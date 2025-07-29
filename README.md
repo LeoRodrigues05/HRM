@@ -40,7 +40,7 @@ cd flash-attention/hopper
 python setup.py install
 ```
 
-For Ampere or earlier GPUs, install FlashAttenion 2
+For Ampere or earlier GPUs, install FlashAttention 2
 
 ```bash
 pip3 install flash-attn
