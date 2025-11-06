@@ -4,6 +4,8 @@ import os
 
 import torch
 import torch.distributed as dist
+import numpy as np
+from typing import Optional
 
 import pydantic
 from omegaconf import OmegaConf
@@ -14,6 +16,7 @@ class EvalConfig(pydantic.BaseModel):
     checkpoint: str
     
     save_outputs: List[str] = ["inputs", "labels", "puzzle_identifiers", "logits", "q_halt_logits", "q_continue_logits"]
+    save_outputs_path: Optional[str] = None
 
 
 def launch():
@@ -63,6 +66,7 @@ def launch():
     if metrics is not None:
         print (metrics)
 
+    
 
 if __name__ == "__main__":
     launch()
