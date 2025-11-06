@@ -280,16 +280,29 @@ def evaluate(config: PretrainConfig, train_state: TrainState, eval_loader: torch
             with torch.device("cuda"):
                 carry = train_state.model.initial_carry(batch)  # type: ignore
 
+            step_frames = []
+
             # Forward
             while True:
-                carry, _, metrics, preds, all_finish = train_state.model(carry=carry, batch=batch, return_keys=config.eval_save_outputs)
+                req = list(set(config.eval_save_outputs + ["intermediate_preds_step"]))
+                carry, _, metrics, preds, all_finish = train_state.model(carry=carry, batch=batch, return_keys=req)
                 
+                if "intermediate_preds_step" in preds:
+                    step_frames.append(preds["intermediate_preds_step"].cpu())
+
+
                 if all_finish:
                     break
+
+            if step_frames:
+                inter = torch.stack(step_frames, dim=0)  # [steps, batch, 81]
+                all_preds.setdefault("intermediate_preds", [])
+                all_preds["intermediate_preds"].append(inter)
 
             for collection in (batch, preds):
                 for k, v in collection.items():
                     if k in config.eval_save_outputs:
+
                         all_preds.setdefault(k, [])
                         all_preds[k].append(v.cpu())  # Move to CPU for saving GPU memory
                         
@@ -306,7 +319,8 @@ def evaluate(config: PretrainConfig, train_state: TrainState, eval_loader: torch
             metric_global_batch_size[set_id] += global_batch_size
 
         if len(all_preds) and config.checkpoint_path is not None:
-            all_preds = {k: torch.cat(v, dim=0) for k, v in all_preds.items()}
+            for k, vlist in all_preds.items():
+                all_preds[k] = torch.cat(vlist, dim=1) if k in ("intermediate_logits","intermediate_preds") else torch.cat(vlist, dim=0)
 
             os.makedirs(config.checkpoint_path, exist_ok=True)
             torch.save(all_preds, os.path.join(config.checkpoint_path, f"step_{train_state.step}_all_preds.{rank}"))

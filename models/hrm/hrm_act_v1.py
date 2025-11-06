@@ -253,6 +253,8 @@ class HierarchicalReasoningModel_ACTV1(nn.Module):
             "q_halt_logits": q_halt_logits,
             "q_continue_logits": q_continue_logits
         }
+
+        outputs["intermediate_preds_step"] = logits.argmax(-1)  # For analysis
         
         with torch.no_grad():
             # Step

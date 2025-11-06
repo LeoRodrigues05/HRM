@@ -167,3 +167,12 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint
+.gitignore
+.gitignore
+Checkpoint_HRM_Sudoku/__MACOSX/Checkpoint_HRM_Sudoku/._all_config.yaml
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/eval_outputs_rank0.npz
+Checkpoint_HRM_Sudoku/__MACOSX/Checkpoint_HRM_Sudoku/._checkpoint
+Checkpoint_HRM_Sudoku/__MACOSX/Checkpoint_HRM_Sudoku/._gitattributes
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/eval_with_steps.npz
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.0
