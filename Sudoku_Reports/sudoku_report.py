@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # sudoku_report.py
 import os, json
+import sys
 import numpy as np
 from pathlib import Path
 from datetime import datetime
 
-NPZ_PATH = "Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/eval_with_steps.npz"
-OUT_HTML = "sudoku_eval_report.html"
+OUTPUT_FILEPATH = sys.argv[1] if len(sys.argv) > 1 else "Sudoku_Reports/sudoku_eval_report.html"
+NPZ_PATH = "../Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.npz"
+OUT_HTML = sys.argv[1] if len(sys.argv) > 1 else "sudoku_eval_report.html"
 NUM_EXAMPLES = 5  # how many puzzles to include
 
 # --- token helpers (HRM Sudoku) ---
