@@ -176,3 +176,13 @@ Checkpoint_HRM_Sudoku/__MACOSX/Checkpoint_HRM_Sudoku/._checkpoint
 Checkpoint_HRM_Sudoku/__MACOSX/Checkpoint_HRM_Sudoku/._gitattributes
 Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/eval_with_steps.npz
 Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.0
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt
+.gitignore
+.gitignore
+.gitignore
+cuda_12_6.run
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.0
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.npz
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/all_config.yaml
+.gitignore
+Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/gitattributes
