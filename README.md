@@ -55,6 +55,33 @@ pip3 install flash-attn
 pip install -r requirements.txt
 ```
 
+### Linear Probes (Global vs Local)
+
+Record hidden states (`z_H`, `z_L`) across ACT steps and build probe datasets to test functional specialization.
+
+- Global features (`H`): decode puzzle-level metrics (is solved, search-state variables).
+- Local features (`L`): decode per-cell logical statuses.
+
+Files:
+- `models/hrm/hrm_act_v1.py`: optional `probe_recorder` hooks capture `z_H`/`z_L` each step.
+- `utils/probes.py`: `ProbeRecorder` that saves:
+      - `results/probes/probe_global.pt` (pooled features per step)
+      - `results/probes/probe_local.pt` (per-token features per step)
+      - `results/probes/probe_index.json` (manifest)
+- `scripts/generate_probes.py`: example script to run collection.
+
+Usage (with an existing virtualenv):
+
+```bash
+source .venv/bin/activate
+python scripts/generate_probes.py
+```
+
+Outputs are written to `results/probes/`. Extend labels in `utils/probes.py` to include:
+- Violated rows/columns/subgrids for Sudoku.
+- Which cell(s) changed since the previous step.
+- Candidate features or other task-specific indicators.
+
 ## W&B Integration 📈
 
 This project uses [Weights & Biases](https://wandb.ai/) for experiment tracking and metric visualization. Ensure you're logged in:
