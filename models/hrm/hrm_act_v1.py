@@ -177,7 +177,7 @@ class HierarchicalReasoningModel_ACTV1_Inner(nn.Module):
             z_L=torch.where(reset_flag.view(-1, 1, 1), self.L_init, carry.z_L),
         )
 
-    def forward(self, carry: HierarchicalReasoningModel_ACTV1InnerCarry, batch: Dict[str, torch.Tensor]) -> Tuple[HierarchicalReasoningModel_ACTV1InnerCarry, torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
+    def forward(self, carry: HierarchicalReasoningModel_ACTV1InnerCarry, batch: Dict[str, torch.Tensor], probe_recorder: Optional[object] = None, step_index: Optional[int] = None) -> Tuple[HierarchicalReasoningModel_ACTV1InnerCarry, torch.Tensor, Tuple[torch.Tensor, torch.Tensor]]:
         seq_info = dict(
             cos_sin=self.rotary_emb() if hasattr(self, "rotary_emb") else None,
         )
@@ -197,11 +197,25 @@ class HierarchicalReasoningModel_ACTV1_Inner(nn.Module):
                 if not (_H_step == self.config.H_cycles - 1):
                     z_H = self.H_level(z_H, z_L, **seq_info)
 
+                # Optional probe capture during no-grad rollout
+                if probe_recorder is not None and step_index is not None:
+                    try:
+                        probe_recorder.record_hidden(step_index=step_index, phase="nograd", z_H=z_H, z_L=z_L, batch=batch)
+                    except Exception:
+                        pass
+
         assert not z_H.requires_grad and not z_L.requires_grad
 
         # 1-step grad
         z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
         z_H = self.H_level(z_H, z_L, **seq_info)
+
+        # Optional probe capture for 1-step grad states
+        if probe_recorder is not None and step_index is not None:
+            try:
+                probe_recorder.record_hidden(step_index=step_index, phase="grad", z_H=z_H, z_L=z_L, batch=batch)
+            except Exception:
+                pass
 
         # LM Outputs
         new_carry = HierarchicalReasoningModel_ACTV1InnerCarry(z_H=z_H.detach(), z_L=z_L.detach())  # New carry no grad
@@ -237,7 +251,7 @@ class HierarchicalReasoningModel_ACTV1(nn.Module):
             current_data={k: torch.empty_like(v) for k, v in batch.items()}
         )
         
-    def forward(self, carry: HierarchicalReasoningModel_ACTV1Carry, batch: Dict[str, torch.Tensor]) -> Tuple[HierarchicalReasoningModel_ACTV1Carry, Dict[str, torch.Tensor]]:
+    def forward(self, carry: HierarchicalReasoningModel_ACTV1Carry, batch: Dict[str, torch.Tensor], probe_recorder: Optional[object] = None) -> Tuple[HierarchicalReasoningModel_ACTV1Carry, Dict[str, torch.Tensor]]:
         # Update data, carry (removing halted sequences)
         new_inner_carry = self.inner.reset_carry(carry.halted, carry.inner_carry)
         
@@ -246,7 +260,7 @@ class HierarchicalReasoningModel_ACTV1(nn.Module):
         new_current_data = {k: torch.where(carry.halted.view((-1, ) + (1, ) * (batch[k].ndim - 1)), batch[k], v) for k, v in carry.current_data.items()}
 
         # Forward inner model
-        new_inner_carry, logits, (q_halt_logits, q_continue_logits) = self.inner(new_inner_carry, new_current_data)
+        new_inner_carry, logits, (q_halt_logits, q_continue_logits) = self.inner(new_inner_carry, new_current_data, probe_recorder=probe_recorder, step_index=int(new_steps.max().item()) if torch.is_tensor(new_steps) else None)
 
         outputs = {
             "logits": logits,
