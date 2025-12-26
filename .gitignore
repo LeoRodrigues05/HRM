@@ -187,3 +187,10 @@ Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/all_config.yam
 .gitignore
 Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/gitattributes
 results/hamming_multi/hamming_per_puzzle.csv
+gdrive_linux-x64.tar.gz
+gdrive_linux-x64.tar.gz
+
+# Probe artifacts
+results/probes/*.pt
+results/probes/*.npz
+results/probes/*.npy
