@@ -1,0 +1,8 @@
+{
+  "count": 1280,
+  "puzzle_type": "sudoku",
+  "files": {
+    "global": "probe_global.pt",
+    "local": "probe_local.pt"
+  }
+}
