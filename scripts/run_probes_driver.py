@@ -1,8 +1,14 @@
 import os
+import sys
 import json
 import numpy as np
 import torch
 from torch.utils.data import DataLoader
+
+# Ensure repo root is on sys.path when executed as `python scripts/run_probes_driver.py`.
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
 from models.hrm.hrm_act_v1 import HierarchicalReasoningModel_ACTV1
 from puzzle_dataset import PuzzleDataset, PuzzleDatasetConfig
