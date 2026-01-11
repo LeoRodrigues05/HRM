@@ -194,3 +194,10 @@ gdrive_linux-x64.tar.gz
 results/probes/*.pt
 results/probes/*.npz
 results/probes/*.npy
+
+# Activation patching artifacts (large binary files)
+results/activation_patching_*/activations_*.pt
+results/activation_patching_*/activations_*.npz
+
+# CUDA installer
+*.run

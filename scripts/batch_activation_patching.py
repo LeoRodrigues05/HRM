@@ -65,10 +65,10 @@ def run_single_experiment(
         print(result.stderr)
         return {"success": False, "error": result.stderr}
     
-    # Parse results
+    # Parse results (main script now saves with _forward suffix)
     results_file = os.path.join(
         output_dir, 
-        f"patch_s{source_idx}_t{target_idx}_{patch_level}.yaml"
+        f"patch_s{source_idx}_t{target_idx}_{patch_level}_forward.yaml"
     )
     
     if os.path.exists(results_file):
@@ -76,6 +76,15 @@ def run_single_experiment(
             results = yaml.safe_load(f)
         return {"success": True, "results": results}
     else:
+        # Fallback to old naming convention for backwards compatibility
+        results_file_old = os.path.join(
+            output_dir, 
+            f"patch_s{source_idx}_t{target_idx}_{patch_level}.yaml"
+        )
+        if os.path.exists(results_file_old):
+            with open(results_file_old, "r") as f:
+                results = yaml.safe_load(f)
+            return {"success": True, "results": results}
         return {"success": False, "error": "Results file not found"}
 
 
@@ -87,7 +96,7 @@ def main():
                         help="Number of puzzles to test")
     parser.add_argument("--patch_levels", type=str, default="H,L,both",
                         help="Comma-separated patch levels to test")
-    parser.add_argument("--patch_steps_configs", type=str, default="all,0,1,2",
+    parser.add_argument("--patch_steps_configs", type=str, default="all,1,2",
                         help="Comma-separated step configurations (use 'all' or specific steps)")
     parser.add_argument("--max_steps", type=int, default=8,
                         help="Maximum reasoning steps")
