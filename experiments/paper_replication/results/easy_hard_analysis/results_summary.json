@@ -1,0 +1,61 @@
+{
+  "overall_metrics": {
+    "overall_accuracy": 0.8367534157460976,
+    "unknown_accuracy": 0.763019357066149,
+    "known_accuracy": 0.999955710585189,
+    "overall_correct": 28655178,
+    "overall_total": 34245666,
+    "unknown_correct": 17998476,
+    "unknown_total": 23588492
+  },
+  "difficulty_bins": [
+    {
+      "bin_id": 0,
+      "difficulty_range": [
+        17.0,
+        24.0
+      ],
+      "num_puzzles": 58050,
+      "mean_accuracy": 0.7363930626003552,
+      "std_accuracy": 0.19529701944047576,
+      "mean_unknown_accuracy": 0.6350320862041178,
+      "std_unknown_accuracy": 0.27064543593724594
+    },
+    {
+      "bin_id": 1,
+      "difficulty_range": [
+        24.0,
+        25.0
+      ],
+      "num_puzzles": 89021,
+      "mean_accuracy": 0.7712266810120125,
+      "std_accuracy": 0.1938074408877578,
+      "mean_unknown_accuracy": 0.6749138829257123,
+      "std_unknown_accuracy": 0.2753970777608535
+    },
+    {
+      "bin_id": 2,
+      "difficulty_range": [
+        25.0,
+        26.0
+      ],
+      "num_puzzles": 89489,
+      "mean_accuracy": 0.8307689102833387,
+      "std_accuracy": 0.18841241149298724,
+      "mean_unknown_accuracy": 0.7552320875829911,
+      "std_unknown_accuracy": 0.27251113408615185
+    },
+    {
+      "bin_id": 4,
+      "difficulty_range": [
+        26.0,
+        36.0
+      ],
+      "num_puzzles": 186226,
+      "mean_accuracy": 0.9022368679076118,
+      "std_accuracy": 0.1589809275509438,
+      "mean_unknown_accuracy": 0.8555686227987609,
+      "std_unknown_accuracy": 0.2347476950973184
+    }
+  ]
+}
