@@ -1,0 +1,13 @@
+{
+  "checkpoint_id": 5,
+  "step": 5000,
+  "epoch": 25.6,
+  "train_loss": 0.8152,
+  "train_accuracy": 0.6362740740740741,
+  "train_unknown_accuracy": 0.4719188935334227,
+  "test_loss": 0.8273876543209877,
+  "test_accuracy": 0.6282506172839506,
+  "test_unknown_accuracy": 0.4601994553788953,
+  "learning_rate": 7.222075445642904e-05,
+  "timestamp": "2026-01-26T15:57:50.893955"
+}

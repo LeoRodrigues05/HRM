@@ -66,6 +66,29 @@ class SpecializationConfig(ExperimentConfig):
 class ActivationPatchingConfig(ExperimentConfig):
     """Config for activation patching experiments."""
     name: str = "activation_patching"
+
+
+@dataclass
+class ActivationAblationConfig(ExperimentConfig):
+    """Config for activation ablation experiments (zeroing H/L activations)."""
+    name: str = "activation_ablation"
+    ablate_levels: List[str] = field(default_factory=lambda: ["H", "L", "both"])
+    ablation_value: float = 0.0
+    max_steps: int = 8
+    num_puzzles: int = 10
+    num_runs: int = 3
+
+
+@dataclass
+class CrossStepTransferConfig(ExperimentConfig):
+    """Config for cross-step activation transfer experiments."""
+    name: str = "cross_step_transfer"
+    transfer_levels: List[str] = field(default_factory=lambda: ["H", "L"])
+    donor_steps: List[int] = field(default_factory=lambda: [6, 7])
+    recipient_steps: List[int] = field(default_factory=lambda: [2, 3, 4])
+    max_steps: int = 8
+    num_puzzles: int = 10
+    num_runs: int = 3
     num_puzzle_pairs: int = 50
     patch_levels: List[str] = field(default_factory=lambda: ["H", "L", "both"])
     patch_step_configs: List[str] = field(default_factory=lambda: ["all", "0", "1,2", "3,4,5,6,7"])
