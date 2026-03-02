@@ -1,0 +1,22 @@
+{
+  "data_path": "data/sudoku-extreme-1k-aug-1000",
+  "output_dir": "experiments/paper_replication/results/grokking_checkpoints_fast",
+  "total_steps": 10000,
+  "num_checkpoints": 10,
+  "eval_batch_size": 64,
+  "hidden_size": 256,
+  "num_layers": 4,
+  "num_heads": 8,
+  "H_cycles": 2,
+  "L_cycles": 2,
+  "halt_max_steps": 16,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.1,
+  "warmup_steps": 2000,
+  "batch_size": 256,
+  "device": "cuda",
+  "seed": 42,
+  "train_eval_samples": 5000,
+  "test_eval_samples": 10000,
+  "train_subset": 50000
+}

@@ -1,0 +1,24 @@
+{
+  "num_puzzles": 200,
+  "num_solved": 99,
+  "pca_variance_explained_H": [
+    0.5389937162399292,
+    0.052746303379535675
+  ],
+  "pca_variance_explained_L": [
+    0.698512077331543,
+    0.12165537476539612
+  ],
+  "metrics_H": {
+    "solved": {
+      "mean_path_length": 6.866141744334288,
+      "mean_final_drift": 0.04577514890409686,
+      "mean_symmetry": 0.5213199832824745
+    },
+    "unsolved": {
+      "mean_path_length": 9.171180229375858,
+      "mean_final_drift": 0.3021794446365963,
+      "mean_symmetry": 0.7186776328795027
+    }
+  }
+}

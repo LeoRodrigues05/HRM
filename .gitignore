@@ -23,3 +23,19 @@ Checkpoint_*/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+
+# Large binary archives
+*.tar.gz
+LARGE_FILES_ZIP/
+
+# Log files
+*.log
+
+# Data directory (large .npy files)
+data/
+
+# Outputs directory
+outputs/

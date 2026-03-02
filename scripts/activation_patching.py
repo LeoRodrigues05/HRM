@@ -675,10 +675,8 @@ def _compute_violations(chars81: List[str]) -> List[bool]:
 
 def _compute_classes(curr_chars: List[str], given_chars: List[str], prev_chars: Optional[List[str]] = None) -> List[str]:
     """Match sudoku_report_colored_ai.py / activation_patching_sudoku_report.py coloring.
-
     Priority:
       changed_ok / changed_bad (half yellow) > given (blue) > ok/bad > blank
-
     "changed" is defined relative to prev_chars (when provided).
     """
     viol = _compute_violations(curr_chars)
@@ -852,6 +850,16 @@ def make_colored_html_report(
     sec_final.append(_table_html("Patched prediction (changes vs baseline highlighted)", patched_final_chars, patched_classes_final))
     sec_final.append("</div>")
     sections.append("\n".join(sec_final))
+
+    # Labels comparison: Source vs Target (side by side for easy comparison)
+    if source_labels is not None:
+        source_label_chars = _to_chars(source_labels)
+        sections.append("<h2>Labels Comparison (Source vs Target)</h2>")
+        sec_labels = ["<div class='row2'>"]
+        sec_labels.append(_table_html("Source Label", source_label_chars))
+        sec_labels.append(_table_html("Target Label", label_chars))
+        sec_labels.append("</div>")
+        sections.append("\n".join(sec_labels))
 
     # Steps
     sections.append("<h2>Baseline vs Patched (per step)</h2>")
