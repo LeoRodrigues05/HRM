@@ -1,0 +1,154 @@
+{
+  "step_metrics": [
+    {
+      "step": 0,
+      "accuracy": 0.6791438659712443,
+      "unknown_accuracy": 0.5341826005664118,
+      "hamming_from_prev": 0.6888023144300947,
+      "kl_from_prev": 0.0,
+      "num_violations": 37.53698797973443,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 1,
+      "accuracy": 0.7409491174737265,
+      "unknown_accuracy": 0.6239130928759669,
+      "hamming_from_prev": 0.23137447524016616,
+      "kl_from_prev": 0.0,
+      "num_violations": 20.71317404076767,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 2,
+      "accuracy": 0.7764736127485445,
+      "unknown_accuracy": 0.6754928208212717,
+      "hamming_from_prev": 0.13878418950882718,
+      "kl_from_prev": 0.0,
+      "num_violations": 16.73283410519743,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 3,
+      "accuracy": 0.7971036977350652,
+      "unknown_accuracy": 0.7054463676609763,
+      "hamming_from_prev": 0.09970149215378087,
+      "kl_from_prev": 0.0,
+      "num_violations": 16.04662879092496,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 4,
+      "accuracy": 0.8081076887218371,
+      "unknown_accuracy": 0.7214235653555132,
+      "hamming_from_prev": 0.07963109842863035,
+      "kl_from_prev": 0.0,
+      "num_violations": 15.093054169248745,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 5,
+      "accuracy": 0.8151123415149818,
+      "unknown_accuracy": 0.7315935668969428,
+      "hamming_from_prev": 0.07055237296304881,
+      "kl_from_prev": 0.0,
+      "num_violations": 14.330628261106092,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 6,
+      "accuracy": 0.8199623858972402,
+      "unknown_accuracy": 0.7386358992342538,
+      "hamming_from_prev": 0.0653642128028697,
+      "kl_from_prev": 0.0,
+      "num_violations": 13.830247453794591,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 7,
+      "accuracy": 0.8235547236838671,
+      "unknown_accuracy": 0.7438522140372518,
+      "hamming_from_prev": 0.06210663270499689,
+      "kl_from_prev": 0.0,
+      "num_violations": 13.432523782717498,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 8,
+      "accuracy": 0.8264417167416163,
+      "unknown_accuracy": 0.7480448093078608,
+      "hamming_from_prev": 0.059951411077828066,
+      "kl_from_prev": 0.0,
+      "num_violations": 13.119190323236815,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 9,
+      "accuracy": 0.8287006303220968,
+      "unknown_accuracy": 0.7513250953049478,
+      "hamming_from_prev": 0.05814192663094945,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.861194552326708,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 10,
+      "accuracy": 0.8305534487196131,
+      "unknown_accuracy": 0.754015856545641,
+      "hamming_from_prev": 0.05672723666696977,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.668863207390974,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 11,
+      "accuracy": 0.8321353131225423,
+      "unknown_accuracy": 0.7563128240669221,
+      "hamming_from_prev": 0.05563106876064259,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.477312399180674,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 12,
+      "accuracy": 0.833643562370783,
+      "unknown_accuracy": 0.7585030870137862,
+      "hamming_from_prev": 0.05472756757015618,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.332541758714811,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 13,
+      "accuracy": 0.8348001758821102,
+      "unknown_accuracy": 0.7601829739688319,
+      "hamming_from_prev": 0.05387040801016981,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.212237396697146,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 14,
+      "accuracy": 0.8358062885972198,
+      "unknown_accuracy": 0.7616439830066288,
+      "hamming_from_prev": 0.053180568893009705,
+      "kl_from_prev": 0.0,
+      "num_violations": 12.095734012006075,
+      "pct_filled": 1.0
+    },
+    {
+      "step": 15,
+      "accuracy": 0.8367534157460976,
+      "unknown_accuracy": 0.763019357066149,
+      "hamming_from_prev": 0.052610306950958405,
+      "kl_from_prev": 0.0,
+      "num_violations": 11.992504482173015,
+      "pct_filled": 1.0
+    }
+  ],
+  "config": {
+    "checkpoint": "Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt",
+    "data_path": "data/sudoku-extreme-1k-aug-1000",
+    "max_steps": 16,
+    "num_puzzles": 422786
+  }
+}

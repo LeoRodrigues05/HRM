@@ -1,0 +1,63 @@
+# HRM v2 Architecture Configuration
+# 
+# This configuration extends the original HRM with structural inductive biases:
+# - Point 2: Constraint-aware sparse attention in L_level
+# - Point 3: Explicit constraint satisfaction head
+# - Point 5: GNN layers for constraint graph structure
+
+# === Base Architecture (same as v1) ===
+H_cycles: 2          # High-level cycles per ACT step
+L_cycles: 2          # Low-level cycles per H cycle
+H_layers: 4          # Transformer blocks in H module
+L_layers: 4          # Transformer blocks in L module
+
+# Transformer config
+hidden_size: 512
+num_heads: 8         # head_dim = 64
+expansion: 4         # SwiGLU intermediate
+
+# Position encoding
+pos_encodings: rope
+rope_theta: 10000.0
+rms_norm_eps: 1e-5
+
+# ACT config
+halt_max_steps: 16
+halt_exploration_prob: 0.1
+
+# Puzzle embeddings
+puzzle_emb_ndim: 512
+
+# Precision
+forward_dtype: bfloat16
+
+# === Point 2: Constraint-Aware Sparse Attention ===
+# Enable sparse attention that respects Sudoku constraint structure
+# Each cell only attends to cells in same row, column, or box (~20 neighbors vs 80)
+use_sparse_attention: true
+sparse_attention_layers: "L"  # Options: "L", "H", "both"
+                              # "L" recommended: low-level needs structural bias
+                              # "H" can use full attention for global reasoning
+
+# === Point 3: Constraint Satisfaction Head ===
+# Auxiliary head predicting per-constraint validity (27 for Sudoku)
+# Provides direct supervision for constraint satisfaction
+use_constraint_head: true
+constraint_head_weight: 0.5   # Loss weight (0.5 = half as important as LM loss)
+
+# Also use differentiable violation counter for smooth gradients
+use_violation_loss: true
+violation_loss_weight: 0.1    # Smaller weight as it's supplementary
+
+# === Point 5: GNN Layers ===
+# Graph Neural Network layers that encode constraint graph topology
+# Interleaved with Transformer blocks for hybrid reasoning
+use_gnn_layers: true
+gnn_type: "mpnn"              # Options: "basic", "gat", "mpnn"
+                              # "basic": Simple typed message passing
+                              # "gat": Graph attention with learned edge weights
+                              # "mpnn": Message-passing NN with edge features
+gnn_layers_per_level: 1       # GNN layers per H/L level (1 recommended)
+gnn_interleave: true          # true = interleave with Transformer
+                              # false = apply all GNN first, then Transformer
+gnn_edge_dim: 32              # Edge feature dimension for MPNN

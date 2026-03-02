@@ -1,45 +1,186 @@
+"""Linear Probe Training for HRM Hidden States.
+
+This module provides functionality to train linear probes on the hidden states
+(z_H and z_L) captured from the Hierarchical Reasoning Model (HRM) during inference.
+
+Linear probes are used to analyze what information is encoded in the model's
+internal representations at different levels:
+- Global probes: Analyze puzzle-level properties (is_solved, violation counts, etc.)
+- Local probes: Analyze per-cell properties (correctness, position, etc.)
+
+Usage:
+    python scripts/train_linear_probes.py --probes_dir results/probes
+    python scripts/train_linear_probes.py --list_label_keys  # Show available targets
+"""
 import os
 import argparse
 import json
-from typing import List, Dict, Tuple, Optional, Any
+import logging
+from typing import List, Dict, Tuple, Optional, Any, Union
 
 import torch
 import torch.nn as nn
 import torch.optim as optim
 
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
-def load_probes(probes_dir: str):
+# ============================================================================
+# Constants for probe targets and feature sets
+# ============================================================================
+
+# Global targets that use regression (continuous values)
+REGRESSION_TARGETS = frozenset({
+    "pct_filled",
+    "violated_units_total",
+    "violated_rows_count",
+    "violated_cols_count",
+    "violated_boxes_count",
+
+    "constraint_pressure",  # Can also be used globally (mean/max)
+})
+
+# Local targets that use multiclass classification (9 classes for Sudoku)
+MULTICLASS_TARGETS = frozenset({
+    "row_idx", 
+    "col_idx", 
+    "box_idx",
+    "position_in_box",
+    "cell_digit",  # 0-9, though 0 means empty
+    "candidate_count",  # 0-9 candidates
+})
+
+# Local targets that use regression (continuous per-cell values)
+LOCAL_REGRESSION_TARGETS = frozenset({
+    "filled_in_row",
+    "filled_in_col", 
+    "filled_in_box",
+    "constraint_pressure",
+    "candidate_count",  # Can also be treated as regression
+})
+
+# Binary local targets
+BINARY_LOCAL_TARGETS = frozenset({
+    "per_cell_correct",
+    "is_forced_cell",
+    "is_given",
+    "is_empty",
+    "cell_changed_from_input",
+    "cells_changed_since_prev_step",
+    # Naked/Hidden singles (basic techniques)
+    "is_naked_single",
+    "is_hidden_single",
+    "is_hidden_single_row",
+    "is_hidden_single_col",
+    "is_hidden_single_box",
+    # Constraint-based
+    "is_min_cand_in_row",
+    "is_min_cand_in_col",
+    "is_min_cand_in_box",
+    "is_most_constrained",
+    # Locked candidates (intermediate technique)
+    "is_pointing_cell",
+    "is_claiming_cell",
+    "is_locked_candidate",
+})
+
+# Supported global feature sets
+GLOBAL_FEATURE_SETS = frozenset({"z_H", "z_L", "concat", "diff", "prod", "concat_norms"})
+
+# Supported local feature sets
+LOCAL_FEATURE_SETS = frozenset({"z_only", "concat", "diff", "prod", "z_and_norms"})
+
+# Default hyperparameters
+DEFAULT_EPOCHS = 50
+DEFAULT_LR = 1e-2
+DEFAULT_MAX_LOCAL_SAMPLES = 200_000
+
+# Sudoku grid constants
+SUDOKU_GRID_SIZE = 9
+SUDOKU_NUM_CELLS = 81
+
+
+# ============================================================================
+# Data Loading
+# ============================================================================
+
+def load_probes(probes_dir: str) -> Tuple[List[Dict], List[Dict], Dict]:
+    """Load probe data from disk.
+    
+    Args:
+        probes_dir: Directory containing probe_global.pt, probe_local.pt, and probe_index.json
+        
+    Returns:
+        Tuple of (global_samples, local_samples, index_metadata)
+        
+    Raises:
+        FileNotFoundError: If probe_global.pt is missing
+    """
     global_path = os.path.join(probes_dir, "probe_global.pt")
     local_path = os.path.join(probes_dir, "probe_local.pt")
     index_path = os.path.join(probes_dir, "probe_index.json")
 
     if not os.path.exists(global_path):
-        raise FileNotFoundError(f"Missing {global_path}")
+        raise FileNotFoundError(
+            f"Missing {global_path}. Run probe collection first with run_probes_driver.py"
+        )
 
-    global_samples = torch.load(global_path)
-    local_samples = []
+    logger.info(f"Loading global probes from {global_path}")
+    global_samples = torch.load(global_path, weights_only=False)
+    
+    local_samples: List[Dict] = []
     if os.path.exists(local_path):
-        local_samples = torch.load(local_path)
-    index = {}
+        logger.info(f"Loading local probes from {local_path}")
+        local_samples = torch.load(local_path, weights_only=False)
+    else:
+        logger.warning(f"Local probes not found at {local_path}")
+        
+    index: Dict = {}
     if os.path.exists(index_path):
         with open(index_path, "r") as f:
             index = json.load(f)
+            
+    logger.info(f"Loaded {len(global_samples)} global samples, {len(local_samples)} local samples")
     return global_samples, local_samples, index
 
 
+# ============================================================================
+# Utility Functions
+# ============================================================================
+
 def _as_tensor(x: Any) -> Optional[torch.Tensor]:
+    """Safely convert input to a PyTorch tensor.
+    
+    Args:
+        x: Input value (tensor, array, list, or scalar)
+        
+    Returns:
+        Tensor if conversion succeeds, None otherwise
+    """
     if x is None:
         return None
     if torch.is_tensor(x):
         return x
     try:
         return torch.as_tensor(x)
-    except Exception:
+    except (ValueError, TypeError, RuntimeError):
         return None
 
 
 def list_available_label_keys(samples: List[Dict]) -> List[str]:
-    keys = set()
+    """Extract all unique label keys from probe samples.
+    
+    Args:
+        samples: List of probe sample dictionaries
+        
+    Returns:
+        Sorted list of available label key names
+    """
+    keys: set = set()
     for row in samples:
         labels = row.get("labels", {}) or {}
         if isinstance(labels, dict):
@@ -48,29 +189,62 @@ def list_available_label_keys(samples: List[Dict]) -> List[str]:
 
 
 def _phase_to_scalar(phase: Any) -> float:
-    # Common phases: "grad" / "nograd". Default to 0.
+    """Convert phase string to numeric scalar.
+    
+    The HRM model has two phases per step:
+    - "grad": The final step where gradients are computed (encoded as 1.0)
+    - "nograd": The rollout steps without gradients (encoded as 0.0)
+    
+    Args:
+        phase: Phase identifier ("grad", "nograd", or None)
+        
+    Returns:
+        1.0 for "grad" phase, 0.0 otherwise
+    """
     if phase is None:
         return 0.0
     s = str(phase).lower()
     return 1.0 if s == "grad" else 0.0
 
 
-def build_global_feature_vector(row: Dict, feature_set: str = "z_H") -> Optional[torch.Tensor]:
-    """Return a 1D feature vector for a global probe row.
+# ============================================================================
+# Feature Building Functions
+# ============================================================================
 
-    Supported feature_set:
-      - z_H | z_L
-      - concat (z_H || z_L)
-      - diff (z_H - z_L)
-      - prod (z_H * z_L)
-      - concat_norms (z_H || z_L || ||z_H|| || ||z_L||)
+def build_global_feature_vector(row: Dict, feature_set: str = "z_H") -> Optional[torch.Tensor]:
+    """Build a 1D feature vector from global (pooled) hidden states.
+    
+    Global features are derived by pooling z_H and z_L across the sequence dimension.
+    These are used to predict puzzle-level properties.
+
+    Args:
+        row: Dictionary containing "z_H" and "z_L" tensors
+        feature_set: One of:
+            - "z_H": Use only the high-level hidden state
+            - "z_L": Use only the low-level hidden state  
+            - "concat": Concatenate z_H and z_L [z_H || z_L]
+            - "diff": Element-wise difference (z_H - z_L)
+            - "prod": Element-wise product (z_H * z_L)
+            - "concat_norms": Concatenate with L2 norms [z_H || z_L || ||z_H|| || ||z_L||]
+            
+    Returns:
+        1D feature tensor, or None if inputs are invalid
+        
+    Raises:
+        ValueError: If feature_set is not recognized
     """
+    if feature_set not in GLOBAL_FEATURE_SETS:
+        raise ValueError(
+            f"Unknown global feature_set: {feature_set}. "
+            f"Valid options: {sorted(GLOBAL_FEATURE_SETS)}"
+        )
+        
     z_H = _as_tensor(row.get("z_H"))
     z_L = _as_tensor(row.get("z_L"))
     if z_H is None or z_L is None:
         return None
 
-    # Unify to [D]
+    # Pool to [D] if needed (mean over sequence dimension)
     if z_H.ndim == 2:
         z_H = z_H.mean(dim=0)
     if z_L.ndim == 2:
@@ -78,21 +252,23 @@ def build_global_feature_vector(row: Dict, feature_set: str = "z_H") -> Optional
     if z_H.ndim != 1 or z_L.ndim != 1:
         return None
 
+    # Build feature vector based on selected feature set
     if feature_set == "z_H":
         return z_H.float()
-    if feature_set == "z_L":
+    elif feature_set == "z_L":
         return z_L.float()
-    if feature_set == "concat":
+    elif feature_set == "concat":
         return torch.cat([z_H, z_L], dim=0).float()
-    if feature_set == "diff":
+    elif feature_set == "diff":
         return (z_H - z_L).float()
-    if feature_set == "prod":
+    elif feature_set == "prod":
         return (z_H * z_L).float()
-    if feature_set == "concat_norms":
+    elif feature_set == "concat_norms":
         nH = torch.linalg.vector_norm(z_H.float()).view(1)
         nL = torch.linalg.vector_norm(z_L.float()).view(1)
         return torch.cat([z_H.float(), z_L.float(), nH, nL], dim=0)
-
+    
+    # This should never be reached due to the check above
     raise ValueError(f"Unknown global feature_set: {feature_set}")
 
 
@@ -105,19 +281,32 @@ def build_local_feature_matrix(
     add_step_feature: bool = True,
     add_phase_feature: bool = True,
 ) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor]]:
-    """Return (X, y) for a single local sample row.
+    """Build per-token feature matrix for local (cell-level) probes.
+    
+    Local features preserve the per-token structure to predict cell-level
+    properties like correctness, position indices, etc.
 
-    - X: [N, F]
-    - y: [N]
-
-    Aligns z token length to y length by taking the last `len(y)` tokens.
-
-    Supported feature_set:
-      - z_only: selected z only
-      - concat: concat z_H and z_L per token
-      - diff: z_H - z_L per token
-      - prod: z_H * z_L per token
-      - z_and_norms: selected z plus per-token norm(s)
+    Args:
+        row: Dictionary containing "z_H", "z_L" tensors and "labels"
+        use_z: Which hidden state to use as base ("z_H" or "z_L")
+        feature_set: One of:
+            - "z_only": Use only the selected z tensor
+            - "concat": Concatenate z_H and z_L per token
+            - "diff": Per-token difference (z_H - z_L)
+            - "prod": Per-token product (z_H * z_L)
+            - "z_and_norms": Selected z plus per-token L2 norm
+        add_position_features: Add Sudoku row/col/box one-hot encodings (27 dims)
+        add_step_feature: Add ACT step index as a scalar feature
+        add_phase_feature: Add phase indicator (grad=1/nograd=0) as scalar
+            
+    Returns:
+        Tuple of (X, y) where:
+            - X: Feature matrix [N, F] where N is number of cells
+            - y: Label vector [N]
+        Returns (None, None) if inputs are invalid
+        
+    Raises:
+        ValueError: If feature_set is not recognized
     """
     labels = row.get("labels", {}) or {}
     per_cell = _as_tensor(labels.get("per_cell_correct"))
@@ -195,16 +384,60 @@ def build_local_feature_matrix(
     return X, y
 
 
+# ============================================================================
+# Model Definition
+# ============================================================================
+
 class LinearProbe(nn.Module):
+    """Simple linear probe for classification or regression.
+    
+    A linear probe is a single linear layer used to predict labels from
+    frozen hidden representations. The probe's performance indicates how
+    linearly decodable the target information is from the representations.
+    
+    Args:
+        in_dim: Input feature dimension
+        out_dim: Output dimension (1 for binary/regression, num_classes for multiclass)
+        bias: Whether to include bias term
+    """
+    
     def __init__(self, in_dim: int, out_dim: int, bias: bool = True):
         super().__init__()
+        self.in_dim = in_dim
+        self.out_dim = out_dim
         self.linear = nn.Linear(in_dim, out_dim, bias=bias)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass through the linear layer."""
         return self.linear(x)
+    
+    def __repr__(self) -> str:
+        return f"LinearProbe(in_dim={self.in_dim}, out_dim={self.out_dim})"
 
 
-def train_binary_probe(X: torch.Tensor, y: torch.Tensor, epochs: int = 50, lr: float = 1e-2) -> Tuple[LinearProbe, float]:
+# ============================================================================
+# Probe Training Functions
+# ============================================================================
+
+def train_binary_probe(
+    X: torch.Tensor, 
+    y: torch.Tensor, 
+    epochs: int = DEFAULT_EPOCHS, 
+    lr: float = DEFAULT_LR
+) -> Tuple[LinearProbe, float]:
+    """Train a binary classification probe.
+    
+    Uses BCEWithLogitsLoss for numerical stability.
+    
+    Args:
+        X: Feature matrix [N, D]
+        y: Binary labels [N] (values in {0, 1})
+        epochs: Number of training epochs
+        lr: Learning rate for AdamW optimizer
+        
+    Returns:
+        Tuple of (trained_model, training_accuracy)
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = LinearProbe(X.shape[1], 1).to(device)
     X = X.to(device)
@@ -229,8 +462,25 @@ def train_binary_probe(X: torch.Tensor, y: torch.Tensor, epochs: int = 50, lr: f
     return model, acc
 
 
-def train_regression_probe(X: torch.Tensor, y: torch.Tensor, epochs: int = 100, lr: float = 1e-2) -> Tuple[LinearProbe, float]:
-    """Train a linear regression probe; returns (model, R^2 on training set)."""
+def train_regression_probe(
+    X: torch.Tensor, 
+    y: torch.Tensor, 
+    epochs: int = 100, 
+    lr: float = DEFAULT_LR
+) -> Tuple[LinearProbe, float]:
+    """Train a linear regression probe.
+    
+    Uses MSELoss and evaluates using R² (coefficient of determination).
+    
+    Args:
+        X: Feature matrix [N, D]
+        y: Continuous labels [N]
+        epochs: Number of training epochs (default higher for regression)
+        lr: Learning rate for AdamW optimizer
+        
+    Returns:
+        Tuple of (trained_model, training_R²_score)
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = LinearProbe(X.shape[1], 1).to(device)
     X = X.to(device)
@@ -256,7 +506,27 @@ def train_regression_probe(X: torch.Tensor, y: torch.Tensor, epochs: int = 100, 
     return model, float(r2)
 
 
-def train_multiclass_probe(X: torch.Tensor, y: torch.Tensor, num_classes: int, epochs: int = 50, lr: float = 1e-2) -> Tuple[LinearProbe, float]:
+def train_multiclass_probe(
+    X: torch.Tensor, 
+    y: torch.Tensor, 
+    num_classes: int, 
+    epochs: int = DEFAULT_EPOCHS, 
+    lr: float = DEFAULT_LR
+) -> Tuple[LinearProbe, float]:
+    """Train a multiclass classification probe.
+    
+    Uses CrossEntropyLoss for multi-class classification.
+    
+    Args:
+        X: Feature matrix [N, D]
+        y: Class labels [N] (values in {0, 1, ..., num_classes-1})
+        num_classes: Number of output classes (e.g., 9 for Sudoku row/col indices)
+        epochs: Number of training epochs
+        lr: Learning rate for AdamW optimizer
+        
+    Returns:
+        Tuple of (trained_model, training_accuracy)
+    """
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = LinearProbe(X.shape[1], num_classes).to(device)
     X = X.to(device)
@@ -280,6 +550,11 @@ def train_multiclass_probe(X: torch.Tensor, y: torch.Tensor, num_classes: int, e
     return model, acc
 
 
+# ============================================================================
+# Dataset Building Functions
+# ============================================================================
+
+
 def build_global_dataset(
     global_samples: List[Dict],
     *,
@@ -288,10 +563,22 @@ def build_global_dataset(
     add_step_feature: bool = True,
     add_phase_feature: bool = True,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
-    """Build a global probe dataset.
-
-    Features are derived from z_H/z_L entries.
-    Labels are pulled from row['labels'][target_key].
+    """Build a dataset for global (puzzle-level) probes.
+    
+    Assembles feature vectors and labels from all global probe samples.
+    
+    Args:
+        global_samples: List of dictionaries from probe_global.pt
+        target_key: Label key to predict (e.g., "is_solved", "pct_filled")
+        feature_set: Feature construction method (see build_global_feature_vector)
+        add_step_feature: Include ACT step index as a feature
+        add_phase_feature: Include phase indicator as a feature
+        
+    Returns:
+        Tuple of (X, y) where X is [N, D] features and y is [N] labels
+        
+    Raises:
+        ValueError: If no valid samples could be processed
     """
     X_list: List[torch.Tensor] = []
     y_list: List[torch.Tensor] = []
@@ -343,6 +630,25 @@ def build_local_dataset(
     add_step_feature: bool = True,
     add_phase_feature: bool = True,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Build a dataset for local (cell-level) probes.
+    
+    Assembles per-cell feature vectors and labels from all local probe samples.
+    
+    Args:
+        local_samples: List of dictionaries from probe_local.pt
+        use_z: Base hidden state to use ("z_H" or "z_L")
+        feature_set: Feature construction method (see build_local_feature_matrix)
+        target_key: Label key to predict (e.g., "per_cell_correct", "row_idx")
+        add_position_features: Include Sudoku position one-hot encodings
+        add_step_feature: Include ACT step index as a feature
+        add_phase_feature: Include phase indicator as a feature
+        
+    Returns:
+        Tuple of (X, y) where X is [N_cells, D] features and y is [N_cells] labels
+        
+    Raises:
+        ValueError: If no valid samples could be processed
+    """
     X_list: List[torch.Tensor] = []
     y_list: List[torch.Tensor] = []
 
