@@ -1,11 +1,37 @@
+"""Linear Probe Sweep for HRM Hidden States.
+
+This script runs a comprehensive sweep over multiple probe configurations
+to systematically evaluate which hidden state features best predict
+various puzzle properties.
+
+The sweep tests:
+- Multiple target labels (global and local)
+- Multiple feature sets (z_H, z_L, concat, diff, etc.)
+- Train/validation splits for proper evaluation
+
+Usage:
+    python scripts/sweep_linear_probes.py --probes_dir results/probes
+    python scripts/sweep_linear_probes.py --global_targets is_solved,pct_filled
+
+Output:
+    CSV file with all sweep results including accuracy/R² scores
+"""
 import os
 import sys
 import argparse
 import csv
-from dataclasses import dataclass
+import logging
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple
 
 import torch
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 # Ensure repo root is on sys.path when executed as `python scripts/...`.
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -20,11 +46,35 @@ from scripts.train_linear_probes import (  # noqa: E402
     train_binary_probe,
     train_multiclass_probe,
     train_regression_probe,
+    REGRESSION_TARGETS,
+    MULTICLASS_TARGETS,
+    LOCAL_REGRESSION_TARGETS,
+    BINARY_LOCAL_TARGETS,
+    DEFAULT_EPOCHS,
+    DEFAULT_LR,
 )
 
 
+# ============================================================================
+# Data Structures
+# ============================================================================
+
 @dataclass
 class SweepRow:
+    """Result of a single probe sweep configuration.
+    
+    Attributes:
+        scope: 'global' or 'local' probe type
+        target: Label key being predicted
+        task: Task type ('binary', 'multiclass', or 'regression')
+        feature_set: Feature construction method used
+        use_z: Base hidden state ('z_H', 'z_L', or '-' for global)
+        metric: Evaluation metric ('acc' or 'r2')
+        score: Metric value on validation set
+        train_n: Number of training samples
+        val_n: Number of validation samples
+        in_dim: Input feature dimension
+    """
     scope: str
     target: str
     task: str
@@ -37,7 +87,22 @@ class SweepRow:
     in_dim: int
 
 
+# ============================================================================
+# Utility Functions
+# ============================================================================
+
+
 def _split_indices(n: int, val_frac: float, seed: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Split indices into train and validation sets.
+    
+    Args:
+        n: Total number of samples
+        val_frac: Fraction to use for validation
+        seed: Random seed for reproducibility
+        
+    Returns:
+        Tuple of (train_indices, val_indices)
+    """
     g = torch.Generator().manual_seed(seed)
     perm = torch.randperm(n, generator=g)
     n_val = int(round(n * val_frac))
@@ -48,6 +113,7 @@ def _split_indices(n: int, val_frac: float, seed: int) -> Tuple[torch.Tensor, to
 
 
 def _eval_binary(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -> float:
+    """Evaluate binary classification accuracy."""
     device = next(model.parameters()).device
     with torch.no_grad():
         logits = model(X.to(device))
@@ -56,6 +122,7 @@ def _eval_binary(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -> fl
 
 
 def _eval_multiclass(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -> float:
+    """Evaluate multiclass classification accuracy."""
     device = next(model.parameters()).device
     with torch.no_grad():
         preds = model(X.to(device)).argmax(dim=1).view(-1).cpu()
@@ -63,6 +130,7 @@ def _eval_multiclass(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -
 
 
 def _eval_r2(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -> float:
+    """Evaluate regression R² score."""
     device = next(model.parameters()).device
     y = y.float().view(-1, 1)
     with torch.no_grad():
@@ -74,23 +142,37 @@ def _eval_r2(model: torch.nn.Module, X: torch.Tensor, y: torch.Tensor) -> float:
 
 
 def _infer_global_task(target: str) -> str:
-    if target in {"pct_filled", "violated_units_total", "violated_rows_count", "violated_cols_count", "violated_boxes_count"}:
+    """Infer task type for global targets."""
+    return "regression" if target in REGRESSION_TARGETS else "binary"
+
+
+def _infer_local_task(target: str) -> str:
+    """Infer task type for local targets.
+    
+    Returns:
+        'multiclass' for position/digit indices (9+ classes)
+        'regression' for continuous values like candidate_count
+        'binary' for all other per-cell boolean features
+    """
+    if target in MULTICLASS_TARGETS:
+        return "multiclass"
+    if target in LOCAL_REGRESSION_TARGETS:
         return "regression"
     return "binary"
 
 
-def _infer_local_task(target: str) -> str:
-    if target in {"row_idx", "col_idx"}:
-        return "multiclass"
-    return "binary"
-
-
 def _subsample(X: torch.Tensor, y: torch.Tensor, max_n: int, seed: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    """Subsample data if it exceeds max_n samples."""
     if X.shape[0] <= max_n:
         return X, y
     g = torch.Generator().manual_seed(seed)
     idx = torch.randperm(X.shape[0], generator=g)[:max_n]
     return X[idx], y[idx]
+
+
+# ============================================================================
+# Main Sweep Logic
+# ============================================================================
 
 
 def main() -> None:
@@ -111,7 +193,12 @@ def main() -> None:
     )
     p.add_argument(
         "--local_targets",
-        default="per_cell_correct,is_forced_cell,cell_changed_from_input,row_idx,col_idx",
+        default=(
+            "per_cell_correct,is_naked_single,is_hidden_single,"
+            "is_hidden_single_row,is_hidden_single_col,is_hidden_single_box,"
+            "is_most_constrained,is_locked_candidate,candidate_count,"
+            "is_given,is_empty,row_idx,col_idx,box_idx"
+        ),
         help="Comma-separated local targets to test",
     )
     p.add_argument(

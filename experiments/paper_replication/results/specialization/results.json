@@ -1,0 +1,190 @@
+{
+  "probe_results": [
+    {
+      "target": "is_solved",
+      "feature_set": "z_H",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.9856798052787781,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "is_solved",
+      "feature_set": "z_L",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.9933355450630188,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "is_solved",
+      "feature_set": "concat",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.9940038323402405,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "is_solved",
+      "feature_set": "diff",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.994814932346344,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "num_violations",
+      "feature_set": "z_H",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.8853213787078857,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "num_violations",
+      "feature_set": "z_L",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.8520519733428955,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "num_violations",
+      "feature_set": "concat",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.8890199661254883,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "num_violations",
+      "feature_set": "diff",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.8763222098350525,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "pct_filled",
+      "feature_set": "z_H",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.0,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "pct_filled",
+      "feature_set": "z_L",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.0,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "pct_filled",
+      "feature_set": "concat",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.0,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "pct_filled",
+      "feature_set": "diff",
+      "scope": "global",
+      "metric": "r2",
+      "score": 0.0,
+      "baseline": 0.0,
+      "num_samples": 800
+    },
+    {
+      "target": "is_correct",
+      "feature_set": "z_H",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.38251227140426636,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_correct",
+      "feature_set": "z_L",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.3931858539581299,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_correct",
+      "feature_set": "concat",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.3816661238670349,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_correct",
+      "feature_set": "diff",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.40521448850631714,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_given",
+      "feature_set": "z_H",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.7427399158477783,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_given",
+      "feature_set": "z_L",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.9782002568244934,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_given",
+      "feature_set": "concat",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.9747347831726074,
+      "baseline": 0.0,
+      "num_samples": 4050
+    },
+    {
+      "target": "is_given",
+      "feature_set": "diff",
+      "scope": "local",
+      "metric": "r2",
+      "score": 0.9657765626907349,
+      "baseline": 0.0,
+      "num_samples": 4050
+    }
+  ],
+  "config": {
+    "checkpoint": "Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt",
+    "data_path": "data/sudoku-extreme-1k-aug-1000",
+    "batch_size": 16,
+    "max_batches": 50
+  }
+}
