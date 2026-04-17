@@ -1,0 +1,18 @@
+name: baselines.universal_transformer@UniversalTransformerModel
+loss:
+  name: losses@ACTLossHead
+  loss_type: stablemax_cross_entropy
+
+halt_exploration_prob: 0.1
+halt_max_steps: 16
+
+num_shared_layers: 4   # 4 shared layers (weight-tied, applied repeatedly)
+num_iterations: 4      # 4 iterations per ACT step (matches HRM's H_cycles * L_cycles = 2*2 = 4)
+
+hidden_size: 768       # Standard size; head_dim=96 is flash-attn friendly (~29M params, within 10% of HRM's 27.3M)
+num_heads: 8
+expansion: 4
+
+puzzle_emb_ndim: ${.hidden_size}
+
+pos_encodings: rope

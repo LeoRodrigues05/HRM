@@ -73,7 +73,7 @@ echo ""
 # 1.1: z_H at early steps (1,2,3)
 echo "[1.1] z_H patching at EARLY steps (1,2,3)"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -87,7 +87,7 @@ echo ""
 # 1.2: z_H at late steps (5,6,7)
 echo "[1.2] z_H patching at LATE steps (5,6,7)"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -117,7 +117,7 @@ echo ""
 # 2.1.1: z_L early steps - first two rows only
 echo "[2.1.1] z_L EARLY steps (1,2,3) - FIRST TWO ROWS"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -132,7 +132,7 @@ echo ""
 # 2.1.2: z_L early steps - first subgrid only
 echo "[2.1.2] z_L EARLY steps (1,2,3) - FIRST SUBGRID (top-left 3x3)"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -147,7 +147,7 @@ echo ""
 # 2.1.3: z_L early steps - ALL positions
 echo "[2.1.3] z_L EARLY steps (1,2,3) - ALL POSITIONS"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -168,7 +168,7 @@ echo ""
 # 2.2.1: z_L late steps - first two rows only
 echo "[2.2.1] z_L LATE steps (5,6,7) - FIRST TWO ROWS"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -183,7 +183,7 @@ echo ""
 # 2.2.2: z_L late steps - first subgrid only
 echo "[2.2.2] z_L LATE steps (5,6,7) - FIRST SUBGRID (top-left 3x3)"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -198,7 +198,7 @@ echo ""
 # 2.2.3: z_L late steps - ALL positions
 echo "[2.2.3] z_L LATE steps (5,6,7) - ALL POSITIONS"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -218,7 +218,7 @@ echo ""
 
 echo "[2.3] z_L ALL steps (1,2,3,4,5,6,7) - ALL POSITIONS"
 echo "----------------------------------------------"
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \
@@ -244,7 +244,7 @@ echo "[2.4] z_L SINGLE step with MODIFIED INPUT (rows 1,2,3 missing from both pu
 echo "----------------------------------------------"
 echo "NOTE: Using --source_missing_rows and --target_missing_rows to create inputs"
 echo "      from labels with first 3 rows blanked out."
-python scripts/activation_patching.py \
+python scripts/core/activation_patching.py \
     --checkpoint "$CHECKPOINT" \
     --source_puzzle_idx $SOURCE_IDX \
     --target_puzzle_idx $TARGET_IDX \

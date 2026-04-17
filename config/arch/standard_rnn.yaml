@@ -1,0 +1,14 @@
+name: baselines.standard_rnn@StandardRNNModel
+loss:
+  name: losses@ACTLossHead
+  loss_type: stablemax_cross_entropy
+
+# No recurrence — single forward pass
+halt_exploration_prob: 0.0
+halt_max_steps: 1
+
+num_layers: 4         # 4 stacked GRU layers (~26.3M params)
+hidden_size: 1024
+dropout: 0.0
+
+puzzle_emb_ndim: ${.hidden_size}

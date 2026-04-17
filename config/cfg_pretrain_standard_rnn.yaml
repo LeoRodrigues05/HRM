@@ -1,0 +1,28 @@
+# Baseline training config — Standard RNN (GRU) on Sudoku-Extreme
+# Matches HRM training hyperparameters exactly
+
+defaults:
+  - arch: standard_rnn
+  - _self_
+
+hydra:
+  output_subdir: null
+
+data_path: data/sudoku-extreme-1k-aug-1000
+
+global_batch_size: 768
+
+epochs: 40000
+eval_interval: 4000
+checkpoint_every_eval: True
+
+lr: 1e-4
+lr_min_ratio: 1.0
+lr_warmup_steps: 2000
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 1.0
+puzzle_emb_weight_decay: 1.0
+
+puzzle_emb_lr: 1e-4
