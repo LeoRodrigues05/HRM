@@ -1,0 +1,23 @@
+{
+  "final_stats": {
+    "alive_count": 2048,
+    "alive_frac": 1.0,
+    "dead_count": 0,
+    "mean_sparsity": 0.03125,
+    "mean_activation": 0.05907612364969136,
+    "L0": 64.0
+  },
+  "training_time_sec": 47.10996127128601,
+  "n_samples": 1296000,
+  "best_recon_loss": 0.010320589998120014,
+  "config": {
+    "input_dim": 512,
+    "dict_size": 2048,
+    "l1_coeff": 0.01,
+    "activation": "topk",
+    "k": 64,
+    "lr": 0.0003,
+    "batch_size": 4096,
+    "epochs": 50
+  }
+}

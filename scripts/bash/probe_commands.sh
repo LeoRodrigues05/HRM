@@ -28,7 +28,7 @@ ls -lh data/sudoku-extreme-1k-aug-1000/test/dataset.json
 PROBE_BATCH_SIZE=${PROBE_BATCH_SIZE:-8} \
 HRM_HALT_MAX_STEPS=${HRM_HALT_MAX_STEPS:-8} \
 MAX_PROBE_BATCHES=${MAX_PROBE_BATCHES:-10} \
-python scripts/run_probes_driver.py
+python scripts/probes/run_probes_driver.py
 
 # 5) Inspect saved probes
 ls -lh results/probes/
@@ -44,7 +44,7 @@ if len(g)>0:
 PY
 
 # 6) Train linear probes (global is_solved, local per_cell_correct)
-python scripts/train_linear_probes.py --probes_dir results/probes
+python scripts/probes/train_linear_probes.py --probes_dir results/probes
 
 # 7) Show trained probe files
 ls -lh results/probes/global_probe_*.pt results/probes/local_probe_*.pt || true

@@ -17,6 +17,7 @@ __pycache__/
 
 # Checkpoint directories
 Checkpoint_*/
+checkpoints/
 
 # CUDA installers
 *.run
@@ -33,9 +34,13 @@ LARGE_FILES_ZIP/
 
 # Log files
 *.log
+logs/
 
 # Data directory (large .npy files)
 data/
 
 # Outputs directory
 outputs/
+
+# Wandb logs
+wandb/

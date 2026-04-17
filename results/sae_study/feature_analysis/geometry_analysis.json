@@ -1,0 +1,31 @@
+{
+  "geometry_stats": {
+    "mean_pairwise_cosine": 0.04829448089003563,
+    "max_pairwise_cosine": 0.9922692775726318,
+    "std_pairwise_cosine": 0.17542903125286102,
+    "median_pairwise_cosine": 0.027880389243364334,
+    "frac_above_0.5": 0.008435076102614403,
+    "frac_above_0.9": 5.00923597428482e-05
+  },
+  "probe_comparison": {
+    "mmcs_sae_to_probes": 0.17189925909042358,
+    "mmcs_probes_to_sae": 0.3805987238883972,
+    "per_probe_max_cos": {
+      "per_cell_correct": 0.3265978693962097,
+      "is_given": 0.3189108967781067,
+      "violated_in_row": 0.35528242588043213,
+      "violated_in_col": 0.353595495223999,
+      "violated_in_box": 0.36428114771842957,
+      "cell_digit": 0.5649245977401733
+    },
+    "n_probes": 6,
+    "probe_names": [
+      "per_cell_correct",
+      "is_given",
+      "violated_in_row",
+      "violated_in_col",
+      "violated_in_box",
+      "cell_digit"
+    ]
+  }
+}
