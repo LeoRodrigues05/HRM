@@ -1,0 +1,38 @@
+{
+  "model_name": "PT_step36456",
+  "checkpoint": "checkpoints/Sudoku-extreme-1k-aug-1000 ACT-torch/PlainTransformerModel strange-nightingale/step_36456",
+  "n_puzzles": 500,
+  "max_steps": 1,
+  "per_step_metrics": {
+    "0": {
+      "cell_accuracy": {
+        "mean": 0.6081975312232971,
+        "std": 0.08631237203385551
+      },
+      "puzzle_accuracy": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "unknown_cell_accuracy": {
+        "mean": 0.4354097357392311,
+        "std": 0.1205949934883197
+      },
+      "hamming_distance": {
+        "mean": 31.736,
+        "std": 6.991302024658927
+      },
+      "row_violations": {
+        "mean": 19.95,
+        "std": 4.859989711923267
+      },
+      "col_violations": {
+        "mean": 22.892,
+        "std": 5.205414104564593
+      },
+      "box_violations": {
+        "mean": 20.618,
+        "std": 5.214218637533336
+      }
+    }
+  }
+}

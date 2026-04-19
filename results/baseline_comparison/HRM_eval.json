@@ -484,47 +484,5 @@
         "std": 10.412768315870665
       }
     }
-  },
-  "activation_patching": {
-    "0": {
-      "mean_delta_accuracy": 0.0,
-      "std_delta_accuracy": 0.0,
-      "n_pairs": 100
-    },
-    "2": {
-      "mean_delta_accuracy": -0.6648148170858622,
-      "std_delta_accuracy": 0.1870635182154845,
-      "n_pairs": 100
-    },
-    "4": {
-      "mean_delta_accuracy": -0.6787654346227646,
-      "std_delta_accuracy": 0.18655444337964397,
-      "n_pairs": 100
-    },
-    "6": {
-      "mean_delta_accuracy": -0.6844444475322962,
-      "std_delta_accuracy": 0.18250170767411994,
-      "n_pairs": 100
-    },
-    "8": {
-      "mean_delta_accuracy": -0.6916049411892891,
-      "std_delta_accuracy": 0.18376392700149838,
-      "n_pairs": 100
-    },
-    "10": {
-      "mean_delta_accuracy": -0.6979012371599674,
-      "std_delta_accuracy": 0.18243601232130532,
-      "n_pairs": 100
-    },
-    "12": {
-      "mean_delta_accuracy": -0.7040740764886141,
-      "std_delta_accuracy": 0.17954755987178472,
-      "n_pairs": 100
-    },
-    "14": {
-      "mean_delta_accuracy": -0.7201234592497349,
-      "std_delta_accuracy": 0.17579531548993307,
-      "n_pairs": 100
-    }
   }
 }
