@@ -15,9 +15,17 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Checkpoint directories
-Checkpoint_*/
+# Checkpoints and large model files
 checkpoints/
+checkpoints/**
+
+# Paper content (exclude all except figures)
+paper/*
+!paper/figures/
+!paper/figures/**
+
+# Conference submission zip
+icml2026.zip
 
 # CUDA installers
 *.run
@@ -36,11 +44,10 @@ LARGE_FILES_ZIP/
 *.log
 logs/
 
-# Data directory (large .npy files)
+
+# Data and outputs (large)
 data/
-
-# Outputs directory
 outputs/
-
-# Wandb logs
 wandb/
+
+
