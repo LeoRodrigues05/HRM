@@ -1,0 +1,3502 @@
+[
+  {
+    "puzzle_idx": 0,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 1,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 2,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 3,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 4,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 5,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.4938271641731262,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 6,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 7,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 8,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 9,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 10,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 11,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 12,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 13,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 14,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 15,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 16,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 17,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 18,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 19,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 20,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 21,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 22,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 23,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 24,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 25,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 26,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 27,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 28,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 29,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 30,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8271604776382446,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 31,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8395061492919922,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 32,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 33,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 34,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 35,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 36,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 37,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 38,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 39,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 40,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 41,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 42,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 43,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 44,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 45,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 46,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 47,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 48,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 49,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 50,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 51,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.7654321193695068,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 52,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 53,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 54,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 55,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 56,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 57,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 58,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 59,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 60,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 61,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 62,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.7407407760620117,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 63,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 64,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 65,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.4938271641731262,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 66,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 67,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8395061492919922,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 68,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 69,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 70,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 71,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 72,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 73,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 74,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 75,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 76,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 77,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 78,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 79,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 80,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 81,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 82,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 83,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 84,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 85,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 86,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7654321193695068,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 87,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 88,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 89,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.7407407760620117,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 90,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 91,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 92,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 93,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 94,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 95,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 96,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 97,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 98,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 99,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5308641791343689,
+    "final_cell_acc": 0.5061728358268738,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 100,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 101,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 102,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 103,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 104,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 105,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 106,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 107,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 108,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 109,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 0.790123462677002,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 110,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 111,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 112,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 113,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 114,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 115,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8148148059844971,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 116,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 117,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 118,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 119,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 120,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 121,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 122,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 123,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 124,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 125,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 126,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 127,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 128,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 129,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 130,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 131,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 132,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.8024691343307495,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 133,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 134,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 135,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 136,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 137,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 138,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 139,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 140,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 141,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 142,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 143,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 144,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 145,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 146,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 147,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.4197530746459961,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 148,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 149,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 150,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 151,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 152,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 153,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 154,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 155,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 156,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 157,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.48148149251937866,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 158,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 159,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.8395061492919922,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 160,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.8395061492919922,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 161,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 162,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 163,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 164,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 165,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 166,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 167,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 168,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 169,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 170,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 171,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 172,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 173,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 174,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 175,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 176,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 177,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 178,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 179,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 180,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 181,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 182,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 183,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.9876543283462524,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 184,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 185,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 186,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 187,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 188,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 189,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 190,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 191,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 192,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 193,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 194,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 195,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 196,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 197,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 198,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 199,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 200,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 201,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5185185074806213,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 202,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 203,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 204,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 205,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 206,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 207,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.8024691343307495,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 208,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 209,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 210,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 211,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.9876543283462524,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 212,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 213,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 214,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 215,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 216,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 217,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 218,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 219,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 220,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 221,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 222,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 223,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 224,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5308641791343689,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 225,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 226,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 227,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5308641791343689,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 228,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.7654321193695068,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 229,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 230,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 231,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 232,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 233,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 234,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 235,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.4444444477558136,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 236,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8024691343307495,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 237,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 238,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 239,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 240,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 241,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 0.8024691343307495,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 242,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 243,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 244,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 245,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 246,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 247,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 248,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 249,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 250,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 251,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 252,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5308641791343689,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 253,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.8024691343307495,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 254,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 255,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 256,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 257,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 258,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.4938271641731262,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 259,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 260,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 261,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 262,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 263,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 264,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 265,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 266,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 267,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 268,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 269,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 270,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 271,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 272,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 273,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 274,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 275,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 276,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 277,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8148148059844971,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 278,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 279,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 280,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 281,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.7407407760620117,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 282,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 283,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.7407407760620117,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 284,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 285,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 286,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 287,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 288,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 289,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 290,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 291,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 292,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 293,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 294,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 295,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 296,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 297,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 298,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 299,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.7407407760620117,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 300,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 301,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 302,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 303,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 304,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.4691358208656311,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 305,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 306,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 307,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 308,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 309,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 310,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.5308641791343689,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 311,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 312,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 313,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 314,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 315,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 316,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 317,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 318,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 319,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8148148059844971,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 320,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 321,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 322,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8024691343307495,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 323,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 324,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 325,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 326,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 327,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 328,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 329,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 330,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 331,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 332,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 333,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 334,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 335,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 336,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 337,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 338,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.9753086566925049,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 339,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 340,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 341,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 342,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 343,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.5061728358268738,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 344,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 345,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 346,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 347,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 348,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 349,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 350,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 351,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 352,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 353,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 354,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 355,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 356,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 357,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 358,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 359,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 360,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 361,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 362,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 363,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 364,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5308641791343689,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 365,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 366,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 367,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 368,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 369,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 370,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 371,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 372,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 373,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 374,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 375,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 376,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 377,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 378,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 379,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 380,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 381,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 382,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 383,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7160493731498718,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 384,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 385,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 386,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 387,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 388,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 389,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 390,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 391,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 392,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 393,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8148148059844971,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 394,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 395,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 396,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 397,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 398,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 399,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 400,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.9753086566925049,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 401,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 402,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 403,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 404,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5061728358268738,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 405,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 406,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 407,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5308641791343689,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 408,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 409,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 410,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 411,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.654321014881134,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 412,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.5185185074806213,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 413,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 414,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.7283950448036194,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 415,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 416,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7777777910232544,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 417,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 418,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 419,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 420,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 421,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 422,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 423,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 424,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 425,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 426,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 427,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 428,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 429,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 430,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 431,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 432,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5679012537002563,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 433,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.7777777910232544,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 434,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 435,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.790123462677002,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 436,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 437,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 438,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 439,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 440,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 441,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 442,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 443,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 444,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 445,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 446,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 447,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 448,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 449,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7407407760620117,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 450,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 451,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 452,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 453,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.4938271641731262,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 454,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.4938271641731262,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 455,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 456,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7283950448036194,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 457,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.5432099103927612,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 458,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5925925970077515,
+    "final_cell_acc": 0.6172839403152466,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 459,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 460,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.8148148059844971,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 461,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 462,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8024691343307495,
+    "final_cell_acc": 0.7654321193695068,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 463,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 464,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 465,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 466,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.5679012537002563,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 467,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 468,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7654321193695068,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 469,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 470,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.7530864477157593,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 471,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5432099103927612,
+    "final_cell_acc": 0.5555555820465088,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 472,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 473,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 474,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 475,
+    "difficulty": "easy",
+    "step0_cell_acc": 1.0,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 476,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7037037014961243,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 477,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5555555820465088,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 478,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.4938271641731262,
+    "final_cell_acc": 0.4691358208656311,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 479,
+    "difficulty": "easy",
+    "step0_cell_acc": 0.8024691343307495,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 480,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 481,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 482,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 1.0,
+    "final_puzzle_acc": 1.0
+  },
+  {
+    "puzzle_idx": 483,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 484,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.5802469253540039,
+    "final_cell_acc": 0.6296296119689941,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 485,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 486,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6419752836227417,
+    "final_cell_acc": 0.8395061492919922,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 487,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6172839403152466,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 488,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6913580298423767,
+    "final_cell_acc": 0.5925925970077515,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 489,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.654321014881134,
+    "final_cell_acc": 0.7530864477157593,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 490,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 491,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 492,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 493,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6666666865348816,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 494,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.6913580298423767,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 495,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6666666865348816,
+    "final_cell_acc": 0.604938268661499,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 496,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.7160493731498718,
+    "final_cell_acc": 0.6790123581886292,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 497,
+    "difficulty": "medium",
+    "step0_cell_acc": 0.6790123581886292,
+    "final_cell_acc": 0.5802469253540039,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 498,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.6296296119689941,
+    "final_cell_acc": 0.6419752836227417,
+    "final_puzzle_acc": 0.0
+  },
+  {
+    "puzzle_idx": 499,
+    "difficulty": "hard",
+    "step0_cell_acc": 0.604938268661499,
+    "final_cell_acc": 0.7037037014961243,
+    "final_puzzle_acc": 0.0
+  }
+]

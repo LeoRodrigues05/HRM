@@ -1,0 +1,38 @@
+{
+  "model_name": "SRNN_step31248",
+  "checkpoint": "checkpoints/Sudoku-extreme-1k-aug-1000 ACT-torch/StandardRNNModel ecstatic-honeybee/step_31248",
+  "n_puzzles": 500,
+  "max_steps": 1,
+  "per_step_metrics": {
+    "0": {
+      "cell_accuracy": {
+        "mean": 0.4954074056148529,
+        "std": 0.0470427319537654
+      },
+      "puzzle_accuracy": {
+        "mean": 0.0,
+        "std": 0.0
+      },
+      "unknown_cell_accuracy": {
+        "mean": 0.27072439187765124,
+        "std": 0.05680825009839554
+      },
+      "hamming_distance": {
+        "mean": 40.872,
+        "std": 3.8104613893858046
+      },
+      "row_violations": {
+        "mean": 41.678,
+        "std": 4.731417969277286
+      },
+      "col_violations": {
+        "mean": 44.078,
+        "std": 4.648001290877618
+      },
+      "box_violations": {
+        "mean": 47.038,
+        "std": 4.678520706377177
+      }
+    }
+  }
+}

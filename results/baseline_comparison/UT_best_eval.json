@@ -484,47 +484,5 @@
         "std": 7.346394762058461
       }
     }
-  },
-  "activation_patching": {
-    "0": {
-      "mean_delta_accuracy": 0.0,
-      "std_delta_accuracy": 0.0,
-      "n_pairs": 100
-    },
-    "2": {
-      "mean_delta_accuracy": -0.38333333179354667,
-      "std_delta_accuracy": 0.2953037648753422,
-      "n_pairs": 100
-    },
-    "4": {
-      "mean_delta_accuracy": -0.451604939699173,
-      "std_delta_accuracy": 0.30637776799115185,
-      "n_pairs": 100
-    },
-    "6": {
-      "mean_delta_accuracy": -0.46061728432774546,
-      "std_delta_accuracy": 0.30990701218615135,
-      "n_pairs": 100
-    },
-    "8": {
-      "mean_delta_accuracy": -0.4656790116429329,
-      "std_delta_accuracy": 0.30398000069166026,
-      "n_pairs": 100
-    },
-    "10": {
-      "mean_delta_accuracy": -0.4817283940315247,
-      "std_delta_accuracy": 0.30490068302354756,
-      "n_pairs": 100
-    },
-    "12": {
-      "mean_delta_accuracy": -0.4919753078371286,
-      "std_delta_accuracy": 0.302821036260548,
-      "n_pairs": 100
-    },
-    "14": {
-      "mean_delta_accuracy": -0.5254320990294218,
-      "std_delta_accuracy": 0.2819214657942186,
-      "n_pairs": 100
-    }
   }
 }

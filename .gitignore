@@ -15,9 +15,13 @@ __pycache__/
 *.pyc
 *.pyo
 
+
 # Checkpoints and large model files
 checkpoints/
 checkpoints/**
+*.pt
+*.ckpt
+*.pth
 
 # Paper content (exclude all except figures)
 paper/*
@@ -49,5 +53,6 @@ logs/
 data/
 outputs/
 wandb/
+logs/
 
 
