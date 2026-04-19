@@ -50,18 +50,24 @@ MODEL_STYLES = {
     "HRM": {"color": "#2196F3", "marker": "o", "linestyle": "-"},
     "UT_best": {"color": "#4CAF50", "marker": "^", "linestyle": "-."},
     "RNN_best": {"color": "#F44336", "marker": "s", "linestyle": "--"},
+    "PT_best": {"color": "#FF9800", "marker": "D", "linestyle": ":"},
+    "SRNN_best": {"color": "#9C27B0", "marker": "v", "linestyle": ":"},
 }
 
 MODEL_LABELS = {
     "HRM": "HRM (Hierarchical)",
-    "UT_best": "Universal Transformer (Best)",
-    "RNN_best": "Vanilla RNN (Best)",
+    "UT_best": "Universal Transformer",
+    "RNN_best": "Vanilla RNN",
+    "PT_best": "Plain Transformer",
+    "SRNN_best": "Standard RNN",
 }
 
 # For trajectory plots (all checkpoints of each family)
 FAMILY_STYLES = {
     "UT": {"color": "#4CAF50", "marker": "^"},
     "RNN": {"color": "#F44336", "marker": "s"},
+    "PT": {"color": "#FF9800", "marker": "D"},
+    "SRNN": {"color": "#9C27B0", "marker": "v"},
 }
 
 
@@ -77,9 +83,9 @@ def load_results(results_dir):
 
 
 def get_primary_models(models):
-    """Return only HRM + best checkpoints for the main comparison figures."""
+    """Return HRM + best checkpoints for all baselines."""
     primary = {}
-    for name in ("HRM", "UT_best", "RNN_best"):
+    for name in ("HRM", "UT_best", "RNN_best", "PT_best", "SRNN_best"):
         if name in models:
             primary[name] = models[name]
     return primary
@@ -275,6 +281,7 @@ def plot_training_trajectory(models, output_dir):
     for family, ax, title in [
         ("UT", ax1, "Universal Transformer"),
         ("RNN", ax2, "Vanilla RNN"),
+        # PT and SRNN families can be added here if needed
     ]:
         ckpts = get_family_checkpoints(models, family)
         if not ckpts:
