@@ -46,16 +46,92 @@ COLORS = {
 
 
 # ======================================================================
-# Figure 1: Accuracy curves (just copy)
+# Figure 1: Accuracy curves (single-panel, sized to match hamming_convergence)
 # ======================================================================
+# Match the figsize/style of plot_baseline_comparison.plot_hamming_convergence
+# (figsize=(6, 4.5)) so the two plots render at the same scale when placed
+# side-by-side as subfigures in the paper.
+_BASELINE_DIR = ROOT / "results" / "baseline_comparison"
+
+_MODEL_STYLES = {
+    "HRM":      {"color": "#2196F3", "marker": "o", "linestyle": "-"},
+    "UT_best":  {"color": "#4CAF50", "marker": "^", "linestyle": "-."},
+    "RNN_best": {"color": "#F44336", "marker": "s", "linestyle": "--"},
+    "PT_best":  {"color": "#FF9800", "marker": "D", "linestyle": ":"},
+    "SRNN_best":{"color": "#9C27B0", "marker": "v", "linestyle": ":"},
+}
+_MODEL_LABELS = {
+    "HRM":      "HRM (Hierarchical)",
+    "UT_best":  "Universal Transformer",
+    "RNN_best": "Vanilla RNN",
+    "PT_best":  "Plain Transformer",
+    "SRNN_best":"Standard RNN",
+}
+
+
 def fig1():
-    src = ROOT / "results" / "baseline_comparison" / "figures" / "fig1_accuracy_vs_step.pdf"
-    dst = OUT / "accuracy_curves_5model.pdf"
-    if src.exists():
-        shutil.copy2(src, dst)
-        print(f"[Fig1] Copied {src.name} → {dst}")
-    else:
-        print(f"[Fig1] WARNING: {src} not found")
+    """Combined 2-panel recurrence figure: Hamming (left) + Cell accuracy (right)."""
+    dst = OUT / "recurrence_curves.pdf"
+
+    # Load primary model eval JSONs
+    primary = {}
+    for name in _MODEL_STYLES.keys():
+        path = _BASELINE_DIR / f"{name}_eval.json"
+        if path.exists():
+            with open(path) as f:
+                primary[name] = json.load(f)
+    if not primary:
+        print(f"[Fig1] WARNING: no eval JSONs found under {_BASELINE_DIR}")
+        return
+
+    # Match plot_baseline_comparison rcParams locally so the figure visually
+    # matches the original fig2_hamming_convergence styling.
+    with plt.rc_context({
+        "font.size": 11,
+        "axes.titlesize": 12,
+        "axes.labelsize": 11,
+        "xtick.labelsize": 10,
+        "ytick.labelsize": 10,
+        "legend.fontsize": 13,
+        "axes.grid": True,
+        "grid.alpha": 0.3,
+        "font.family": "sans-serif",
+    }):
+        fig, (ax_h, ax_a) = plt.subplots(1, 2, figsize=(12, 4.5))
+
+        for name, data in sorted(primary.items()):
+            steps_data = data["per_step_metrics"]
+            steps = sorted(int(s) for s in steps_data.keys())
+            style = _MODEL_STYLES[name]
+            label = _MODEL_LABELS[name]
+
+            hamming = [steps_data[str(s)]["hamming_distance"]["mean"] for s in steps]
+            ax_h.plot(steps, hamming, label=label, markersize=4, **style)
+
+            cell_accs = [steps_data[str(s)]["cell_accuracy"]["mean"] for s in steps]
+            ax_a.plot(steps, cell_accs, label=label, markersize=4, **style)
+
+        ax_h.set_xlabel("Reasoning Step")
+        ax_h.set_ylabel("Hamming Distance to Solution")
+        ax_h.set_title("(a) Hamming Distance vs. Step")
+
+        ax_a.set_xlabel("Reasoning Step")
+        ax_a.set_ylabel("Cell Accuracy")
+        ax_a.set_title("(b) Cell Accuracy vs. Step")
+        ax_a.set_ylim(0, 1.05)
+
+        # Single shared legend underneath both panels.
+        handles, labels = ax_h.get_legend_handles_labels()
+        fig.legend(handles, labels, loc="lower center", ncol=len(labels),
+                   frameon=False, bbox_to_anchor=(0.5, -0.04),
+                   fontsize=13, handlelength=2.5, handletextpad=0.6,
+                   columnspacing=1.8)
+
+        fig.tight_layout(rect=(0, 0.09, 1, 1))
+        fig.savefig(dst)
+        fig.savefig(OUT / "recurrence_curves.png", dpi=300)
+        plt.close(fig)
+    print(f"[Fig1] Saved {dst.name}")
 
 
 # ======================================================================
@@ -252,6 +328,13 @@ def fig4():
     ax.set_xticklabels(labels, fontsize=7)
     ax.set_ylabel("$\\Delta$ Cell Accuracy (%)")
     ax.set_title("Causal Importance Hierarchy")
+
+    # Add headroom so positive-bar labels (e.g. "+0.6%") don't clip the
+    # top axis spine. Pad the data range by ~10% on each side.
+    vmin, vmax = min(vals), max(vals)
+    span = vmax - vmin
+    pad = max(span * 0.10, 1.5)
+    ax.set_ylim(vmin - pad, vmax + pad)
 
     plt.tight_layout()
     fig.savefig(OUT / "causal_hierarchy.pdf")

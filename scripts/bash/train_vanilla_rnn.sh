@@ -11,10 +11,15 @@
 mkdir -p logs
 
 # Activate environment
-eval "$(conda shell.bash hook)"
-conda activate hrm
+# Activate environment (prefer .venv, fallback to conda env named "hrm")
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+elif command -v conda >/dev/null 2>&1; then
+    eval "$(conda shell.bash hook)"
+    conda activate "${HRM_CONDA_ENV:-hrm}"
+fi
 
-cd /home/leo.rodrigues/HRM
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 # Disable torch.compile for stability (avoids graph break issues)
 export DISABLE_COMPILE=1

@@ -1,12 +1,12 @@
 #Async evaluation to get predictions
-nohup bash -c 'OMP_NUM_THREADS=8 uv run python evaluate.py checkpoint=Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt \
+nohup bash -c 'OMP_NUM_THREADS=8 uv run python evaluate.py checkpoint=checkpoints/sapientinc-sudoku-extreme/checkpoint.pt \
 save_outputs="[\"inputs\",\"labels\",\"puzzle_identifiers\",\"logits\",\"q_halt_logits\",\"q_continue_logits\",\"intermediate_preds\"]"'   > eval.log 2>&1 &
 
 # Get .npz
 uv run python - <<'PY'
 import torch, numpy as np, os
 
-in_path = "Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.0"
+in_path = "checkpoints/sapientinc-sudoku-extreme/step_0_all_preds.0"
 out_path = os.path.splitext(in_path)[0] + ".npz"
 data = torch.load(in_path, map_location="cpu")
 
@@ -44,11 +44,11 @@ python sudoku_report_colored_ai.py
 #To get metrics
 # Hamming (ignore givens), also plots
 python result_metrics_sudoku.py \
-  --npz Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.npz \
+  --npz checkpoints/sapientinc-sudoku-extreme/step_0_all_preds.npz \
   --ignore_givens \
   --outdir results/metrics
 
 
 # python result_metrics_sudoku_multiple.py  \
-#  --npz Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/step_0_all_preds.npz  \
+#  --npz checkpoints/sapientinc-sudoku-extreme/step_0_all_preds.npz  \
 #  --ignore_givens   --outdir results/hamming_multi --grid_rows 4 --grid_cols 6 --overlay_max 150

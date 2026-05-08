@@ -1,58 +1,48 @@
-# Large data files
-*.npy
-*.pt
-*.ckpt
-*.pth
+# =============================================================================
+# .gitignore for the HRM mechanistic-interpretability fork
+# =============================================================================
 
-# Results with per-puzzle data (too large)
-experiments/paper_replication/results/easy_hard_analysis/results.json
-
-# PDF documents
-docs/*.pdf
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
 *.pyo
+.ipynb_checkpoints/
 
+# Virtual envs
+.venv/
+venv/
+.env
 
-# Checkpoints and large model files
-checkpoints/
-checkpoints/**
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# Large model / numerical artefacts
 *.pt
 *.ckpt
 *.pth
-
-# Paper content (exclude all except figures)
-paper/*
-!paper/figures/
-!paper/figures/**
-
-# Conference submission zip
-icml2026.zip
-
-# CUDA installers
+*.npy
+*.npz
+*.tar.gz
 *.run
 
-# Jupyter
-.ipynb_checkpoints/
-
-# Virtual environments
-.venv/
-
-# Large binary archives
-*.tar.gz
-LARGE_FILES_ZIP/
-
-# Log files
-*.log
-logs/
-
-
-# Data and outputs (large)
+# Data / outputs / experiment artefacts (large)
 data/
 outputs/
 wandb/
 logs/
+checkpoints/
 
+# Per-puzzle logs that should not be committed
+experiments/paper_replication/results/easy_hard_analysis/results.json
 
+# Paper / submission artefacts (kept out of repo)
+paper/*
+!paper/figures/
+!paper/figures/**
+icml2026.zip
+
+# PDFs (paper/figures excepted above)
+docs/*.pdf
+*.log

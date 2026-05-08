@@ -10,9 +10,14 @@
 
 mkdir -p logs results/baseline_comparison
 
-eval "$(conda shell.bash hook)"
-conda activate hrm
-cd /home/leo.rodrigues/HRM
+# Activate environment (prefer .venv, fallback to conda env named "hrm")
+if [ -f ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+elif command -v conda >/dev/null 2>&1; then
+    eval "$(conda shell.bash hook)"
+    conda activate "${HRM_CONDA_ENV:-hrm}"
+fi
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 export DISABLE_COMPILE=1
 
 N_PUZZLES=500

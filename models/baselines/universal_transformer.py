@@ -62,6 +62,11 @@ class UniversalTransformerConfig(BaseModel):
     num_shared_layers: int  # Shared layers (weight-tied)
     num_iterations: int     # Times to repeat the shared block per step
 
+    # If True (default, matches HRM): wrap all but the final iteration in torch.no_grad()
+    # so only the last step receives gradient. If False, all iterations are differentiated
+    # (a fully-unrolled BPTT) -- used for the standalone Universal-Transformer baseline.
+    one_step_grad: bool = True
+
     # Transformer config
     hidden_size: int
     expansion: float
@@ -218,16 +223,22 @@ class UniversalTransformer_Inner(nn.Module):
 
         input_embeddings = self._input_embeddings(batch["inputs"], batch["puzzle_identifiers"])
 
-        # Repeat shared layers num_iterations times (no-grad for all but last)
-        with torch.no_grad():
+        if self.config.one_step_grad:
+            # Repeat shared layers num_iterations times (no-grad for all but last)
+            with torch.no_grad():
+                z = carry.z
+                for _iter in range(self.config.num_iterations - 1):
+                    z = self._apply_shared_block(z, input_embeddings, cos_sin)
+
+            assert not z.requires_grad
+
+            # 1-step grad
+            z = self._apply_shared_block(z, input_embeddings, cos_sin)
+        else:
+            # Fully-unrolled recurrence with gradient through every iteration.
             z = carry.z
-            for _iter in range(self.config.num_iterations - 1):
+            for _iter in range(self.config.num_iterations):
                 z = self._apply_shared_block(z, input_embeddings, cos_sin)
-
-        assert not z.requires_grad
-
-        # 1-step grad
-        z = self._apply_shared_block(z, input_embeddings, cos_sin)
 
         # Output
         new_carry = UniversalTransformerInnerCarry(z=z.detach())

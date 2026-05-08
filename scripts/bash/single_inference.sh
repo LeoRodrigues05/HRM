@@ -11,7 +11,7 @@
 set -euo pipefail
 
 # Default configuration
-CHECKPOINT="Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt"
+CHECKPOINT="checkpoints/sapientinc-sudoku-extreme/checkpoint.pt"
 DATA_DIR="data/sudoku-extreme-1k-aug-1000"
 OUTPUT_DIR="results/single_inference"
 NUM_PUZZLES=10

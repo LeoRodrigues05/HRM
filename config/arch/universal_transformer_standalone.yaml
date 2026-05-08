@@ -1,0 +1,22 @@
+name: baselines.universal_transformer@UniversalTransformerModel
+loss:
+  name: losses@ACTLossHead
+  loss_type: stablemax_cross_entropy
+
+# Standalone Universal Transformer: NO ACT, NO deep supervision,
+# NO one-step gradient approximation. Single segment, full BPTT through
+# every iteration of the weight-shared block.
+halt_exploration_prob: 0.0
+halt_max_steps: 1
+
+num_shared_layers: 4   # 4 shared layers (weight-tied, applied repeatedly)
+num_iterations: 16     # 16 recurrent steps within the single segment
+one_step_grad: false   # Differentiate every iteration (full BPTT)
+
+hidden_size: 768       # Matches the existing UT baseline (~29M params)
+num_heads: 8
+expansion: 4
+
+puzzle_emb_ndim: ${.hidden_size}
+
+pos_encodings: rope

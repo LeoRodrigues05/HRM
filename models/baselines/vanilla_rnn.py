@@ -58,6 +58,11 @@ class VanillaRNNConfig(BaseModel):
     num_layers: int  # Total transformer layers (flat, no H/L)
     num_iterations: int  # Number of recurrent steps (replaces H_cycles × L_cycles × halt_max_steps)
 
+    # If True (default, matches HRM): wrap all but the final iteration in torch.no_grad()
+    # so only the last step receives gradient. If False, all iterations are differentiated
+    # (a fully-unrolled BPTT) -- used for the standalone recurrent-Transformer baseline.
+    one_step_grad: bool = True
+
     # Transformer config
     hidden_size: int
     expansion: float
@@ -209,22 +214,30 @@ class VanillaRNN_Inner(nn.Module):
 
         input_embeddings = self._input_embeddings(batch["inputs"], batch["puzzle_identifiers"])
 
-        # Flat recurrent iterations (same as HRM's H_cycles * L_cycles but flat)
-        with torch.no_grad():
+        if self.config.one_step_grad:
+            # Flat recurrent iterations (same as HRM's H_cycles * L_cycles but flat)
+            with torch.no_grad():
+                z = carry.z
+                for _iter in range(self.config.num_iterations - 1):
+                    # Input injection + layers
+                    z_in = z + input_embeddings
+                    for layer in self.layers:
+                        z_in = layer(cos_sin=cos_sin, hidden_states=z_in)
+                    z = z_in
+
+            assert not z.requires_grad
+
+            # 1-step grad (matching HRM's pattern)
+            z = z + input_embeddings
+            for layer in self.layers:
+                z = layer(cos_sin=cos_sin, hidden_states=z)
+        else:
+            # Fully-unrolled recurrence with gradient through every iteration.
             z = carry.z
-            for _iter in range(self.config.num_iterations - 1):
-                # Input injection + layers
-                z_in = z + input_embeddings
+            for _iter in range(self.config.num_iterations):
+                z = z + input_embeddings
                 for layer in self.layers:
-                    z_in = layer(cos_sin=cos_sin, hidden_states=z_in)
-                z = z_in
-
-        assert not z.requires_grad
-
-        # 1-step grad (matching HRM's pattern)
-        z = z + input_embeddings
-        for layer in self.layers:
-            z = layer(cos_sin=cos_sin, hidden_states=z)
+                    z = layer(cos_sin=cos_sin, hidden_states=z)
 
         # Output
         new_carry = VanillaRNNInnerCarry(z=z.detach())
