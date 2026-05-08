@@ -68,7 +68,9 @@ def plot_pca_trajectories(data):
 
     var_explained = pca.explained_variance_ratio_
 
-    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.4), sharey=True)
+    # Column-width (~3.3in) layout: stack 3 panels vertically so each panel
+    # has enough room for readable axis labels and tick marks.
+    fig, axes = plt.subplots(3, 1, figsize=(3.3, 6.6), sharex=True)
     cmap = plt.cm.viridis
 
     # ── Panel A: Solved ──
@@ -83,7 +85,6 @@ def plot_pca_trajectories(data):
         ax.plot(traj[0, 0], traj[0, 1], "o", color="#2ecc71", ms=2.5, zorder=5)
         ax.plot(traj[-1, 0], traj[-1, 1], "x", color="#e74c3c", ms=3, zorder=5,
                 mew=0.8)
-    ax.set_xlabel(f"PC1 ({var_explained[0]*100:.1f}%)")
     ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
     ax.set_title(f"(a) Solved (n={n_solved})")
 
@@ -99,7 +100,7 @@ def plot_pca_trajectories(data):
         ax.plot(traj[0, 0], traj[0, 1], "o", color="#2ecc71", ms=2.5, zorder=5)
         ax.plot(traj[-1, 0], traj[-1, 1], "x", color="#e74c3c", ms=3, zorder=5,
                 mew=0.8)
-    ax.set_xlabel(f"PC1 ({var_explained[0]*100:.1f}%)")
+    ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
     ax.set_title(f"(b) Failed (n={n_failed})")
 
     # ── Panel C: Overlay ──
@@ -117,20 +118,28 @@ def plot_pca_trajectories(data):
         ax.plot(traj[-1, 0], traj[-1, 1], "x", color="#e67e22", ms=3, mew=0.8,
                 alpha=0.6)
     from matplotlib.lines import Line2D
-    ax.legend([Line2D([0], [0], color="#2980b9", lw=1.2),
-               Line2D([0], [0], color="#e67e22", lw=1.2)],
-              ["Solved", "Failed"], fontsize=6, loc="best")
+    legend_handles = [Line2D([0], [0], color="#2980b9", lw=1.5),
+                      Line2D([0], [0], color="#e67e22", lw=1.5)]
     ax.set_xlabel(f"PC1 ({var_explained[0]*100:.1f}%)")
+    ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
     ax.set_title("(c) Overlay")
 
-    # colorbar for step
+    # Reserve room: bottom for legend, right for colorbar.
+    fig.subplots_adjust(left=0.18, right=0.84, bottom=0.10, top=0.95,
+                        hspace=0.35)
+    cax = fig.add_axes([0.87, 0.10, 0.025, 0.85])  # [left, bottom, width, height]
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(0, S - 1))
     sm.set_array([])
-    cbar = fig.colorbar(sm, ax=axes, shrink=0.8, aspect=30, pad=0.02)
-    cbar.set_label("ACT step", fontsize=7)
+    cbar = fig.colorbar(sm, cax=cax)
+    cbar.set_label("ACT step", fontsize=9)
     cbar.set_ticks([0, 5, 10, 15])
+    cbar.ax.tick_params(labelsize=8)
 
-    fig.subplots_adjust(right=0.88)
+    # Solved/Failed legend inside the overlay panel (top-right corner).
+    axes[2].legend(legend_handles, ["Solved", "Failed"],
+                   loc="upper right", fontsize=8, frameon=True,
+                   handlelength=1.5, handletextpad=0.4)
+
     fig.savefig(OUT / "zh_pca_trajectories.pdf")
     fig.savefig(OUT / "zh_pca_trajectories.png", dpi=300)
     plt.close(fig)

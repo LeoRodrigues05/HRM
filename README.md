@@ -1,221 +1,211 @@
-# Hierarchical Reasoning Model
+# Tell Me Why: Mechanistic Interpretability of the Hierarchical Reasoning Model
+
+A research fork of the
+[Hierarchical Reasoning Model (HRM)](https://arxiv.org/abs/2506.21734)
+codebase, extended with a full mechanistic-interpretability (MI) suite that
+asks **what z<sub>H</sub> and z<sub>L</sub> encode**, **which steps of the ACT
+recurrence matter**, and **which directions in latent space are *causally*
+responsible for solving Sudoku** — not just statistically correlated with the
+solution.
+
+The original HRM is a 27 M-parameter recurrent transformer with two
+interdependent modules — a high-level state z<sub>H</sub> (slow, abstract
+planning) and a low-level state z<sub>L</sub> (fast, per-cell computation) —
+iterated for up to 16 ACT steps with a Q-learning halting head. With only 1 000
+training examples it nearly solves Sudoku-Extreme, the 30×30 hard maze
+distribution, and is competitive on ARC-AGI-2.
 
 ![](./assets/hrm.png)
 
-Reasoning, the process of devising and executing complex goal-oriented action sequences, remains a critical challenge in AI.
-Current large language models (LLMs) primarily employ Chain-of-Thought (CoT) techniques, which suffer from brittle task decomposition, extensive data requirements, and high latency. Inspired by the hierarchical and multi-timescale processing in the human brain, we propose the Hierarchical Reasoning Model (HRM), a novel recurrent architecture that attains significant computational depth while maintaining both training stability and efficiency.
-HRM executes sequential reasoning tasks in a single forward pass without explicit supervision of the intermediate process, through two interdependent recurrent modules: a high-level module responsible for slow, abstract planning, and a low-level module handling rapid, detailed computations. With only 27 million parameters, HRM achieves exceptional performance on complex reasoning tasks using only 1000 training samples. The model operates without pre-training or CoT data, yet achieves nearly perfect performance on challenging tasks including complex Sudoku puzzles and optimal path finding in large mazes.
-Furthermore, HRM outperforms much larger models with significantly longer context windows on the Abstraction and Reasoning Corpus (ARC), a key benchmark for measuring artificial general intelligence capabilities.
-These results underscore HRM’s potential as a transformative advancement toward universal computation and general-purpose reasoning systems.
+## What this repository adds on top of upstream HRM
 
-**Join our Discord Community: [https://discord.gg/sapient](https://discord.gg/sapient)**
+- **Baselines**: Vanilla RNN, GRU, Plain Transformer, and Universal Transformer
+  trained on the same Sudoku-Extreme data (`models/baselines/`,
+  `config/cfg_pretrain_*.yaml`, `scripts/bash/train_*.sh`).
+- **HRM v2** with sparse constraint-aware attention and an explicit
+  constraint-satisfaction head (`models/hrm_v2/`, `pretrain_v2.py`,
+  `config/cfg_pretrain_v2.yaml`).
+- **Activation patching / ablation engine** (`scripts/core/`) used by every
+  intervention experiment.
+- **Interpretability experiment drivers** (`scripts/{ablation,freeze,patching,
+  time_shift,probes,directed_ablation,sae,controlled}/`) covering ablation,
+  freeze, time-shift, linear / non-linear / sparse-autoencoder probes, and
+  directed ablation along discovered directions.
+- **Plotting and report tooling** (`scripts/plotting/`, `scripts/reports/`).
+- **Paper-replication scripts** (`experiments/paper_replication/`) that
+  re-derive every claim in the original HRM paper from the released
+  checkpoint.
 
+A complete experiment ↔ script ↔ output map lives in
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md). Open follow-ups and architectural
+extensions are catalogued in [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md).
 
-## Quick Start Guide 🚀
+---
 
-### Prerequisites ⚙️
+## Replication in three steps
 
-Ensure PyTorch and CUDA are installed. The repo needs CUDA extensions to be built. If not present, run the following commands:
+### 1. Bootstrap the environment
 
-```bash
-# Install CUDA 12.6
-CUDA_URL=https://developer.download.nvidia.com/compute/cuda/12.6.3/local_installers/cuda_12.6.3_560.35.05_linux.run
-
-wget -q --show-progress --progress=bar:force:noscroll -O cuda_installer.run $CUDA_URL
-sudo sh cuda_installer.run --silent --toolkit --override
-
-export CUDA_HOME=/usr/local/cuda-12.6
-
-# Install PyTorch with CUDA 12.6
-PYTORCH_INDEX_URL=https://download.pytorch.org/whl/cu126
-
-pip3 install torch torchvision torchaudio --index-url $PYTORCH_INDEX_URL
-
-# Additional packages for building extensions
-pip3 install packaging ninja wheel setuptools setuptools-scm
-```
-
-Then install FlashAttention. For Hopper GPUs, install FlashAttention 3
+Linux + NVIDIA GPU (Ampere or newer recommended) is assumed.
 
 ```bash
-git clone git@github.com:Dao-AILab/flash-attention.git
-cd flash-attention/hopper
-python setup.py install
-```
-
-For Ampere or earlier GPUs, install FlashAttention 2
-
-```bash
-pip3 install flash-attn
-```
-
-## Install Python Dependencies 🐍
-
-```bash
-pip install -r requirements.txt
-```
-
-### Linear Probes (Global vs Local)
-
-Record hidden states (`z_H`, `z_L`) across ACT steps and build probe datasets to test functional specialization.
-
-- Global features (`H`): decode puzzle-level metrics (is solved, search-state variables).
-- Local features (`L`): decode per-cell logical statuses.
-
-Files:
-- `models/hrm/hrm_act_v1.py`: optional `probe_recorder` hooks capture `z_H`/`z_L` each step.
-- `utils/probes.py`: `ProbeRecorder` that saves:
-      - `results/probes/probe_global.pt` (pooled features per step)
-      - `results/probes/probe_local.pt` (per-token features per step)
-      - `results/probes/probe_index.json` (manifest)
-- `scripts/generate_probes.py`: example script to run collection.
-
-Usage (with an existing virtualenv):
-
-```bash
+git clone <this-repo-url> HRM && cd HRM
+git submodule update --init --recursive
+bash scripts/bash/Initialize_HRM_Repo.sh        # uv venv + CUDA 12.6 + PyTorch + FA + deps + Sudoku data
 source .venv/bin/activate
-python scripts/generate_probes.py
 ```
 
-Outputs are written to `results/probes/`. Extend labels in `utils/probes.py` to include:
-- Violated rows/columns/subgrids for Sudoku.
-- Which cell(s) changed since the previous step.
-- Candidate features or other task-specific indicators.
+Useful skip flags for the bootstrap script:
 
-## W&B Integration 📈
+```bash
+SKIP_CUDA=1 SKIP_APT=1 bash scripts/bash/Initialize_HRM_Repo.sh   # already have CUDA + sudo-less env
+SKIP_FA=1   bash scripts/bash/Initialize_HRM_Repo.sh               # skip flash-attn (CPU-only / unsupported GPU)
+SKIP_DATA=1 bash scripts/bash/Initialize_HRM_Repo.sh               # do not rebuild the Sudoku dataset
+```
 
-This project uses [Weights & Biases](https://wandb.ai/) for experiment tracking and metric visualization. Ensure you're logged in:
+For Hopper GPUs install FlashAttention 3 instead:
+
+```bash
+git clone https://github.com/Dao-AILab/flash-attention.git
+cd flash-attention/hopper && python setup.py install && cd ../..
+```
+
+(Optional) experiment tracking:
 
 ```bash
 wandb login
 ```
 
-## Run Experiments
+### 2. Get the model checkpoints and data
 
-### Quick Demo: Sudoku Solver 💻🗲
-
-Train a master-level Sudoku AI capable of solving extremely difficult puzzles on a modern laptop GPU. 🧩
-
-```bash
-# Download and build Sudoku dataset
-python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000  --subsample-size 1000 --num-aug 1000
-
-# Start training (single GPU, smaller batch size)
-OMP_NUM_THREADS=8 python pretrain.py data_path=data/sudoku-extreme-1k-aug-1000 epochs=20000 eval_interval=2000 global_batch_size=384 lr=7e-5 puzzle_emb_lr=7e-5 weight_decay=1.0 puzzle_emb_weight_decay=1.0
-```
-
-Runtime: ~10 hours on a RTX 4070 laptop GPU
-
-## Trained Checkpoints 🚧
-
- - [ARC-AGI-2](https://huggingface.co/sapientinc/HRM-checkpoint-ARC-2)
- - [Sudoku 9x9 Extreme (1000 examples)](https://huggingface.co/sapientinc/HRM-checkpoint-sudoku-extreme)
- - [Maze 30x30 Hard (1000 examples)](https://huggingface.co/sapientinc/HRM-checkpoint-maze-30x30-hard)
-
-To use the checkpoints, see Evaluation section below.
-
-## Full-scale Experiments 🔵
-
-Experiments below assume an 8-GPU setup.
-
-### Dataset Preparation
+The interpretability experiments are designed to run against the released
+pretrained HRM checkpoints:
 
 ```bash
-# Initialize submodules
-git submodule update --init --recursive
-
-# ARC-1
-python dataset/build_arc_dataset.py  # ARC offical + ConceptARC, 960 examples
-# ARC-2
-python dataset/build_arc_dataset.py --dataset-dirs dataset/raw-data/ARC-AGI-2/data --output-dir data/arc-2-aug-1000  # ARC-2 official, 1120 examples
-
-# Sudoku-Extreme
-python dataset/build_sudoku_dataset.py  # Full version
-python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000  --subsample-size 1000 --num-aug 1000  # 1000 examples
-
-# Maze
-python dataset/build_maze_dataset.py  # 1000 examples
+mkdir -p checkpoints
+huggingface-cli download sapientinc/HRM-checkpoint-sudoku-extreme \
+    --local-dir checkpoints/sapientinc-sudoku-extreme
+huggingface-cli download sapientinc/HRM-checkpoint-maze-30x30-hard \
+    --local-dir checkpoints/sapientinc-hrm-maze-30x30-hard
+huggingface-cli download sapientinc/HRM-checkpoint-ARC-2 \
+    --local-dir checkpoints/sapientinc-arc-2          # only if you want ARC results
 ```
 
-### Dataset Visualization
-
-Explore the puzzles visually:
-
-* Open `puzzle_visualizer.html` in your browser.
-* Upload the generated dataset folder located in `data/...`.
-
-## Launch experiments
-
-### Small-sample (1K)
-
-ARC-1:
+Datasets are reproducible from source:
 
 ```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 pretrain.py 
+python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000 \
+    --subsample-size 1000 --num-aug 1000              # used by every interpretability script
+python dataset/build_maze_dataset.py                  # for maze MI experiments
+python dataset/build_arc_dataset.py                   # ARC-1 / ARC-2 (requires submodules)
 ```
 
-*Runtime:* ~24 hours
+You can re-train HRM (and the four baselines) yourself instead — exact commands
+and configs are listed in [`docs/EXPERIMENTS.md §1`](docs/EXPERIMENTS.md#1-training).
 
-ARC-2:
+### 3. Run the experiment suite
+
+End-to-end orchestrators (run any subset):
 
 ```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 pretrain.py data_path=data/arc-2-aug-1000
+# Paper-claims replication on the released HRM checkpoint
+python experiments/paper_replication/run_all_experiments.py
+
+# Single-variable, larger-N controlled re-runs of E1 / E2 / E5 / E9
+python scripts/controlled/run_all_controlled_experiments.py
+
+# 5-model baseline comparison (HRM vs Vanilla RNN, GRU, Plain & Universal Transformer)
+bash scripts/bash/eval_all_baselines.sh
+
+# Constraint probes (E8) and directed ablation (E9)
+python scripts/probes/e8_constraint_probes.py
+python scripts/directed_ablation/e9_directed_ablation.py
+
+# Sparse-autoencoder study (E10)
+python scripts/sae/sae_train.py
+python scripts/sae/sae_analyze_features.py
+python scripts/sae/sae_causal_ablation.py
+
+# Regenerate every committed paper figure
+python scripts/plotting/generate_paper_figures.py
 ```
 
-*Runtime:* ~24 hours (checkpoint after 8 hours is often sufficient)
+A per-experiment table (`E1…E10`, maze variants, controlled runs) with the
+exact driver script and output directory is in
+[`docs/EXPERIMENTS.md §3`](docs/EXPERIMENTS.md#3-mechanistic-interpretability-experiments).
 
-Sudoku Extreme (1k):
+---
 
-```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 pretrain.py data_path=data/sudoku-extreme-1k-aug-1000 epochs=20000 eval_interval=2000 lr=1e-4 puzzle_emb_lr=1e-4 weight_decay=1.0 puzzle_emb_weight_decay=1.0
+## Project layout (short version)
+
+```
+config/                Hydra configs (HRM, HRM v2, baselines)
+models/                HRM (`hrm/`), HRM v2 (`hrm_v2/`), baselines (`baselines/`)
+dataset/               Sudoku / Maze / ARC dataset builders + raw-data submodules
+pretrain.py            Generic Hydra training entrypoint
+pretrain_v2.py         HRM v2 training entrypoint
+evaluate.py            Distributed evaluation + per-puzzle prediction dump
+arc_eval.ipynb         ARC submission scoring notebook
+puzzle_dataset.py      Shared dataloader
+
+scripts/
+  core/                Activation-patching / ablation engine
+  ablation/  freeze/  patching/  time_shift/    Per-experiment intervention drivers
+  probes/              Linear, sweep, MLP, and constraint-specific probes
+  directed_ablation/   E9 / E9b directed ablation along probe directions
+  sae/                 E10 sparse-autoencoder study (train, analyse, causal)
+  controlled/          Tighter, single-variable controlled re-runs of E1/E2/E5/E9
+  analysis/            Evaluation, difficulty-stratified, trajectory tools
+  plotting/            Paper / presentation figure generators
+  reports/             Sudoku HTML and metric reports
+  bash/                Convenience wrappers (Init, train_*, eval_*, single_inference, ...)
+
+experiments/paper_replication/   Phase-7 replication of the original HRM claims
+
+docs/
+  EXPERIMENTS.md       Full experiment + script catalogue (this is the long one)
+  FUTURE_WORK.md       Open follow-ups / extensions
+
+paper/                 LaTeX source of the accompanying manuscript (gitignored except figures/)
 ```
 
-*Runtime:* ~10 minutes
+The directories `data/`, `outputs/`, `wandb/`, `logs/`, `checkpoints/`, and the
+LaTeX build artefacts are intentionally gitignored — they are large and
+fully reproducible from the steps above.
 
-Maze 30x30 Hard (1k):
+---
 
-```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 pretrain.py data_path=data/maze-30x30-hard-1k epochs=20000 eval_interval=2000 lr=1e-4 puzzle_emb_lr=1e-4 weight_decay=1.0 puzzle_emb_weight_decay=1.0
-```
+## Notes & caveats
 
-*Runtime:* ~1 hour
+- Small-sample (1k) Sudoku training shows a typical ±2 % accuracy variance.
+  For Sudoku-Extreme the late-stage Q-learning loss can become unstable;
+  early-stop once train accuracy reaches 100 %.
+- All `scripts/bash/*.sh` wrappers source `.venv/bin/activate` if it exists and
+  fall back to a conda environment named `${HRM_CONDA_ENV:-hrm}` otherwise.
+  No paths are hard-coded to a specific user — every script `cd`s to
+  `git rev-parse --show-toplevel` (or `pwd`) before running.
+- Multi-GPU training uses `torchrun --nproc-per-node 8`; single-GPU training
+  works by replacing the launcher with plain `python` and lowering
+  `global_batch_size`.
 
-### Full Sudoku-Hard
-
-```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 pretrain.py data_path=data/sudoku-hard-full epochs=100 eval_interval=10 lr_min_ratio=0.1 global_batch_size=2304 lr=3e-4 puzzle_emb_lr=3e-4 weight_decay=0.1 puzzle_emb_weight_decay=0.1 arch.loss.loss_type=softmax_cross_entropy arch.L_cycles=8 arch.halt_max_steps=8 arch.pos_encodings=learned
-```
-
-*Runtime:* ~2 hours
-
-## Evaluation
-
-Evaluate your trained models:
-
-* Check `eval/exact_accuracy` in W&B.
-* For ARC-AGI, follow these additional steps:
-
-```bash
-OMP_NUM_THREADS=8 torchrun --nproc-per-node 8 evaluate.py checkpoint=<CHECKPOINT_PATH>
-```
-
-* Then use the provided `arc_eval.ipynb` notebook to finalize and inspect your results.
-
-## Notes
-
- - Small-sample learning typically exhibits accuracy variance of around ±2 points.
- - For Sudoku-Extreme (1,000-example dataset), late-stage overfitting may cause numerical instability during training and Q-learning. It is advisable to use early stopping once the training accuracy approaches 100%.
-
-## Citation 📜
+## Citation
 
 ```bibtex
 @misc{wang2025hierarchicalreasoningmodel,
-      title={Hierarchical Reasoning Model}, 
+      title={Hierarchical Reasoning Model},
       author={Guan Wang and Jin Li and Yuhao Sun and Xing Chen and Changling Liu and Yue Wu and Meng Lu and Sen Song and Yasin Abbasi Yadkori},
       year={2025},
       eprint={2506.21734},
       archivePrefix={arXiv},
       primaryClass={cs.AI},
-      url={https://arxiv.org/abs/2506.21734}, 
+      url={https://arxiv.org/abs/2506.21734}
 }
 ```
+
+This fork additionally accompanies an interpretability manuscript whose source
+lives under `paper/` (kept out of the public repository); the committed
+`paper/figures/*.pdf` files are the exact assets used in the manuscript.
+
+## License
+
+See [LICENSE](LICENSE).

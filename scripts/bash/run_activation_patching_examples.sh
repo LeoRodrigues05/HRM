@@ -12,7 +12,7 @@
 set -euo pipefail
 
 # Set checkpoint path
-CHECKPOINT="Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt"
+CHECKPOINT="checkpoints/sapientinc-sudoku-extreme/checkpoint.pt"
 OUTPUT_DIR="results/activation_patching_examples"
 NUM_RUNS=5  # Number of repeated runs for stability
 

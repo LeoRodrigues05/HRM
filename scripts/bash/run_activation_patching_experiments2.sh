@@ -21,7 +21,7 @@
 set -euo pipefail
 
 # Configuration
-CHECKPOINT="Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt"
+CHECKPOINT="checkpoints/sapientinc-sudoku-extreme/checkpoint.pt"
 OUTPUT_BASE="results/activation_patching_experiments2"
 NUM_RUNS=5
 

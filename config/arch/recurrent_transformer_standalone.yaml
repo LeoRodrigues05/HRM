@@ -1,0 +1,22 @@
+name: baselines.vanilla_rnn@VanillaRNNModel
+loss:
+  name: losses@ACTLossHead
+  loss_type: stablemax_cross_entropy
+
+# Standalone recurrent Transformer: NO ACT, NO deep supervision,
+# NO one-step gradient approximation. A single segment with full BPTT
+# through every iteration. Tests the architecture on its own.
+halt_exploration_prob: 0.0
+halt_max_steps: 1
+
+num_layers: 8        # 8 flat layers (same as HRM total)
+num_iterations: 16   # 16 recurrent steps within the single segment
+one_step_grad: false # Differentiate every iteration (full BPTT)
+
+hidden_size: 512
+num_heads: 8
+expansion: 4
+
+puzzle_emb_ndim: ${.hidden_size}
+
+pos_encodings: rope
