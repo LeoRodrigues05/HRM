@@ -46,3 +46,6 @@ icml2026.zip
 # PDFs (paper/figures excepted above)
 docs/*.pdf
 *.log
+
+# Local paper drafts (working copy)
+docs/paper/
