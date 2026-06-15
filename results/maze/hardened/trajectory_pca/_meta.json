@@ -1,0 +1,33 @@
+{
+  "experiment": "maze_trajectory_pca_z_H",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T18:26:38",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/maze/trajectory_pca_maze.py",
+    "--stream",
+    "z_H",
+    "--activations",
+    "results/maze/sae_study/activations_zH.pt",
+    "--num_puzzles",
+    "300",
+    "--output_dir",
+    "results/maze/hardened/trajectory_pca"
+  ],
+  "params": {
+    "stream": "z_H",
+    "activations": "results/maze/sae_study/activations_zH.pt",
+    "num_puzzles": 300,
+    "max_steps": 16,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}

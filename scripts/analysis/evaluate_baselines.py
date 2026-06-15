@@ -35,10 +35,34 @@ if REPO_ROOT not in sys.path:
 
 from pretrain import PretrainConfig, create_dataloader
 from utils.functions import load_model_class
+from scripts.core.sudoku_sample import (
+    collect_indexed_batches,
+    load_puzzle_indices,
+    save_puzzle_indices,
+)
 
 SUDOKU_SIZE = 9
 SUDOKU_CELLS = 81
 IGNORE_LABEL_ID = -100
+
+
+def bootstrap_ci(values, n_boot: int = 10000, confidence: float = 0.95, seed: int = 0):
+    """Percentile bootstrap CI for the mean of ``values``.
+
+    Returns ``(mean, ci_lower, ci_upper)``. Resamples the per-puzzle values with
+    replacement so the interval reflects sampling variability across puzzles.
+    """
+    arr = np.asarray(values, dtype=np.float64)
+    n = arr.size
+    mean = float(arr.mean()) if n else float("nan")
+    if n < 2:
+        return mean, mean, mean
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, n, size=(n_boot, n))
+    boot_means = arr[idx].mean(axis=1)
+    lo = float(np.percentile(boot_means, 100 * (1 - confidence) / 2))
+    hi = float(np.percentile(boot_means, 100 * (1 + confidence) / 2))
+    return mean, lo, hi
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -171,23 +195,37 @@ def load_baseline_model(checkpoint_path: str, device: torch.device):
 # Per-step evaluation
 # ═══════════════════════════════════════════════════════════════════════════
 
-def evaluate_per_step(model, test_loader, device, n_puzzles, max_steps=16):
+def _extract_batch(data):
+    if isinstance(data, (tuple, list)):
+        return data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
+    return data
+
+
+def evaluate_per_step(
+    model,
+    test_loader,
+    device,
+    n_puzzles,
+    max_steps=16,
+    puzzle_indices_path=None,
+):
     """Run model on test puzzles and collect per-step metrics."""
     model.eval()
     step_metrics: Dict[int, List[Dict]] = {s: [] for s in range(max_steps)}
-    n_done = 0
+    puzzle_indices = (
+        load_puzzle_indices(puzzle_indices_path, limit=n_puzzles)
+        if puzzle_indices_path else None
+    )
+    indexed_batches = collect_indexed_batches(
+        test_loader,
+        device,
+        num_puzzles=n_puzzles,
+        puzzle_indices=puzzle_indices,
+        extract_batch=_extract_batch,
+    )
 
     with torch.inference_mode():
-        for data in test_loader:
-            if n_done >= n_puzzles:
-                break
-
-            if isinstance(data, (tuple, list)):
-                batch = data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
-            else:
-                batch = data
-            batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-
+        for _puzzle_idx, batch in indexed_batches:
             with torch.device(device):
                 carry = model.initial_carry(batch)
 
@@ -203,8 +241,6 @@ def evaluate_per_step(model, test_loader, device, n_puzzles, max_steps=16):
                 )
                 step_metrics[step].append(metrics)
 
-            n_done += batch["inputs"].shape[0]
-
     # Aggregate per step
     aggregated = {}
     for step in range(max_steps):
@@ -213,37 +249,49 @@ def evaluate_per_step(model, test_loader, device, n_puzzles, max_steps=16):
         agg = {}
         for key in step_metrics[step][0]:
             vals = [m[key] for m in step_metrics[step]]
+            mean, lo, hi = bootstrap_ci(vals)
             agg[key] = {
-                "mean": float(np.mean(vals)),
+                "mean": mean,
                 "std": float(np.std(vals)),
+                "ci_lower": lo,
+                "ci_upper": hi,
+                "n": len(vals),
             }
         aggregated[step] = agg
 
-    return aggregated
+    return aggregated, [idx for idx, _batch in indexed_batches]
 
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Activation patching
 # ═══════════════════════════════════════════════════════════════════════════
 
-def activation_patching_experiment(model, test_loader, device, n_pairs=100, max_steps=16):
+def activation_patching_experiment(
+    model,
+    test_loader,
+    device,
+    n_pairs=100,
+    max_steps=16,
+    puzzle_indices_path=None,
+):
     """Patch hidden state from puzzle B into puzzle A at each step, measure Δacc.
 
     This measures causal importance of the hidden state representation.
     """
     model.eval()
 
-    # Collect puzzle pairs
-    puzzles = []
-    for data in test_loader:
-        if len(puzzles) >= 2 * n_pairs:
-            break
-        if isinstance(data, (tuple, list)):
-            batch = data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
-        else:
-            batch = data
-        batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-        puzzles.append(batch)
+    puzzle_indices = (
+        load_puzzle_indices(puzzle_indices_path, limit=2 * n_pairs)
+        if puzzle_indices_path else None
+    )
+    indexed_batches = collect_indexed_batches(
+        test_loader,
+        device,
+        num_puzzles=2 * n_pairs,
+        puzzle_indices=puzzle_indices,
+        extract_batch=_extract_batch,
+    )
+    puzzles = [batch for _idx, batch in indexed_batches]
 
     results_by_step = {}
 
@@ -287,6 +335,8 @@ def activation_patching_experiment(model, test_loader, device, n_pairs=100, max_
             results_by_step[patch_step] = {
                 "mean_delta_accuracy": float(np.mean(deltas)),
                 "std_delta_accuracy": float(np.std(deltas)),
+                "ci_lower_delta_accuracy": bootstrap_ci(deltas)[1],
+                "ci_upper_delta_accuracy": bootstrap_ci(deltas)[2],
                 "n_pairs": len(deltas),
             }
 
@@ -308,6 +358,10 @@ def main():
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--output_dir", type=str, default="results/baseline_comparison")
+    parser.add_argument("--puzzle_indices", type=str, default=None,
+                        help="JSON manifest/list of dataloader puzzle indices to evaluate")
+    parser.add_argument("--save_puzzle_indices", type=str, default=None,
+                        help="Write the collected dataloader puzzle indices to this JSON manifest")
     parser.add_argument("--skip_patching", action="store_true",
                         help="Skip activation patching experiment")
     args = parser.parse_args()
@@ -339,7 +393,25 @@ def main():
     # Per-step evaluation
     print("\nRunning per-step evaluation...")
     t0 = time.time()
-    step_results = evaluate_per_step(model, test_loader, device, args.n_puzzles, args.max_steps)
+    step_results, collected_indices = evaluate_per_step(
+        model,
+        test_loader,
+        device,
+        args.n_puzzles,
+        args.max_steps,
+        puzzle_indices_path=args.puzzle_indices,
+    )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            collected_indices,
+            metadata={
+                "experiment": "baseline_eval",
+                "model_name": model_name,
+                "num_puzzles": len(collected_indices),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     print(f"  Done in {time.time() - t0:.1f}s")
 
     # Activation patching
@@ -349,7 +421,12 @@ def main():
         t0 = time.time()
         _, _, test_loader2, _ = load_baseline_model(args.checkpoint, device)
         patching_results = activation_patching_experiment(
-            model, test_loader2, device, args.n_patching_pairs, args.max_steps,
+            model,
+            test_loader2,
+            device,
+            args.n_patching_pairs,
+            args.max_steps,
+            puzzle_indices_path=args.puzzle_indices,
         )
         print(f"  Done in {time.time() - t0:.1f}s")
 
@@ -368,6 +445,19 @@ def main():
     with open(out_path, "w") as f:
         json.dump(output, f, indent=2)
     print(f"\nResults saved to {out_path}")
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "baseline_eval", {
+            "model_name": model_name, "checkpoint": args.checkpoint,
+            "n_puzzles": args.n_puzzles, "max_steps": args.max_steps,
+            "n_patching_pairs": args.n_patching_pairs,
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+            "num_puzzles_collected": len(collected_indices),
+        }, repo_root=REPO_ROOT)
+    except Exception as e:
+        print(f"  (could not write _meta.json: {e})")
 
     # Print summary table
     print(f"\n{'Step':>4s}  {'CellAcc':>8s}  {'PuzzAcc':>8s}  {'UnkAcc':>8s}  "

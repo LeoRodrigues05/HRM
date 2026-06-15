@@ -1,0 +1,60 @@
+{
+  "experiment": "maze_probe_geometry",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T18:35:27",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/maze/probe_geometry_maze.py",
+    "--num_puzzles",
+    "1000",
+    "--steps",
+    "0,1,2,4,8,15",
+    "--streams",
+    "z_H,z_L",
+    "--seeds",
+    "0,1,2,3,4",
+    "--device",
+    "cuda",
+    "--train_device",
+    "cuda",
+    "--output_dir",
+    "results/maze/hardened/probe_geometry"
+  ],
+  "params": {
+    "num_puzzles": 1000,
+    "steps": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      15
+    ],
+    "streams": [
+      "z_H",
+      "z_L"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "features": [
+      "on_optimal_path",
+      "is_wall",
+      "is_free",
+      "is_dead_end",
+      "is_junction",
+      "is_corner_on_path",
+      "off_path_passable",
+      "near_start_5",
+      "near_goal_5"
+    ],
+    "split": "puzzle_disjoint"
+  }
+}

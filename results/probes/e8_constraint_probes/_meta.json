@@ -1,0 +1,43 @@
+{
+  "experiment": "E8_constraint_probes",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-06T13:45:37",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/probes/e8_constraint_probes.py",
+    "--n_puzzles",
+    "500",
+    "--seeds",
+    "0,1,2,3,4",
+    "--steps",
+    "0,4,8,12,15",
+    "--epochs",
+    "60",
+    "--z_level",
+    "both",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/probes/e8_constraint_probes"
+  ],
+  "params": {
+    "n_puzzles": 500,
+    "steps": "0,4,8,12,15",
+    "max_steps": 16,
+    "epochs": 60,
+    "lr": 0.005,
+    "val_frac": 0.2,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "z_level": "both",
+    "split": "puzzle_disjoint"
+  }
+}

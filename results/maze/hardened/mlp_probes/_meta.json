@@ -1,0 +1,60 @@
+{
+  "experiment": "maze_mlp_probes",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T15:59:14",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/maze/linear_probes_maze.py",
+    "--num_puzzles",
+    "1000",
+    "--steps",
+    "0,1,2,4,8,15",
+    "--probe_type",
+    "mlp",
+    "--seeds",
+    "0,1,2,3,4",
+    "--streams",
+    "z_H,z_L",
+    "--device",
+    "cuda",
+    "--train_device",
+    "cuda",
+    "--output_dir",
+    "results/maze/hardened/mlp_probes"
+  ],
+  "params": {
+    "num_puzzles": 1000,
+    "n_puzzles_collected": 1000,
+    "steps": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      15
+    ],
+    "max_steps": 16,
+    "probe_type": "mlp",
+    "mlp_hidden": 256,
+    "epochs": 30,
+    "lr": 0.001,
+    "val_frac": 0.2,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "streams": [
+      "z_H",
+      "z_L"
+    ],
+    "positions_per_sample": 128,
+    "split": "puzzle_disjoint",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint"
+  }
+}

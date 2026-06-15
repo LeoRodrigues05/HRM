@@ -1,0 +1,42 @@
+{
+  "experiment": "nonlinear_probes",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T15:41:24",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/probes/nonlinear_probes.py",
+    "--n_puzzles",
+    "500",
+    "--steps",
+    "0,4,8,12,15",
+    "--seeds",
+    "0,1,2,3,4",
+    "--z_level",
+    "both",
+    "--val_frac",
+    "0.2",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/probes/nonlinear_probes"
+  ],
+  "params": {
+    "n_puzzles": 500,
+    "steps": "0,4,8,12,15",
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "z_level": "both",
+    "val_frac": 0.2,
+    "epochs": 60,
+    "mlp_hidden": 256,
+    "split": "puzzle_disjoint"
+  }
+}

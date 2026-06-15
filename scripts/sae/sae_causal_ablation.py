@@ -59,6 +59,11 @@ from scripts.core.activation_ablation import (
     ActivationAblator, ActivationCache, _patch_attention_for_cpu,
     _make_inner_carry, _make_carry, ACTCarry,
 )
+from scripts.core.sudoku_sample import (
+    collect_indexed_batches,
+    load_puzzle_indices,
+    save_puzzle_indices,
+)
 from models.sae import SparseAutoencoder, TopKSparseAutoencoder
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
@@ -350,6 +355,7 @@ def run_experiment(
     max_steps: int = 16,
     probe_weights_path: Optional[str] = None,
     seed: int = 42,
+    puzzle_indices_path: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """Run the full causal ablation experiment."""
     torch.manual_seed(seed)
@@ -357,17 +363,22 @@ def run_experiment(
 
     ablator = SAEFeatureAblator(model, sae, device=device)
 
-    # Collect batches
-    batches = []
-    for i, data in enumerate(test_loader):
-        if i >= n_puzzles:
-            break
+    def _extract_batch(data):
         if isinstance(data, (tuple, list)):
-            batch = data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
-        else:
-            batch = data
-        batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-        batches.append(batch)
+            return data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
+        return data
+
+    puzzle_indices = (
+        load_puzzle_indices(puzzle_indices_path, limit=n_puzzles)
+        if puzzle_indices_path else None
+    )
+    batches = collect_indexed_batches(
+        test_loader,
+        device,
+        num_puzzles=n_puzzles,
+        puzzle_indices=puzzle_indices,
+        extract_batch=_extract_batch,
+    )
     logger.info(f"Loaded {len(batches)} puzzles")
 
     # Load E8 probe directions if available — select best step per target
@@ -417,7 +428,7 @@ def run_experiment(
 
     per_puzzle_results = []
 
-    for pi, batch in enumerate(batches):
+    for pi, (puzzle_idx, batch) in enumerate(batches):
         targets_tok = batch["labels"][:, -SUDOKU_CELLS:].cpu()
         inputs_tok = batch["inputs"][:, -SUDOKU_CELLS:].cpu()
 
@@ -430,7 +441,7 @@ def run_experiment(
         baseline_viols = count_violations(baseline_preds)
 
         puzzle_result = {
-            'puzzle_idx': pi,
+            'puzzle_idx': puzzle_idx,
             'baseline_acc': baseline_acc,
             'baseline_violations': baseline_viols,
             'sae_feature_ablations': {},
@@ -542,8 +553,75 @@ def run_experiment(
 
 
 def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Compute aggregate statistics with t-tests."""
+    """Compute aggregate statistics with CIs and paired tests."""
     from scipy import stats as scipy_stats
+
+    def bootstrap_summary(values: List[float], seed: int = 42) -> Dict[str, float]:
+        arr = np.asarray(values, dtype=np.float64)
+        if arr.size == 0:
+            return {
+                "mean": 0.0, "std": 0.0, "ci_lower": 0.0,
+                "ci_upper": 0.0, "n": 0,
+            }
+        rng = np.random.default_rng(seed)
+        boot = rng.choice(arr, size=(1000, arr.size), replace=True).mean(axis=1)
+        return {
+            "mean": float(arr.mean()),
+            "std": float(arr.std()),
+            "ci_lower": float(np.percentile(boot, 2.5)),
+            "ci_upper": float(np.percentile(boot, 97.5)),
+            "n": int(arr.size),
+        }
+
+    def condition_stats(values: List[float]) -> Dict[str, Any]:
+        summary = bootstrap_summary(values)
+        return {
+            "mean_delta_acc": summary["mean"],
+            "std_delta_acc": summary["std"],
+            "ci_lower_delta_acc": summary["ci_lower"],
+            "ci_upper_delta_acc": summary["ci_upper"],
+            "n_samples": summary["n"],
+            "delta_acc": summary,
+        }
+
+    def per_puzzle_group_means(group: str) -> List[Optional[float]]:
+        out: List[Optional[float]] = []
+        for pr in results:
+            vals = [v["delta_acc"] for v in pr[group].values()]
+            out.append(float(np.mean(vals)) if vals else None)
+        return out
+
+    def paired_test(left: str, right: str) -> Dict[str, Any]:
+        l_raw = per_puzzle_group_means(left)
+        r_raw = per_puzzle_group_means(right)
+        pairs = [(l, r) for l, r in zip(l_raw, r_raw) if l is not None and r is not None]
+        if len(pairs) < 2:
+            return {"n_pairs": len(pairs)}
+        l_arr = np.asarray([p[0] for p in pairs], dtype=np.float64)
+        r_arr = np.asarray([p[1] for p in pairs], dtype=np.float64)
+        diffs = l_arr - r_arr
+        t_stat, p_val = scipy_stats.ttest_rel(l_arr, r_arr)
+        if np.any(diffs != 0):
+            try:
+                w_stat, w_p = scipy_stats.wilcoxon(l_arr, r_arr)
+                w_stat, w_p = float(w_stat), float(w_p)
+            except Exception:
+                w_stat, w_p = float("nan"), float("nan")
+        else:
+            w_stat, w_p = float("nan"), 1.0
+        diff_std = float(diffs.std(ddof=1))
+        cohens_d = float(diffs.mean() / diff_std) if diff_std > 1e-10 else 0.0
+        diff_ci = bootstrap_summary(diffs.tolist())
+        return {
+            "n_pairs": int(len(pairs)),
+            "paired_t_statistic": float(t_stat),
+            "paired_p_value": float(p_val),
+            "wilcoxon_stat": w_stat,
+            "wilcoxon_p_value": w_p,
+            "cohens_d_paired": cohens_d,
+            "mean_paired_delta": diff_ci,
+            "significant_0.05": bool(p_val < 0.05),
+        }
 
     # Collect all delta_acc values per condition
     sae_deltas = []
@@ -574,26 +652,10 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
     aggregate = {
         'n_puzzles': len(results),
         'conditions': {
-            'sae_top_features': {
-                'mean_delta_acc': float(sae_arr.mean()),
-                'std_delta_acc': float(sae_arr.std()),
-                'n_samples': len(sae_deltas),
-            },
-            'random_sae_features': {
-                'mean_delta_acc': float(rand_arr.mean()),
-                'std_delta_acc': float(rand_arr.std()),
-                'n_samples': len(random_feature_deltas),
-            },
-            'probe_directions': {
-                'mean_delta_acc': float(probe_arr.mean()),
-                'std_delta_acc': float(probe_arr.std()),
-                'n_samples': len(probe_deltas),
-            },
-            'random_directions': {
-                'mean_delta_acc': float(rand_dir_arr.mean()),
-                'std_delta_acc': float(rand_dir_arr.std()),
-                'n_samples': len(random_dir_deltas),
-            },
+            'sae_top_features': condition_stats(sae_deltas),
+            'random_sae_features': condition_stats(random_feature_deltas),
+            'probe_directions': condition_stats(probe_deltas),
+            'random_directions': condition_stats(random_dir_deltas),
         },
     }
 
@@ -605,6 +667,7 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
             't_statistic': float(t_stat),
             'p_value': float(p_val),
             'significant_0.05': bool(p_val < 0.05),
+            **paired_test('sae_feature_ablations', 'random_feature_ablations'),
         }
     if len(sae_deltas) > 1 and len(probe_deltas) > 1:
         t_stat, p_val = scipy_stats.ttest_ind(sae_arr, probe_arr)
@@ -612,6 +675,7 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
             't_statistic': float(t_stat),
             'p_value': float(p_val),
             'significant_0.05': bool(p_val < 0.05),
+            **paired_test('sae_feature_ablations', 'probe_direction_ablations'),
         }
     if len(probe_deltas) > 1 and len(random_dir_deltas) > 1:
         t_stat, p_val = scipy_stats.ttest_ind(probe_arr, rand_dir_arr)
@@ -619,6 +683,7 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
             't_statistic': float(t_stat),
             'p_value': float(p_val),
             'significant_0.05': bool(p_val < 0.05),
+            **paired_test('probe_direction_ablations', 'random_direction_ablations'),
         }
     aggregate['statistical_tests'] = tests
 
@@ -629,6 +694,7 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
             'mean_delta_acc': float(np.mean(deltas)),
             'std_delta_acc': float(np.std(deltas)),
             'n': len(deltas),
+            'delta_acc': bootstrap_summary(deltas),
         }
     aggregate['per_item_means'] = per_item_means
 
@@ -649,6 +715,10 @@ def main():
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--output_dir", type=str, default="results/sae_study/causal_ablation")
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--puzzle_indices", type=str, default=None,
+                        help="JSON manifest/list of dataloader puzzle indices to evaluate")
+    parser.add_argument("--save_puzzle_indices", type=str, default=None,
+                        help="Write the collected dataloader puzzle indices to this JSON manifest")
     args = parser.parse_args()
 
     torch.manual_seed(args.seed)
@@ -698,6 +768,7 @@ def main():
         max_steps=args.max_steps,
         probe_weights_path=args.probe_weights_path,
         seed=args.seed,
+        puzzle_indices_path=args.puzzle_indices,
     )
     elapsed = time.time() - t0
     logger.info(f"Experiment took {elapsed:.1f}s")
@@ -709,6 +780,17 @@ def main():
         for pr in results:
             f.write(json.dumps(pr) + "\n")
     logger.info(f"Saved per-puzzle results to {jsonl_path}")
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            [int(pr["puzzle_idx"]) for pr in results],
+            metadata={
+                "experiment": "sae_causal_ablation",
+                "seed": args.seed,
+                "num_puzzles": len(results),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
 
     # Compute and save aggregate
     aggregate = compute_aggregate(results)
@@ -716,6 +798,24 @@ def main():
     with open(agg_path, 'w') as f:
         json.dump(aggregate, f, indent=2)
     logger.info(f"Saved aggregate results to {agg_path}")
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "sae_causal_ablation", {
+            "sae_path": args.sae_path,
+            "activations_path": args.activations_path,
+            "probe_weights_path": args.probe_weights_path,
+            "n_puzzles": args.n_puzzles,
+            "num_puzzles_collected": len(results),
+            "top_k": args.top_k,
+            "n_random_features": args.n_random_features,
+            "max_steps": args.max_steps,
+            "seed": args.seed,
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+        }, repo_root=REPO_ROOT)
+    except Exception as e:
+        logger.warning(f"Could not write _meta.json: {e}")
 
     # Print summary
     logger.info("\n" + "="*60)

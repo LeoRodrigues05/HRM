@@ -1,0 +1,41 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><title>Maze - Linear Probe Report</title>
+<style>
+body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+       background:#fafafa; color:#222; margin:16px; }
+h1 { margin: 8px 0 4px 0; }
+h2 { margin: 18px 0 6px 0; }
+h3 { margin: 12px 0 4px 0; font-size: 1.0em; }
+.meta { color:#555; margin-bottom: 12px; font-size: 0.9em; }
+.legend span { display:inline-block; padding:2px 8px; margin-right:6px;
+               border:1px solid #999; font-size:0.85em; }
+.row2 { display:grid; grid-template-columns: repeat(2, max-content);
+        gap:24px; align-items:start; }
+.row3 { display:grid; grid-template-columns: repeat(3, max-content);
+        gap:24px; align-items:start; }
+.steps { display:flex; flex-wrap:wrap; gap:18px; align-items:start; }
+.gridTitle { font-weight:700; margin:4px 0; font-size:0.9em; }
+table.mgrid { border-collapse:collapse; }
+table.mgrid td {
+  width:12px; height:12px; padding:0; text-align:center;
+  font-size:9px; line-height:12px;
+  border:1px solid #ddd;
+}
+/* Cell base styles by token */
+td.wall   { background:#222; color:#222; }
+td.free   { background:#fff; color:#ccc; }
+td.start  { background:#1a7f37; color:#fff; font-weight:700; }
+td.goal   { background:#cf222e; color:#fff; font-weight:700; }
+td.path   { background:#fbe88a; color:#7a5a00; font-weight:700; }
+td.pad    { background:#eee; color:#bbb; }
+/* Correctness overlays for label-aware rendering */
+td.bad         { background:#ff6b6b !important; color:#fff; }
+td.missing     { background:#fff1f1 !important; color:#cf222e; }
+/* Changed cells vs prev: diagonal gradient (matches Sudoku report style) */
+td.changed_ok  { background-image: linear-gradient(135deg, #ffe15a 50%, #fbe88a 50%); }
+td.changed_bad { background-image: linear-gradient(135deg, #ffe15a 50%, #ff6b6b 50%); color:#fff; }
+table.metrics { border-collapse:collapse; margin:6px 0 12px 0; }
+table.metrics th, table.metrics td { border:1px solid #999; padding:3px 8px; font-size:0.9em; }
+table.metrics th { background:#eee; }
+details > summary { cursor:pointer; }
+</style>
+</head><body><h1>Maze - Linear Probe Report</h1><div class='meta'>num_puzzles=32 | max_steps=4 | epochs=30 | generated 2026-05-31 11:36:01</div><h2>Dataset summary</h2><table class='metrics'><tr><th>field</th><th>value</th></tr><tr><td>global_samples</td><td>128</td></tr><tr><td>local_blocks</td><td>128</td></tr><tr><td>local_samples_before_cap</td><td>16384</td></tr><tr><td>puzzle_emb_len</td><td>1</td></tr><tr><td>exact_solved_by_step</td><td>{'0': 0.21875, '1': 0.8125, '2': 0.84375, '3': 0.84375}</td></tr></table><h2>Global probes</h2><table class='metrics'><tr><th>stream</th><th>target</th><th>task</th><th>status</th><th>n</th><th>test_acc</th><th>baseline_acc</th><th>test_r2</th><th>test_mse</th><th>baseline_mse</th></tr><tr><td>z_H</td><td>exact_solved</td><td>binary</td><td>ok</td><td>128</td><td>0.7812</td><td>0.5938</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>connects_start_goal</td><td>binary</td><td>ok</td><td>128</td><td>0.6250</td><td>0.8750</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>valid_sg_path</td><td>binary</td><td>ok</td><td>128</td><td>0.8125</td><td>0.6875</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>valid_optimal_path</td><td>binary</td><td>ok</td><td>128</td><td>0.9062</td><td>0.8438</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>path_f1</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-338.2662</td><td>0.6683</td><td>0.0020</td></tr><tr><td>z_H</td><td>path_jaccard</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-48.5122</td><td>0.5899</td><td>0.0120</td></tr><tr><td>z_H</td><td>wall_path_rate</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>0.0000</td><td>0.1981</td><td>0.0000</td></tr><tr><td>z_H</td><td>path_length_ratio</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-2699.0305</td><td>0.7127</td><td>0.0003</td></tr><tr><td>z_L</td><td>exact_solved</td><td>binary</td><td>ok</td><td>128</td><td>0.8125</td><td>0.7188</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>connects_start_goal</td><td>binary</td><td>ok</td><td>128</td><td>0.6250</td><td>0.8125</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>valid_sg_path</td><td>binary</td><td>ok</td><td>128</td><td>0.8125</td><td>0.8125</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>valid_optimal_path</td><td>binary</td><td>ok</td><td>128</td><td>0.8438</td><td>0.7812</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>path_f1</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-839.5756</td><td>1.3973</td><td>0.0017</td></tr><tr><td>z_L</td><td>path_jaccard</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-94.3363</td><td>0.8491</td><td>0.0089</td></tr><tr><td>z_L</td><td>wall_path_rate</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>0.0000</td><td>0.3557</td><td>0.0000</td></tr><tr><td>z_L</td><td>path_length_ratio</td><td>regression</td><td>ok</td><td>128</td><td></td><td></td><td>-205.6890</td><td>0.4685</td><td>0.0023</td></tr></table><h2>Local probes</h2><table class='metrics'><tr><th>stream</th><th>target</th><th>task</th><th>status</th><th>n</th><th>test_acc</th><th>baseline_acc</th><th>test_r2</th><th>test_mse</th><th>baseline_mse</th></tr><tr><td>z_H</td><td>on_optimal_path</td><td>binary</td><td>ok</td><td>16384</td><td>0.8342</td><td>0.6462</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>is_wall</td><td>binary</td><td>ok</td><td>16384</td><td>0.8542</td><td>0.5496</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>is_dead_end</td><td>binary</td><td>ok</td><td>16384</td><td>0.9602</td><td>0.9602</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>is_junction</td><td>binary</td><td>ok</td><td>16384</td><td>0.7903</td><td>0.6931</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>near_start_5</td><td>binary</td><td>ok</td><td>16384</td><td>0.9822</td><td>0.9802</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>near_goal_5</td><td>binary</td><td>ok</td><td>16384</td><td>0.9802</td><td>0.9761</td><td></td><td></td><td></td></tr><tr><td>z_H</td><td>distance_to_start_norm</td><td>regression</td><td>ok</td><td>16384</td><td></td><td></td><td>0.2639</td><td>0.0753</td><td>0.1026</td></tr><tr><td>z_H</td><td>distance_to_goal_norm</td><td>regression</td><td>ok</td><td>16384</td><td></td><td></td><td>0.3067</td><td>0.0709</td><td>0.1024</td></tr><tr><td>z_L</td><td>on_optimal_path</td><td>binary</td><td>ok</td><td>16384</td><td>0.8984</td><td>0.6372</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>is_wall</td><td>binary</td><td>ok</td><td>16384</td><td>0.8884</td><td>0.5344</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>is_dead_end</td><td>binary</td><td>ok</td><td>16384</td><td>0.9683</td><td>0.9609</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>is_junction</td><td>binary</td><td>ok</td><td>16384</td><td>0.8384</td><td>0.6985</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>near_start_5</td><td>binary</td><td>ok</td><td>16384</td><td>0.9814</td><td>0.9795</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>near_goal_5</td><td>binary</td><td>ok</td><td>16384</td><td>0.9812</td><td>0.9775</td><td></td><td></td><td></td></tr><tr><td>z_L</td><td>distance_to_start_norm</td><td>regression</td><td>ok</td><td>16384</td><td></td><td></td><td>0.3358</td><td>0.0707</td><td>0.1065</td></tr><tr><td>z_L</td><td>distance_to_goal_norm</td><td>regression</td><td>ok</td><td>16384</td><td></td><td></td><td>0.3724</td><td>0.0665</td><td>0.1059</td></tr></table></body></html>

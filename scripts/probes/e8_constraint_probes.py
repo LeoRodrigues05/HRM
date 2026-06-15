@@ -67,6 +67,11 @@ from models.hrm.hrm_act_v1 import HierarchicalReasoningModel_ACTV1
 from scripts.core.activation_ablation import (
     ActivationAblator, ActivationCache, _patch_attention_for_cpu
 )
+from scripts.core.sudoku_sample import (
+    collect_indexed_batches,
+    load_puzzle_indices,
+    save_puzzle_indices,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
 logger = logging.getLogger(__name__)
@@ -342,6 +347,59 @@ def train_multiclass(X_tr, y_tr, X_va, y_va, n_classes=10, epochs=50, lr=1e-2):
     return model, tr_acc, va_acc
 
 
+# ===========================================================================
+# Statistics helpers (seed ensemble + leakage-free split)
+# ===========================================================================
+
+def mean_ci(values, confidence: float = 0.95):
+    """Mean + t-based CI over a small sample (e.g. seeds).
+
+    Returns ``(mean, ci_lower, ci_upper, std)``. Uses Student-t so the interval
+    is honest for the handful of seeds we run.
+    """
+    arr = np.asarray(values, dtype=np.float64)
+    n = arr.size
+    mean = float(arr.mean())
+    if n < 2:
+        return mean, mean, mean, 0.0
+    std = float(arr.std(ddof=1))
+    sem = std / np.sqrt(n)
+    try:
+        from scipy import stats as _sps
+        tcrit = float(_sps.t.ppf(0.5 + confidence / 2.0, df=n - 1))
+    except Exception:
+        tcrit = 1.96
+    half = tcrit * sem
+    return mean, mean - half, mean + half, std
+
+
+def puzzle_disjoint_split(n_rows: int, val_frac: float, seed: int,
+                          cells_per_puzzle: int = SUDOKU_CELLS, device="cpu"):
+    """Train/val row indices with a PUZZLE-DISJOINT split.
+
+    Rows are grouped by puzzle in contiguous blocks of ``cells_per_puzzle``.
+    Splitting at the puzzle level prevents cells from the same puzzle landing in
+    both train and val (which leaks puzzle-specific structure and inflates val
+    scores). Falls back to a row-level split when there are < 2 puzzles.
+    """
+    n_puzzles = n_rows // cells_per_puzzle
+    g = torch.Generator(device="cpu").manual_seed(int(seed))
+    if n_puzzles < 2:
+        perm = torch.randperm(n_rows, generator=g).to(device)
+        n_val = max(1, int(n_rows * val_frac))
+        return perm[n_val:], perm[:n_val]
+    puzzle_perm = torch.randperm(n_puzzles, generator=g)
+    n_val_p = max(1, int(n_puzzles * val_frac))
+    val_p, train_p = puzzle_perm[:n_val_p], puzzle_perm[n_val_p:]
+
+    def _rows(pidx):
+        base = (pidx.long() * cells_per_puzzle).view(-1, 1)
+        offs = torch.arange(cells_per_puzzle).view(1, -1)
+        return (base + offs).reshape(-1).to(device)
+
+    return _rows(train_p), _rows(val_p)
+
+
 # ═══════════════════════════════════════════════════════════════════════════
 # Data collection
 # ═══════════════════════════════════════════════════════════════════════════
@@ -404,7 +462,8 @@ def collect_activations(
     n_puzzles: int,
     steps_to_record: List[int],
     max_steps: int = 16,
-) -> Tuple[Dict[str, List[torch.Tensor]], Dict[str, List[torch.Tensor]], int]:
+    puzzle_indices_path: Optional[str] = None,
+) -> Tuple[Dict[str, List[torch.Tensor]], Dict[str, List[torch.Tensor]], int, List[int]]:
     """Run inference and collect z_H per-cell features + constraint labels.
 
     Returns
@@ -415,17 +474,24 @@ def collect_activations(
     """
     ablator = ActivationAblator(model, device=device)
 
-    # Collect all puzzle batches first
-    batches = []
-    for i, data in enumerate(test_loader):
-        if i >= n_puzzles:
-            break
+    def _extract_batch(data):
         if isinstance(data, (tuple, list)):
-            batch = data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
-        else:
-            batch = data
-        batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-        batches.append(batch)
+            return data[1] if len(data) >= 2 and isinstance(data[1], dict) else data[0]
+        return data
+
+    puzzle_indices = (
+        load_puzzle_indices(puzzle_indices_path, limit=n_puzzles)
+        if puzzle_indices_path else None
+    )
+    indexed_batches = collect_indexed_batches(
+        test_loader,
+        device,
+        num_puzzles=n_puzzles,
+        puzzle_indices=puzzle_indices,
+        extract_batch=_extract_batch,
+    )
+    collected_indices = [idx for idx, _batch in indexed_batches]
+    batches = [batch for _idx, batch in indexed_batches]
 
     logger.info(f"Collected {len(batches)} puzzles. Running inference...")
 
@@ -466,7 +532,7 @@ def collect_activations(
             logger.info(f"  {pi+1}/{len(batches)} puzzles processed")
 
     logger.info(f"Done. Hidden dim = {hidden_dim}")
-    return features_H, features_L, label_bank, hidden_dim
+    return features_H, features_L, label_bank, hidden_dim, collected_indices
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -483,6 +549,13 @@ def main():
     parser.add_argument("--lr", type=float, default=5e-3)
     parser.add_argument("--val_frac", type=float, default=0.2)
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seeds", type=str, default="0,1,2,3,4",
+                        help="Comma-separated seeds for the probe ensemble "
+                             "(each uses an independent puzzle-disjoint split)")
+    parser.add_argument("--puzzle_indices", type=str, default=None,
+                        help="JSON manifest/list of dataloader puzzle indices to evaluate")
+    parser.add_argument("--save_puzzle_indices", type=str, default=None,
+                        help="Write the collected dataloader puzzle indices to this JSON manifest")
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--output_dir", type=str, default="results/probes/e8_constraint_probes")
     parser.add_argument("--z_level", type=str, default="H",
@@ -505,14 +578,28 @@ def main():
 
     # ── Collect ───────────────────────────────────────────────────────
     t0 = time.time()
-    features_H, features_L, label_bank, hidden_dim = collect_activations(
-        model, test_loader, device, args.n_puzzles, steps_to_record, args.max_steps
+    features_H, features_L, label_bank, hidden_dim, collected_indices = collect_activations(
+        model, test_loader, device, args.n_puzzles, steps_to_record, args.max_steps,
+        puzzle_indices_path=args.puzzle_indices,
     )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            collected_indices,
+            metadata={
+                "experiment": "E8_constraint_probes",
+                "seed": args.seed,
+                "num_puzzles": len(collected_indices),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     logger.info(f"Collection took {time.time()-t0:.1f}s")
 
     # ── Build datasets & train probes ─────────────────────────────────
     probe_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(args.seed)
+    seeds = [int(s) for s in str(args.seeds).split(",")] if args.seeds else [args.seed]
+    logger.info(f"Seed ensemble: {seeds} (puzzle-disjoint splits, val_frac={args.val_frac})")
 
     z_levels = ["H", "L"] if args.z_level == "both" else [args.z_level]
 
@@ -561,33 +648,51 @@ def main():
                 if y_use.float().std() < 1e-6:
                     continue
 
-                # Train/val split
-                n = X_use.shape[0]
-                perm = torch.randperm(n, device=probe_device)
-                n_val = max(1, int(n * args.val_frac))
-                X_va, y_va = X_use[perm[:n_val]], y_use[perm[:n_val]]
-                X_tr, y_tr = X_use[perm[n_val:]], y_use[perm[n_val:]]
-
-                # Determine task type
+                # Determine task type once
                 if target in BINARY_TARGETS:
-                    task = "binary"
-                    probe, tr_score, va_score = train_binary(
-                        X_tr, y_tr, X_va, y_va, epochs=args.epochs, lr=args.lr)
-                    metric = "acc"
+                    task, metric = "binary", "acc"
                 elif target in REGRESSION_TARGETS:
-                    task = "regression"
-                    probe, tr_score, va_score = train_regression(
-                        X_tr, y_tr, X_va, y_va, epochs=args.epochs, lr=args.lr)
-                    metric = "r2"
+                    task, metric = "regression", "r2"
                 elif target in MULTICLASS_TARGETS:
-                    task = "multiclass"
-                    n_classes = 10  # digits 0-9
-                    probe, tr_score, va_score = train_multiclass(
-                        X_tr, y_tr, X_va, y_va, n_classes=n_classes,
-                        epochs=args.epochs, lr=args.lr)
-                    metric = "acc"
+                    task, metric = "multiclass", "acc"
                 else:
                     continue
+
+                # ── Seed ensemble with PUZZLE-DISJOINT splits ─────────
+                seed_tr_scores: List[float] = []
+                seed_va_scores: List[float] = []
+                rep_probe = None          # first-seed probe kept for geometry
+                rep_ntr = rep_nva = 0
+                seed_weight_vecs: List[torch.Tensor] = []  # per-seed [in] for binary geometry
+                for s_i, seed in enumerate(seeds):
+                    tr_idx, va_idx = puzzle_disjoint_split(
+                        X_use.shape[0], args.val_frac, seed,
+                        cells_per_puzzle=SUDOKU_CELLS, device=probe_device,
+                    )
+                    X_tr, y_tr = X_use[tr_idx], y_use[tr_idx]
+                    X_va, y_va = X_use[va_idx], y_use[va_idx]
+
+                    torch.manual_seed(seed)
+                    if task == "binary":
+                        probe, tr_score, va_score = train_binary(
+                            X_tr, y_tr, X_va, y_va, epochs=args.epochs, lr=args.lr)
+                    elif task == "regression":
+                        probe, tr_score, va_score = train_regression(
+                            X_tr, y_tr, X_va, y_va, epochs=args.epochs, lr=args.lr)
+                    else:
+                        probe, tr_score, va_score = train_multiclass(
+                            X_tr, y_tr, X_va, y_va, n_classes=10,
+                            epochs=args.epochs, lr=args.lr)
+                    seed_tr_scores.append(tr_score)
+                    seed_va_scores.append(va_score)
+                    if task == "binary":
+                        seed_weight_vecs.append(probe.linear.weight.detach().cpu()[0])  # [in]
+                    if s_i == 0:
+                        rep_probe = probe
+                        rep_ntr, rep_nva = X_tr.shape[0], X_va.shape[0]
+
+                va_mean, va_lo, va_hi, va_std = mean_ci(seed_va_scores)
+                tr_mean = float(np.mean(seed_tr_scores))
 
                 results.append({
                     "z_level": z_name,
@@ -595,30 +700,43 @@ def main():
                     "target": target,
                     "task": task,
                     "metric": metric,
-                    "train_score": round(tr_score, 5),
-                    "val_score": round(va_score, 5),
-                    "n_train": X_tr.shape[0],
-                    "n_val": X_va.shape[0],
-                    "in_dim": int(X_tr.shape[1]),
+                    "train_score": round(tr_mean, 5),
+                    "val_score": round(va_mean, 5),
+                    "val_ci_lower": round(va_lo, 5),
+                    "val_ci_upper": round(va_hi, 5),
+                    "val_std": round(va_std, 5),
+                    "n_seeds": len(seeds),
+                    "val_scores_per_seed": ";".join(f"{v:.5f}" for v in seed_va_scores),
+                    "n_train": rep_ntr,
+                    "n_val": rep_nva,
+                    "in_dim": int(X_use.shape[1]),
                 })
 
-                # Store weight vectors for geometric analysis
+                # Store representative (first-seed) weights for geometry/ablation
                 key = f"z_{z_name}_step{step_str}_{target}"
-                W = probe.linear.weight.detach().cpu()      # [out, in]
-                b = probe.linear.bias.detach().cpu()         # [out]
+                W = rep_probe.linear.weight.detach().cpu()   # [out, in]
+                b = rep_probe.linear.bias.detach().cpu()      # [out]
                 probe_weights[key] = {
                     "W": W, "b": b,
                     "task": task, "metric": metric,
-                    "val_score": va_score,
-                    "in_dim": int(X_tr.shape[1]),
+                    "val_score": va_mean,
+                    "val_ci_lower": va_lo,
+                    "val_ci_upper": va_hi,
+                    "val_std": va_std,
+                    "val_scores_per_seed": seed_va_scores,
+                    "n_seeds": len(seeds),
+                    "in_dim": int(X_use.shape[1]),
                     "z_level": z_name,
                     "step": int(step_str),
                     "target": target,
+                    # per-seed unit weight vectors for ensemble geometry (binary only)
+                    "W_per_seed": [w for w in seed_weight_vecs] if seed_weight_vecs else None,
                 }
 
                 logger.info(
                     f"  z_{z_name} step {step_str:>2s} {target:28s} "
-                    f"{metric}={va_score:.4f} (train={tr_score:.4f})"
+                    f"{metric}={va_mean:.4f} ±{(va_hi - va_mean):.4f} "
+                    f"(train={tr_mean:.4f}, {len(seeds)} seeds)"
                 )
 
     # ── Save results CSV ──────────────────────────────────────────────
@@ -629,9 +747,41 @@ def main():
         w.writerows(results)
     logger.info(f"Saved {len(results)} rows to {csv_path}")
 
+    # ── Save seed-ensemble summary (mean ± 95% CI per probe) ──────────
+    summary = {
+        f"z_{r['z_level']}_step{r['step']}_{r['target']}": {
+            "z_level": r["z_level"], "step": r["step"], "target": r["target"],
+            "task": r["task"], "metric": r["metric"],
+            "val_mean": r["val_score"], "val_ci_lower": r["val_ci_lower"],
+            "val_ci_upper": r["val_ci_upper"], "val_std": r["val_std"],
+            "val_per_seed": [float(x) for x in r["val_scores_per_seed"].split(";")],
+            "train_mean": r["train_score"], "n_seeds": r["n_seeds"],
+            "n_train": r["n_train"], "n_val": r["n_val"],
+        }
+        for r in results
+    }
+    with open(os.path.join(args.output_dir, "probe_summary.json"), "w") as f:
+        json.dump(summary, f, indent=2)
+    logger.info("Saved probe_summary.json (seed-ensemble mean ± 95% CI)")
+
     # ── Save probe weights ────────────────────────────────────────────
     torch.save(probe_weights, os.path.join(args.output_dir, "probe_weights.pt"))
     logger.info(f"Saved probe weights ({len(probe_weights)} probes)")
+
+    # ── Provenance ────────────────────────────────────────────────────
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "E8_constraint_probes", {
+            "n_puzzles": args.n_puzzles, "steps": args.steps,
+            "max_steps": args.max_steps, "epochs": args.epochs, "lr": args.lr,
+            "val_frac": args.val_frac, "seeds": seeds, "z_level": args.z_level,
+            "split": "puzzle_disjoint",
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+            "num_puzzles_collected": len(collected_indices),
+        }, repo_root=REPO_ROOT)
+    except Exception as e:
+        logger.warning(f"Could not write _meta.json: {e}")
 
     # ── Geometric analysis ────────────────────────────────────────────
     logger.info("Running geometric analysis...")
@@ -696,6 +846,69 @@ def geometric_analysis(probe_weights: dict, output_dir: str) -> dict:
                 })
 
     result["constraint_cosines"] = cosine_entries
+
+    # ── Seed-ensemble cosines & PCA (mean ± 95% CI across seeds) ──────
+    # Uses per-seed weight vectors when available so the reported geometry is
+    # robust to probe-training randomness rather than a single-seed snapshot.
+    seed_groups: Dict[str, Dict[str, List[torch.Tensor]]] = {}
+    for key, val in probe_weights.items():
+        tgt = val["target"]
+        if (tgt in constraint_targets and val["task"] == "binary"
+                and val.get("W_per_seed")):
+            gk = f"z_{val['z_level']}_step{val['step']}"
+            seed_groups.setdefault(gk, {})[tgt] = val["W_per_seed"]  # list of [D]
+
+    ensemble_cosines = []
+    ensemble_pca = []
+    for gk, vecs in seed_groups.items():
+        n_seeds = min(len(v) for v in vecs.values()) if vecs else 0
+        if n_seeds < 1:
+            continue
+        targets_sorted = sorted(vecs.keys())
+        # pairwise cosine per seed
+        for i in range(len(targets_sorted)):
+            for j in range(i + 1, len(targets_sorted)):
+                a, b = targets_sorted[i], targets_sorted[j]
+                per_seed = [
+                    F.cosine_similarity(vecs[a][s].unsqueeze(0),
+                                        vecs[b][s].unsqueeze(0)).item()
+                    for s in range(n_seeds)
+                ]
+                m, lo, hi, sd = mean_ci(per_seed)
+                ensemble_cosines.append({
+                    "group": gk, "probe_a": a, "probe_b": b,
+                    "cosine_mean": round(m, 5),
+                    "cosine_ci_lower": round(lo, 5),
+                    "cosine_ci_upper": round(hi, 5),
+                    "cosine_std": round(sd, 5),
+                    "n_seeds": n_seeds,
+                    "cosine_per_seed": [round(x, 5) for x in per_seed],
+                })
+        # PCA PC1 explained-variance per seed
+        if len(targets_sorted) >= 2:
+            pc1_per_seed = []
+            for s in range(n_seeds):
+                mat = torch.stack([vecs[t][s] for t in targets_sorted], dim=0)
+                mat_c = mat - mat.mean(dim=0, keepdim=True)
+                try:
+                    S = torch.linalg.svdvals(mat_c)
+                    ev = (S ** 2) / (S ** 2).sum()
+                    pc1_per_seed.append(float(ev[0].item()))
+                except Exception:
+                    pass
+            if pc1_per_seed:
+                m, lo, hi, sd = mean_ci(pc1_per_seed)
+                ensemble_pca.append({
+                    "group": gk, "n_probes": len(targets_sorted),
+                    "pc1_explained_mean": round(m, 5),
+                    "pc1_explained_ci_lower": round(lo, 5),
+                    "pc1_explained_ci_upper": round(hi, 5),
+                    "pc1_explained_std": round(sd, 5),
+                    "n_seeds": len(pc1_per_seed),
+                    "pc1_per_seed": [round(x, 5) for x in pc1_per_seed],
+                })
+    result["constraint_cosines_ensemble"] = ensemble_cosines
+    result["pca_pc1_ensemble"] = ensemble_pca
 
     # ── PCA of constraint weight vectors at each step ──
     pca_entries = []

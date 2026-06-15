@@ -38,10 +38,12 @@ from scripts.controlled.controlled_common import (
     load_model_and_dataloader, collect_puzzles,
     bootstrap_ci, extract_batch,
 )
+from scripts.core.sudoku_sample import save_puzzle_indices
 from scripts.core.activation_ablation import (
     ActivationAblator, ActivationCache, _make_inner_carry,
 )
 from scripts.core.activation_patching import compute_metrics
+from scripts.maze.maze_common import MAZE_METRIC_KEYS, maybe_maze_batch_metrics
 
 
 class TimeShiftRunner(ActivationAblator):
@@ -170,6 +172,7 @@ def run_time_shift_for_puzzle(
     base_out = runner.run_and_cache_activations(batch, base_cache, max_steps=max_steps)
     base_preds = base_out["logits"].argmax(-1)
     base_acc = compute_metrics(base_preds, labels)["accuracy"]
+    base_maze_metrics = maybe_maze_batch_metrics(base_preds, labels, batch.get("inputs"))
 
     transfers = {}
     for donor_step, recipient_step in pairs:
@@ -181,16 +184,27 @@ def run_time_shift_for_puzzle(
         )
         preds = out["logits"].argmax(-1) if out else base_preds
         acc = compute_metrics(preds, labels)["accuracy"]
-        transfers[f"{donor_step}->{recipient_step}"] = {
+        row = {
             "accuracy": acc,
             "delta": acc - base_acc,
         }
+        if base_maze_metrics is not None:
+            maze_metrics = maybe_maze_batch_metrics(preds, labels, batch.get("inputs"))
+            if maze_metrics is not None:
+                row["maze_metric_deltas"] = {
+                    metric: maze_metrics[metric] - base_maze_metrics[metric]
+                    for metric in MAZE_METRIC_KEYS
+                }
+        transfers[f"{donor_step}->{recipient_step}"] = row
 
-    return {
+    result = {
         "puzzle_idx": puzzle_idx,
         "baseline_accuracy": base_acc,
         "transfers": transfers,
     }
+    if base_maze_metrics is not None:
+        result["baseline_maze_metrics"] = base_maze_metrics
+    return result
 
 
 def compute_aggregates(
@@ -207,6 +221,13 @@ def compute_aggregates(
         "per_pair": {},
     }
 
+    have_maze = all("baseline_maze_metrics" in r for r in all_results)
+    if have_maze:
+        agg["baseline_maze_metrics"] = {
+            metric: bootstrap_ci([r["baseline_maze_metrics"][metric] for r in all_results])
+            for metric in MAZE_METRIC_KEYS
+        }
+
     for d, r in pairs:
         key = f"{d}->{r}"
         deltas = [res["transfers"][key]["delta"]
@@ -220,6 +241,17 @@ def compute_aggregates(
                 "delta_accuracy": bootstrap_ci(deltas),
                 "transferred_accuracy": bootstrap_ci(accs),
             }
+            if have_maze:
+                metric_deltas = {}
+                for metric in MAZE_METRIC_KEYS:
+                    dvals = [res["transfers"][key]["maze_metric_deltas"][metric]
+                             for res in all_results
+                             if key in res["transfers"]
+                             and "maze_metric_deltas" in res["transfers"][key]]
+                    if dvals:
+                        metric_deltas[metric] = bootstrap_ci(dvals)
+                if metric_deltas:
+                    agg["per_pair"][key]["maze_metric_deltas"] = metric_deltas
 
     return agg
 
@@ -274,7 +306,24 @@ def main():
     model_obj, test_loader, config = load_model_and_dataloader(args.checkpoint, device)
     runner = TimeShiftRunner(model_obj, device=device)
 
-    puzzles = collect_puzzles(test_loader, device, args.num_puzzles, seed=args.seed)
+    puzzles = collect_puzzles(
+        test_loader,
+        device,
+        args.num_puzzles,
+        seed=args.seed,
+        puzzle_indices_path=args.puzzle_indices,
+    )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            [idx for idx, _batch in puzzles],
+            metadata={
+                "experiment": "controlled_time_shift",
+                "seed": args.seed,
+                "num_puzzles": len(puzzles),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     print(f"Collected {len(puzzles)} puzzles, {len(pairs)} pairs each")
 
     jsonl_path = os.path.join(args.output_dir, "per_puzzle.jsonl")
@@ -318,6 +367,24 @@ def main():
     with open(agg_path, "w") as f:
         json.dump(agg, f, indent=2)
     print(f"Aggregate saved to {agg_path}")
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "controlled_time_shift", {
+            "num_puzzles": len(puzzles),
+            "requested_num_puzzles": args.num_puzzles,
+            "mode": args.mode,
+            "fixed_donor": args.fixed_donor,
+            "fixed_recipient": args.fixed_recipient,
+            "n_pairs": len(pairs),
+            "max_steps": args.max_steps,
+            "seed": args.seed,
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+            "checkpoint": args.checkpoint,
+        })
+    except Exception as e:
+        print(f"  (could not write _meta.json: {e})")
 
     # Summary: top 10 best and worst pairs
     sorted_pairs = sorted(
