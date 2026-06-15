@@ -201,6 +201,52 @@ def is_dead_end(grid_input: GridLike) -> np.ndarray:
     return free_only & (_free_neighbor_count(g) == 1)
 
 
+def is_free(grid_input: GridLike) -> np.ndarray:
+    """Open-corridor cell (FREE_ID): passable, but not a wall / pad / S / G."""
+    g = _to_grid(grid_input)
+    return g == FREE_ID
+
+
+def passable_neighbor_count(grid_input: GridLike) -> np.ndarray:
+    """Per-cell count (0-4) of 4-neighbors that are passable (free / S / G).
+
+    Regression target: a denser description of local corridor topology than the
+    binary is_junction / is_dead_end (degree 1 = dead end, 2 = corridor,
+    >2 = junction).
+    """
+    g = _to_grid(grid_input)
+    return _free_neighbor_count(g).astype(np.int32)
+
+
+def on_path_corner(grid_label: GridLike) -> np.ndarray:
+    """On-optimal-path cells where the route bends (an L-turn).
+
+    A corner is an on-path cell that has at least one *horizontal* and at least
+    one *vertical* on-path neighbor. Endpoints (S/G, one path neighbor) and
+    straight segments (collinear neighbors) are therefore not corners. Encodes
+    the geometry of the route rather than mere membership.
+    """
+    on = on_optimal_path(grid_label)
+    up = np.zeros_like(on);   up[1:, :] = on[:-1, :]
+    down = np.zeros_like(on); down[:-1, :] = on[1:, :]
+    left = np.zeros_like(on); left[:, 1:] = on[:, :-1]
+    right = np.zeros_like(on); right[:, :-1] = on[:, 1:]
+    has_vert = up | down
+    has_horz = left | right
+    return on & has_vert & has_horz
+
+
+def off_path_passable(grid_input: GridLike, grid_label: GridLike) -> np.ndarray:
+    """Passable cells (non-wall, non-pad) that are NOT on the optimal route.
+
+    Distinguishes the true solution route from decoy open corridors — the
+    sharpest test of whether the state represents *the path* vs generic free
+    space.
+    """
+    gi = _to_grid(grid_input)
+    return _passable(gi) & (~on_optimal_path(grid_label))
+
+
 # ---------------------------------------------------------------------------
 # Per-puzzle scalars
 # ---------------------------------------------------------------------------
@@ -265,6 +311,7 @@ __all__ = [
     "is_wall", "on_optimal_path",
     "distance_to_goal", "distance_to_start",
     "is_junction", "is_dead_end",
+    "is_free", "passable_neighbor_count", "on_path_corner", "off_path_passable",
     "path_length", "num_dead_ends", "num_junctions", "frac_solved",
     "all_features",
 ]

@@ -1,0 +1,3534 @@
+{
+  "num_puzzles": 80,
+  "baseline_accuracy": {
+    "mean": 0.9910694444444446,
+    "ci_lower": 0.9861635416666666,
+    "ci_upper": 0.9951534722222221,
+    "std": 0.021378744888900552,
+    "n": 80
+  },
+  "per_pair": {
+    "0->2": {
+      "donor_step": 0,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": -0.0007777777777777772,
+        "ci_lower": -0.002917361111111114,
+        "ci_upper": 0.0012229166666666697,
+        "std": 0.009149647500462307,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9902916666666666,
+        "ci_lower": 0.9849017361111111,
+        "ci_upper": 0.9947100694444444,
+        "std": 0.022182425302115876,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": -0.0007777777777777772,
+          "ci_lower": -0.002917361111111114,
+          "ci_upper": 0.0012229166666666697,
+          "std": 0.009149647500462307,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": -0.0125,
+          "ci_lower": -0.075,
+          "ci_upper": 0.05,
+          "std": 0.24968730444297726,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": -0.003357329476000458,
+          "ci_lower": -0.01165194423046623,
+          "ci_upper": 0.003936363240439126,
+          "std": 0.034791980046158306,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": -0.0034154428450110007,
+          "ci_lower": -0.01259979727543569,
+          "ci_upper": 0.0051172859066342035,
+          "std": 0.038164847246942434,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": -0.003357329476000458,
+          "ci_lower": -0.01165194423046623,
+          "ci_upper": 0.003936363240439126,
+          "std": 0.034791980046158306,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": -0.003388945085632704,
+          "ci_lower": -0.01198513722103845,
+          "ci_upper": 0.004523715203961822,
+          "std": 0.03639211017104838,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": -0.005348568063551955,
+          "ci_lower": -0.020267212432766794,
+          "ci_upper": 0.008083757869254572,
+          "std": 0.06147050113752039,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": -0.225,
+          "ci_upper": 0.175,
+          "std": 0.8944271909999159,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 3.9983982007726905e-05,
+          "ci_lower": -0.0018950753626747233,
+          "ci_upper": 0.0015733630473375529,
+          "std": 0.00772089433081284,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": -0.0125,
+          "ci_lower": -0.0375,
+          "ci_upper": 0.0,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": -0.05,
+          "ci_upper": 0.05,
+          "std": 0.22360679774997896,
+          "n": 80
+        }
+      }
+    },
+    "1->2": {
+      "donor_step": 1,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0006944444444444448,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0016388888888888898,
+        "std": 0.0036276331432798224,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.991763888888889,
+        "ci_lower": 0.9869993055555557,
+        "ci_upper": 0.995792361111111,
+        "std": 0.020428053325129175,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0006944444444444448,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0016388888888888898,
+          "std": 0.0036276331432798224,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.05,
+          "std": 0.11110243021644486,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0028669695594474368,
+          "ci_lower": 0.0,
+          "ci_upper": 0.006647886282842036,
+          "std": 0.014808522552852536,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.002749825561440286,
+          "ci_lower": 0.0,
+          "ci_upper": 0.006716465282172608,
+          "std": 0.014892859509386062,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0028669695594474368,
+          "ci_lower": 0.0,
+          "ci_upper": 0.006647886282842036,
+          "std": 0.014808522552852536,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0027882823034329402,
+          "ci_lower": 0.0,
+          "ci_upper": 0.006576028621158968,
+          "std": 0.014582289098171027,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.004351193887346548,
+          "ci_lower": 0.0,
+          "ci_upper": 0.010835839726555774,
+          "std": 0.02364123725033742,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.025,
+          "ci_lower": -0.075,
+          "ci_upper": 0.15,
+          "std": 0.4993746088859544,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00020007770007770127,
+          "ci_lower": -0.0006818181818181821,
+          "ci_upper": 0.0012820512820512857,
+          "std": 0.004324635399593567,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": -0.0125,
+          "ci_lower": -0.05,
+          "ci_upper": 0.0,
+          "std": 0.11110243021644485,
+          "n": 80
+        }
+      }
+    },
+    "3->2": {
+      "donor_step": 3,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "4->2": {
+      "donor_step": 4,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "5->2": {
+      "donor_step": 5,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "6->2": {
+      "donor_step": 6,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "7->2": {
+      "donor_step": 7,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "8->2": {
+      "donor_step": 8,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "9->2": {
+      "donor_step": 9,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->0": {
+      "donor_step": 10,
+      "recipient_step": 0,
+      "delta_accuracy": {
+        "mean": 5.555555555555453e-05,
+        "ci_lower": -0.000944444444444445,
+        "ci_upper": 0.0011388888888888866,
+        "std": 0.004674266298800139,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.991125,
+        "ci_lower": 0.986109027777778,
+        "ci_upper": 0.9952920138888889,
+        "std": 0.021286184696901824,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 5.555555555555453e-05,
+          "ci_lower": -0.000944444444444445,
+          "ci_upper": 0.0011388888888888866,
+          "std": 0.004674266298800139,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": -0.0125,
+          "ci_lower": -0.05,
+          "ci_upper": 0.025,
+          "std": 0.19324531042175383,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0003013303360128297,
+          "ci_lower": -0.0035190217391304346,
+          "ci_upper": 0.004352650892839675,
+          "std": 0.017323969496210744,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 7.399708983876901e-05,
+          "ci_lower": -0.00391292735042735,
+          "ci_upper": 0.004474690905738671,
+          "std": 0.019413768327273467,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0003013303360128297,
+          "ci_lower": -0.0035190217391304346,
+          "ci_upper": 0.004352650892839675,
+          "std": 0.017323969496210744,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.00018664268315637388,
+          "ci_lower": -0.003717672413793102,
+          "ci_upper": 0.004389854008855971,
+          "std": 0.0182187892779936,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0002514414850442709,
+          "ci_lower": -0.006909430438842204,
+          "ci_upper": 0.007813030651173915,
+          "std": 0.03329181698750936,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.025,
+          "ci_lower": -0.125,
+          "ci_upper": 0.175,
+          "std": 0.6703543838895961,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0002061452404701819,
+          "ci_lower": -0.0010983981693363897,
+          "ci_upper": 0.0015068747677443317,
+          "std": 0.005808428708889261,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": -0.0125,
+          "ci_lower": -0.0625,
+          "ci_upper": 0.025,
+          "std": 0.19324531042175383,
+          "n": 80
+        }
+      }
+    },
+    "10->1": {
+      "donor_step": 10,
+      "recipient_step": 1,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->2": {
+      "donor_step": 10,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861638888888888,
+        "ci_upper": 0.9951545138888888,
+        "std": 0.02137046464771553,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 1.0054697554696956e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 3.016409266409087e-05,
+          "std": 8.936810667345417e-05,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 6.110370460146314e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001833111138043894,
+          "std": 0.0005431016061160255,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0001033057851239666,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003099173553718998,
+          "std": 0.0009182019026152436,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0375,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00011261261261261146,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003378378378378344,
+          "std": 0.001000922794742736,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->3": {
+      "donor_step": 10,
+      "recipient_step": 3,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861638888888888,
+        "ci_upper": 0.9951545138888888,
+        "std": 0.02137046464771553,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 1.0054697554696956e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 3.016409266409087e-05,
+          "std": 8.936810667345417e-05,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 6.110370460146314e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001833111138043894,
+          "std": 0.0005431016061160255,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0001033057851239666,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003099173553718998,
+          "std": 0.0009182019026152436,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0375,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00011261261261261146,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003378378378378344,
+          "std": 0.001000922794742736,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->4": {
+      "donor_step": 10,
+      "recipient_step": 4,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->5": {
+      "donor_step": 10,
+      "recipient_step": 5,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->6": {
+      "donor_step": 10,
+      "recipient_step": 6,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861638888888888,
+        "ci_upper": 0.9951545138888888,
+        "std": 0.02137046464771553,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 1.0054697554696956e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 3.016409266409087e-05,
+          "std": 8.936810667345417e-05,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 6.110370460146314e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001833111138043894,
+          "std": 0.0005431016061160255,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0001033057851239666,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003099173553718998,
+          "std": 0.0009182019026152436,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0375,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00011261261261261146,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003378378378378344,
+          "std": 0.001000922794742736,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->7": {
+      "donor_step": 10,
+      "recipient_step": 7,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->8": {
+      "donor_step": 10,
+      "recipient_step": 8,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->9": {
+      "donor_step": 10,
+      "recipient_step": 9,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->11": {
+      "donor_step": 10,
+      "recipient_step": 11,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->12": {
+      "donor_step": 10,
+      "recipient_step": 12,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->13": {
+      "donor_step": 10,
+      "recipient_step": 13,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->14": {
+      "donor_step": 10,
+      "recipient_step": 14,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "10->15": {
+      "donor_step": 10,
+      "recipient_step": 15,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861909722222222,
+        "ci_upper": 0.9951673611111111,
+        "std": 0.021362519820620873,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 9.21013852048333e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0002763041556144999,
+          "std": 0.0008186150178046317,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 4.705439488048163e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001411631846414449,
+          "std": 0.00041822860988685996,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 7.339988256018781e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00022019964768056345,
+          "std": 0.0006523924264030813,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": -0.0125,
+          "ci_lower": -0.0375,
+          "ci_upper": 0.0,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": -0.00010964912280701788,
+          "ci_lower": -0.00032894736842105365,
+          "ci_upper": 0.0,
+          "std": 0.0009745827211968878,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "11->2": {
+      "donor_step": 11,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "12->2": {
+      "donor_step": 12,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861638888888888,
+        "ci_upper": 0.9951545138888888,
+        "std": 0.02137046464771553,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 1.0054697554696956e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 3.016409266409087e-05,
+          "std": 8.936810667345417e-05,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 6.110370460146314e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001833111138043894,
+          "std": 0.0005431016061160255,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0001033057851239666,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003099173553718998,
+          "std": 0.0009182019026152436,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0375,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00011261261261261146,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003378378378378344,
+          "std": 0.001000922794742736,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "13->2": {
+      "donor_step": 13,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "14->2": {
+      "donor_step": 14,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 1.3888888888889672e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 4.166666666666902e-05,
+        "std": 0.00012344714468494572,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910833333333333,
+        "ci_lower": 0.9861638888888888,
+        "ci_upper": 0.9951545138888888,
+        "std": 0.02137046464771553,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 1.3888888888889672e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 4.166666666666902e-05,
+          "std": 0.00012344714468494572,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 1.0054697554696956e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 3.016409266409087e-05,
+          "std": 8.936810667345417e-05,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.00011261261261261284,
+          "ci_lower": 0.0,
+          "ci_upper": 0.00033783783783783856,
+          "std": 0.0010009227947427484,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 6.110370460146314e-05,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0001833111138043894,
+          "std": 0.0005431016061160255,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0001033057851239666,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003099173553718998,
+          "std": 0.0009182019026152436,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0375,
+          "std": 0.11110243021644485,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.00011261261261261146,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0003378378378378344,
+          "std": 0.001000922794742736,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    },
+    "15->2": {
+      "donor_step": 15,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 80
+      },
+      "transferred_accuracy": {
+        "mean": 0.9910694444444446,
+        "ci_lower": 0.9861635416666666,
+        "ci_upper": 0.9951534722222221,
+        "std": 0.021378744888900552,
+        "n": 80
+      },
+      "maze_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_precision": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_recall": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_f1": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_jaccard": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "pred_path_length": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "path_length_ratio": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "wall_path_rate": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "connects_start_goal": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "no_branch": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_sg_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        },
+        "valid_optimal_path": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 80
+        }
+      }
+    }
+  },
+  "baseline_maze_metrics": {
+    "token_acc": {
+      "mean": 0.9910694444444446,
+      "ci_lower": 0.9861635416666666,
+      "ci_upper": 0.9951534722222221,
+      "std": 0.021378744888900552,
+      "n": 80
+    },
+    "exact_solved": {
+      "mean": 0.775,
+      "ci_lower": 0.675,
+      "ci_upper": 0.8625,
+      "std": 0.41758232721225164,
+      "n": 80
+    },
+    "path_cell_acc": {
+      "mean": 0.9653435642543691,
+      "ci_lower": 0.945187173136761,
+      "ci_upper": 0.981535066147339,
+      "std": 0.08563489547799558,
+      "n": 80
+    },
+    "path_precision": {
+      "mean": 0.9635685653143085,
+      "ci_lower": 0.9434761710948911,
+      "ci_upper": 0.9801068134606068,
+      "std": 0.08649676665251492,
+      "n": 80
+    },
+    "path_recall": {
+      "mean": 0.9653435642543691,
+      "ci_lower": 0.945187173136761,
+      "ci_upper": 0.981535066147339,
+      "std": 0.08563489547799558,
+      "n": 80
+    },
+    "path_f1": {
+      "mean": 0.964394790905039,
+      "ci_lower": 0.9446666444016001,
+      "ci_upper": 0.980825371421902,
+      "std": 0.08606346741584862,
+      "n": 80
+    },
+    "path_jaccard": {
+      "mean": 0.9419853986731113,
+      "ci_lower": 0.9118889679734109,
+      "ci_upper": 0.967177272072562,
+      "std": 0.1300686046394286,
+      "n": 80
+    },
+    "pred_path_length": {
+      "mean": 113.6875,
+      "ci_lower": 112.836875,
+      "ci_upper": 114.625,
+      "std": 4.226682357357837,
+      "n": 80
+    },
+    "path_length_ratio": {
+      "mean": 1.0020229163728753,
+      "ci_lower": 0.9979124318805438,
+      "ci_upper": 1.006045994309193,
+      "std": 0.019105478923941138,
+      "n": 80
+    },
+    "wall_path_rate": {
+      "mean": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "std": 0.0,
+      "n": 80
+    },
+    "connects_start_goal": {
+      "mean": 0.95,
+      "ci_lower": 0.9,
+      "ci_upper": 0.9875,
+      "std": 0.21794494717703372,
+      "n": 80
+    },
+    "no_branch": {
+      "mean": 0.9875,
+      "ci_lower": 0.9625,
+      "ci_upper": 1.0,
+      "std": 0.11110243021644485,
+      "n": 80
+    },
+    "valid_sg_path": {
+      "mean": 0.95,
+      "ci_lower": 0.9,
+      "ci_upper": 0.9875,
+      "std": 0.21794494717703372,
+      "n": 80
+    },
+    "valid_optimal_path": {
+      "mean": 0.875,
+      "ci_lower": 0.8,
+      "ci_upper": 0.9375,
+      "std": 0.33071891388307384,
+      "n": 80
+    }
+  }
+}

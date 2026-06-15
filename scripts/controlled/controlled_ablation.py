@@ -34,8 +34,10 @@ from scripts.controlled.controlled_common import (
     load_model_and_dataloader, collect_puzzles,
     bootstrap_ci, extract_batch,
 )
+from scripts.core.sudoku_sample import save_puzzle_indices
 from scripts.core.activation_ablation import ActivationAblator, ActivationCache
 from scripts.core.activation_patching import compute_metrics
+from scripts.maze.maze_common import MAZE_METRIC_KEYS, maybe_maze_batch_metrics
 
 
 def run_ablation_for_puzzle(
@@ -54,6 +56,7 @@ def run_ablation_for_puzzle(
     base_out = ablator.run_and_cache_activations(batch, base_cache, max_steps=max_steps)
     base_preds = base_out["logits"].argmax(-1)
     base_acc = compute_metrics(base_preds, labels)["accuracy"]
+    base_maze_metrics = maybe_maze_batch_metrics(base_preds, labels, batch.get("inputs"))
 
     # Per-step baseline accuracy
     base_step_accs = []
@@ -69,11 +72,13 @@ def run_ablation_for_puzzle(
     )
     all_preds = all_out["logits"].argmax(-1)
     all_acc = compute_metrics(all_preds, labels)["accuracy"]
+    all_maze_metrics = maybe_maze_batch_metrics(all_preds, labels, batch.get("inputs"))
 
     # Single-step ablations
     single_step_accs = []
     single_step_deltas = []
     single_step_trajectories = []
+    single_step_maze_deltas: List[Optional[Dict[str, float]]] = []
 
     for step_k in range(num_steps):
         abl_out, abl_cache, _ = ablator.run_with_ablation(
@@ -84,6 +89,16 @@ def run_ablation_for_puzzle(
         single_step_accs.append(abl_acc)
         single_step_deltas.append(abl_acc - base_acc)
 
+        if base_maze_metrics is not None:
+            step_maze = maybe_maze_batch_metrics(abl_preds, labels, batch.get("inputs"))
+            if step_maze is not None:
+                single_step_maze_deltas.append({
+                    metric: step_maze[metric] - base_maze_metrics[metric]
+                    for metric in MAZE_METRIC_KEYS
+                })
+            else:
+                single_step_maze_deltas.append(None)
+
         # Per-step trajectory for this ablation
         traj = []
         for s in range(num_steps):
@@ -93,7 +108,7 @@ def run_ablation_for_puzzle(
                 traj.append(0.0)
         single_step_trajectories.append(traj)
 
-    return {
+    result = {
         "puzzle_idx": puzzle_idx,
         "ablate_level": ablate_level,
         "baseline_accuracy": base_acc,
@@ -104,6 +119,16 @@ def run_ablation_for_puzzle(
         "single_step_deltas": single_step_deltas,
         "single_step_trajectories": single_step_trajectories,
     }
+    if base_maze_metrics is not None:
+        result["baseline_maze_metrics"] = base_maze_metrics
+        if all_maze_metrics is not None:
+            result["all_steps_maze_metrics"] = all_maze_metrics
+            result["all_steps_maze_deltas"] = {
+                metric: all_maze_metrics[metric] - base_maze_metrics[metric]
+                for metric in MAZE_METRIC_KEYS
+            }
+        result["single_step_maze_deltas"] = single_step_maze_deltas
+    return result
 
 
 def compute_aggregates(
@@ -126,6 +151,22 @@ def compute_aggregates(
         "per_step_ablation": {},
     }
 
+    have_maze = all("baseline_maze_metrics" in r for r in all_results)
+    if have_maze:
+        agg["baseline_maze_metrics"] = {
+            metric: bootstrap_ci([r["baseline_maze_metrics"][metric] for r in all_results])
+            for metric in MAZE_METRIC_KEYS
+        }
+        if all("all_steps_maze_deltas" in r for r in all_results):
+            agg["all_steps_maze_deltas"] = {
+                metric: bootstrap_ci([r["all_steps_maze_deltas"][metric] for r in all_results])
+                for metric in MAZE_METRIC_KEYS
+            }
+            agg["all_steps_maze_metrics"] = {
+                metric: bootstrap_ci([r["all_steps_maze_metrics"][metric] for r in all_results])
+                for metric in MAZE_METRIC_KEYS
+            }
+
     for step_k in range(max_steps):
         deltas = [r["single_step_deltas"][step_k] for r in all_results
                   if step_k < len(r["single_step_deltas"])]
@@ -136,6 +177,19 @@ def compute_aggregates(
                 "delta_accuracy": bootstrap_ci(deltas),
                 "ablated_accuracy": bootstrap_ci(accs),
             }
+            if have_maze:
+                metric_deltas = {}
+                for metric in MAZE_METRIC_KEYS:
+                    dvals = []
+                    for r in all_results:
+                        ssmd = r.get("single_step_maze_deltas")
+                        if ssmd is None or step_k >= len(ssmd) or ssmd[step_k] is None:
+                            continue
+                        dvals.append(ssmd[step_k][metric])
+                    if dvals:
+                        metric_deltas[metric] = bootstrap_ci(dvals)
+                if metric_deltas:
+                    agg["per_step_ablation"][step_k]["maze_metric_deltas"] = metric_deltas
 
     return agg
 
@@ -173,7 +227,24 @@ def main():
 
     # Collect puzzles
     print(f"Collecting {args.num_puzzles} puzzles...")
-    puzzles = collect_puzzles(test_loader, device, args.num_puzzles, seed=args.seed)
+    puzzles = collect_puzzles(
+        test_loader,
+        device,
+        args.num_puzzles,
+        seed=args.seed,
+        puzzle_indices_path=args.puzzle_indices,
+    )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            [idx for idx, _batch in puzzles],
+            metadata={
+                "experiment": "controlled_ablation",
+                "seed": args.seed,
+                "num_puzzles": len(puzzles),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     print(f"Collected {len(puzzles)} puzzles")
 
     # Run for z_H and/or z_L
@@ -220,6 +291,21 @@ def main():
         with open(agg_path, "w") as f:
             json.dump(agg, f, indent=2)
         print(f"  Aggregate saved to {agg_path}")
+
+        try:
+            from scripts.core.provenance import write_meta
+            write_meta(level_dir, f"controlled_ablation_z{level}", {
+                "num_puzzles": len(puzzles),
+                "requested_num_puzzles": args.num_puzzles,
+                "ablate_level": level,
+                "max_steps": args.max_steps,
+                "seed": args.seed,
+                "puzzle_indices": args.puzzle_indices,
+                "save_puzzle_indices": args.save_puzzle_indices,
+                "checkpoint": args.checkpoint,
+            })
+        except Exception as e:
+            print(f"  (could not write _meta.json: {e})")
 
         # Summary
         print(f"\n  z_{level} SUMMARY:")

@@ -1,0 +1,43 @@
+{
+  "experiment": "sae_sweep",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T17:37:49",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/sae/sae_sweep.py",
+    "--activations_path",
+    "results/maze/sae_study/activations_zH.pt",
+    "--activation_level",
+    "z_H",
+    "--dict_sizes",
+    "1024,2048,4096,8192",
+    "--l1_coeffs",
+    "0.003,0.01,0.03",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/maze/sae_study"
+  ],
+  "params": {
+    "dict_sizes": [
+      1024,
+      2048,
+      4096,
+      8192
+    ],
+    "l1_coeffs": [
+      0.003,
+      0.01,
+      0.03
+    ],
+    "activation_level": "z_H",
+    "lr": 0.0003,
+    "batch_size": 4096,
+    "epochs": 50,
+    "seed": 42,
+    "activations_path": "results/maze/sae_study/activations_zH.pt"
+  }
+}

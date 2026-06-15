@@ -37,6 +37,7 @@ from scripts.controlled.controlled_common import (
     load_model_and_dataloader, collect_puzzles,
     bootstrap_ci, extract_batch,
 )
+from scripts.core.sudoku_sample import save_puzzle_indices
 from scripts.core.activation_ablation import (
     ActivationAblator, ActivationCache, _make_inner_carry,
 )
@@ -186,7 +187,24 @@ def main():
     model_obj, test_loader, config = load_model_and_dataloader(args.checkpoint, device)
     ablator = DirectionalAblator(model_obj, device=device)
 
-    puzzles = collect_puzzles(test_loader, device, args.num_puzzles, seed=args.seed)
+    puzzles = collect_puzzles(
+        test_loader,
+        device,
+        args.num_puzzles,
+        seed=args.seed,
+        puzzle_indices_path=args.puzzle_indices,
+    )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            [idx for idx, _batch in puzzles],
+            metadata={
+                "experiment": "controlled_directed_ablation",
+                "seed": args.seed,
+                "num_puzzles": len(puzzles),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     print(f"Collected {len(puzzles)} puzzles")
 
     # ── Run ablations ──────────────────────────────────────────────────
@@ -238,6 +256,17 @@ def main():
         # Paired t-test
         t_stat, p_value = scipy_stats.ttest_rel(probe_deltas, random_per_puzzle)
 
+        # Paired Wilcoxon signed-rank (non-parametric; robust to non-normal Δacc)
+        diffs = np.asarray(probe_deltas) - np.asarray(random_per_puzzle)
+        if np.any(diffs != 0):
+            try:
+                w_stat, w_p = scipy_stats.wilcoxon(probe_deltas, random_per_puzzle)
+                w_stat, w_p = float(w_stat), float(w_p)
+            except Exception:
+                w_stat, w_p = float("nan"), float("nan")
+        else:
+            w_stat, w_p = float("nan"), 1.0
+
         # Cohen's d
         d = cohens_d(probe_deltas, random_per_puzzle)
 
@@ -257,6 +286,8 @@ def main():
             "random_control_delta_accuracy": random_ci,
             "paired_t_stat": float(t_stat),
             "paired_p_value": float(p_value),
+            "wilcoxon_stat": w_stat,
+            "wilcoxon_p_value": w_p,
             "cohens_d": d,
             "significant_at_005": bool(p_value < 0.05),
             "significant_at_001": bool(p_value < 0.01),
@@ -318,6 +349,18 @@ def main():
         json.dump(analysis, f, indent=2,
                   default=lambda o: float(o) if isinstance(o, (np.floating, np.integer)) else
                                     bool(o) if isinstance(o, np.bool_) else str(o))
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "controlled_directed_ablation", {
+            "num_puzzles": len(puzzles), "z_level": args.z_level,
+            "max_steps": args.max_steps, "probe_weights": args.probe_weights,
+            "seed": args.seed, "n_random_controls": args.n_random_controls,
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+        })
+    except Exception as e:
+        print(f"  (could not write _meta.json: {e})")
 
     print(f"\nResults saved to {args.output_dir}")
 

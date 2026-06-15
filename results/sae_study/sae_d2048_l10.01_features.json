@@ -7,7 +7,7 @@
     "mean_activation": 0.11428349247685185,
     "L0": 704.5705185185185
   },
-  "training_time_sec": 56.4893057346344,
+  "training_time_sec": 56.25115489959717,
   "n_samples": 1296000,
   "best_recon_loss": 0.00024893786074198514,
   "config": {

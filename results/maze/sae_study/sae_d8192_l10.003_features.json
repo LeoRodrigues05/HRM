@@ -1,0 +1,23 @@
+{
+  "final_stats": {
+    "alive_count": 6486,
+    "alive_frac": 0.791748046875,
+    "dead_count": 1706,
+    "mean_sparsity": 0.11921899020671844,
+    "mean_activation": 0.12057050057870371,
+    "L0": 773.2545185185185
+  },
+  "training_time_sec": 734.6978356838226,
+  "n_samples": 4320000,
+  "best_recon_loss": 0.0003720719685062978,
+  "config": {
+    "input_dim": 512,
+    "dict_size": 8192,
+    "l1_coeff": 0.003,
+    "activation": "relu",
+    "k": 64,
+    "lr": 0.0003,
+    "batch_size": 4096,
+    "epochs": 50
+  }
+}

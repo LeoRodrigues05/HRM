@@ -12,6 +12,7 @@ import argparse
 import numpy as np
 import torch
 from typing import Any, Dict, List, Optional, Tuple, cast
+from torch.utils.data import DataLoader
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 if REPO_ROOT not in sys.path:
@@ -19,7 +20,8 @@ if REPO_ROOT not in sys.path:
 
 import yaml
 from torch import nn
-from pretrain import PretrainConfig, create_dataloader
+from pretrain import PretrainConfig
+from puzzle_dataset import PuzzleDataset, PuzzleDatasetConfig
 from utils.functions import load_model_class
 from models.hrm.hrm_act_v1 import HierarchicalReasoningModel_ACTV1
 from models.hrm_v2.hrm_v2 import HierarchicalReasoningModel_V2
@@ -27,6 +29,7 @@ from scripts.core.activation_ablation import (
     ActivationAblator, ACTModel, _patch_attention_for_cpu,
 )
 from scripts.core.activation_patching import ActivationCache, compute_metrics
+from scripts.core.sudoku_sample import collect_indexed_batches, load_puzzle_indices
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -54,6 +57,41 @@ def find_checkpoint() -> str:
 # Model loading
 # ═══════════════════════════════════════════════════════════════════════════
 
+def _create_eval_dataloader(
+    config: PretrainConfig,
+    *,
+    pin_memory: bool,
+) -> Tuple[Any, Any]:
+    """Create the test dataloader used by analysis scripts.
+
+    ``pretrain.create_dataloader`` defaults to one worker process. In this
+    sandbox, torch multiprocessing cannot open its resource-sharing socket, so
+    eval analysis defaults to single-process loading. Set
+    ``HRM_EVAL_DATALOADER_WORKERS=1`` to opt back into the original worker
+    behavior on a normal machine.
+    """
+    dataset = PuzzleDataset(PuzzleDatasetConfig(
+        seed=config.seed,
+        dataset_path=config.data_path,
+        test_set_mode=True,
+        epochs_per_iter=1,
+        global_batch_size=1,
+        rank=0,
+        num_replicas=1,
+    ), split="test")
+    num_workers = int(os.environ.get("HRM_EVAL_DATALOADER_WORKERS", "0"))
+    kwargs: Dict[str, Any] = {
+        "batch_size": None,
+        "num_workers": num_workers,
+        "pin_memory": pin_memory,
+    }
+    if num_workers > 0:
+        kwargs.update({
+            "prefetch_factor": 8,
+            "persistent_workers": True,
+        })
+    return DataLoader(dataset, **kwargs), dataset.metadata
+
 def load_model_and_dataloader(
     checkpoint_path: str,
     device: torch.device,
@@ -68,10 +106,7 @@ def load_model_and_dataloader(
     with open(config_path) as f:
         config = PretrainConfig(**yaml.safe_load(f))
 
-    test_loader, test_meta = create_dataloader(
-        config, "test", test_set_mode=True,
-        epochs_per_iter=1, global_batch_size=1, rank=0, world_size=1,
-    )
+    test_loader, test_meta = _create_eval_dataloader(config, pin_memory=(device.type == "cuda"))
 
     model_cfg = dict(
         **config.arch.__pydantic_extra__,
@@ -179,6 +214,14 @@ def add_common_args(parser: argparse.ArgumentParser) -> argparse.ArgumentParser:
         "--quick", action="store_true",
         help="Quick test mode: N=20 puzzles",
     )
+    parser.add_argument(
+        "--puzzle_indices", type=str, default=None,
+        help="JSON manifest/list of dataloader puzzle indices to evaluate",
+    )
+    parser.add_argument(
+        "--save_puzzle_indices", type=str, default=None,
+        help="Write the collected dataloader puzzle indices to this JSON manifest",
+    )
     return parser
 
 
@@ -200,16 +243,21 @@ def collect_puzzles(
     device: torch.device,
     num_puzzles: int,
     seed: int = 42,
+    puzzle_indices_path: Optional[str] = None,
 ) -> List[Tuple[int, Dict[str, torch.Tensor]]]:
     """Collect a deterministic subset of puzzles from the test loader.
 
     Returns list of (puzzle_idx, batch_dict).
     """
-    puzzles = []
-    for idx, data in enumerate(test_loader):
-        if len(puzzles) >= num_puzzles:
-            break
-        batch = extract_batch(data)
-        batch = {k: v.to(device) if torch.is_tensor(v) else v for k, v in batch.items()}
-        puzzles.append((idx, batch))
-    return puzzles
+    del seed  # The explicit index manifest is the reproducibility boundary.
+    puzzle_indices = (
+        load_puzzle_indices(puzzle_indices_path, limit=num_puzzles)
+        if puzzle_indices_path else None
+    )
+    return collect_indexed_batches(
+        test_loader,
+        device,
+        num_puzzles=num_puzzles,
+        puzzle_indices=puzzle_indices,
+        extract_batch=extract_batch,
+    )

@@ -126,9 +126,11 @@ def train_sae(
     t0 = time.time()
 
     for epoch in range(epochs):
-        # Shuffle
+        # Shuffle indices only and gather per-batch below. Materializing a full
+        # permuted copy (activations[perm]) doubles the device-sized tensor every
+        # epoch and OOMs at large dict_size / N; per-batch gather is identical
+        # math at a fraction of the memory.
         perm = torch.randperm(n_samples, device=device)
-        activations_shuffled = activations[perm]
 
         epoch_recon_loss = 0.0
         epoch_l1_loss = 0.0
@@ -137,7 +139,7 @@ def train_sae(
 
         sae.train()
         for start in range(0, n_samples, batch_size):
-            batch = activations_shuffled[start:start + batch_size]
+            batch = activations[perm[start:start + batch_size]]
             if batch.shape[0] < 2:
                 continue
 

@@ -119,6 +119,12 @@ def main():
             sweep_results.append(row)
             logger.info(f"Result: {row}")
 
+            # Free the trained SAE + cached allocations before the next config so
+            # device memory does not accumulate/fragment across the sweep grid.
+            del result
+            if device.type == "cuda":
+                torch.cuda.empty_cache()
+
     # Save sweep results CSV
     csv_path = os.path.join(args.output_dir, "sweep_results.csv")
     with open(csv_path, 'w', newline='') as f:
@@ -126,6 +132,17 @@ def main():
         writer.writeheader()
         writer.writerows(sweep_results)
     logger.info(f"\nSaved sweep results to {csv_path}")
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "sae_sweep", {
+            "dict_sizes": dict_sizes, "l1_coeffs": l1_coeffs,
+            "activation_level": args.activation_level, "lr": args.lr,
+            "batch_size": args.batch_size, "epochs": args.epochs,
+            "seed": args.seed, "activations_path": args.activations_path,
+        }, repo_root=REPO_ROOT)
+    except Exception as e:
+        logger.warning(f"Could not write _meta.json: {e}")
 
     # Print summary table
     logger.info("\n" + "="*90)

@@ -1,0 +1,534 @@
+{
+  "num_puzzles": 15,
+  "baseline_accuracy": {
+    "mean": 0.9965185185185185,
+    "ci_lower": 0.9908148148148148,
+    "ci_upper": 1.0,
+    "std": 0.009383170879164444,
+    "n": 15
+  },
+  "per_pair": {
+    "0->2": {
+      "donor_step": 0,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0017777777777777818,
+        "ci_lower": 0.0,
+        "ci_upper": 0.004740740740740749,
+        "std": 0.00481424498052502,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9982962962962962,
+        "ci_lower": 0.9948888888888888,
+        "ci_upper": 1.0,
+        "std": 0.006374675547837086,
+        "n": 15
+      }
+    },
+    "1->2": {
+      "donor_step": 1,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "3->2": {
+      "donor_step": 3,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "4->2": {
+      "donor_step": 4,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "5->2": {
+      "donor_step": 5,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "6->2": {
+      "donor_step": 6,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "7->2": {
+      "donor_step": 7,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "8->2": {
+      "donor_step": 8,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "9->2": {
+      "donor_step": 9,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->0": {
+      "donor_step": 10,
+      "recipient_step": 0,
+      "delta_accuracy": {
+        "mean": -0.0014814814814814836,
+        "ci_lower": -0.0044444444444444505,
+        "ci_upper": 0.0,
+        "std": 0.005543196128553997,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9950370370370369,
+        "ci_lower": 0.9891074074074074,
+        "ci_upper": 1.0,
+        "std": 0.010414193121953548,
+        "n": 15
+      }
+    },
+    "10->1": {
+      "donor_step": 10,
+      "recipient_step": 1,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->2": {
+      "donor_step": 10,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->3": {
+      "donor_step": 10,
+      "recipient_step": 3,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->4": {
+      "donor_step": 10,
+      "recipient_step": 4,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->5": {
+      "donor_step": 10,
+      "recipient_step": 5,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->6": {
+      "donor_step": 10,
+      "recipient_step": 6,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->7": {
+      "donor_step": 10,
+      "recipient_step": 7,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->8": {
+      "donor_step": 10,
+      "recipient_step": 8,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->9": {
+      "donor_step": 10,
+      "recipient_step": 9,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->11": {
+      "donor_step": 10,
+      "recipient_step": 11,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->12": {
+      "donor_step": 10,
+      "recipient_step": 12,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->13": {
+      "donor_step": 10,
+      "recipient_step": 13,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->14": {
+      "donor_step": 10,
+      "recipient_step": 14,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "10->15": {
+      "donor_step": 10,
+      "recipient_step": 15,
+      "delta_accuracy": {
+        "mean": 7.407407407407825e-05,
+        "ci_lower": 0.0,
+        "ci_upper": 0.00022222222222223476,
+        "std": 0.00027715980642771494,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965925925925926,
+        "ci_lower": 0.9911111111111112,
+        "ci_upper": 1.0,
+        "std": 0.009139672186777588,
+        "n": 15
+      }
+    },
+    "11->2": {
+      "donor_step": 11,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "12->2": {
+      "donor_step": 12,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "13->2": {
+      "donor_step": 13,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "14->2": {
+      "donor_step": 14,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    },
+    "15->2": {
+      "donor_step": 15,
+      "recipient_step": 2,
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 15
+      },
+      "transferred_accuracy": {
+        "mean": 0.9965185185185185,
+        "ci_lower": 0.9908148148148148,
+        "ci_upper": 1.0,
+        "std": 0.009383170879164444,
+        "n": 15
+      }
+    }
+  }
+}

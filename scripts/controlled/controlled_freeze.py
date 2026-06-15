@@ -32,10 +32,12 @@ from scripts.controlled.controlled_common import (
     load_model_and_dataloader, collect_puzzles,
     bootstrap_ci, extract_batch,
 )
+from scripts.core.sudoku_sample import save_puzzle_indices
 from scripts.core.activation_ablation import (
     ActivationAblator, ActivationCache, _make_inner_carry,
 )
 from scripts.core.activation_patching import compute_metrics
+from scripts.maze.maze_common import MAZE_METRIC_KEYS, maybe_maze_batch_metrics
 
 
 class FreezeRunner(ActivationAblator):
@@ -143,6 +145,7 @@ def run_freeze_for_puzzle(
     base_out = runner.run_and_cache_activations(batch, base_cache, max_steps=max_steps)
     base_preds = base_out["logits"].argmax(-1)
     base_acc = compute_metrics(base_preds, labels)["accuracy"]
+    base_maze_metrics = maybe_maze_batch_metrics(base_preds, labels, batch.get("inputs"))
 
     result = {
         "puzzle_idx": puzzle_idx,
@@ -150,6 +153,8 @@ def run_freeze_for_puzzle(
         "freeze_H": {},
         "freeze_L": {},
     }
+    if base_maze_metrics is not None:
+        result["baseline_maze_metrics"] = base_maze_metrics
 
     # Freeze z_H at each step
     for k in range(max_steps):
@@ -158,11 +163,19 @@ def run_freeze_for_puzzle(
         )
         preds = out["logits"].argmax(-1) if out else base_preds
         acc = compute_metrics(preds, labels)["accuracy"]
-        result["freeze_H"][k] = {
+        row = {
             "accuracy": acc,
             "delta": acc - base_acc,
             "steps_frozen": len(info["steps_frozen"]),
         }
+        maze_metrics = maybe_maze_batch_metrics(preds, labels, batch.get("inputs"))
+        if base_maze_metrics is not None and maze_metrics is not None:
+            row["maze_metrics"] = maze_metrics
+            row["maze_metric_deltas"] = {
+                metric: maze_metrics[metric] - base_maze_metrics[metric]
+                for metric in MAZE_METRIC_KEYS
+            }
+        result["freeze_H"][k] = row
 
     # Freeze z_L at each step
     for k in range(max_steps):
@@ -171,11 +184,19 @@ def run_freeze_for_puzzle(
         )
         preds = out["logits"].argmax(-1) if out else base_preds
         acc = compute_metrics(preds, labels)["accuracy"]
-        result["freeze_L"][k] = {
+        row = {
             "accuracy": acc,
             "delta": acc - base_acc,
             "steps_frozen": len(info["steps_frozen"]),
         }
+        maze_metrics = maybe_maze_batch_metrics(preds, labels, batch.get("inputs"))
+        if base_maze_metrics is not None and maze_metrics is not None:
+            row["maze_metrics"] = maze_metrics
+            row["maze_metric_deltas"] = {
+                metric: maze_metrics[metric] - base_maze_metrics[metric]
+                for metric in MAZE_METRIC_KEYS
+            }
+        result["freeze_L"][k] = row
 
     return result
 
@@ -191,6 +212,11 @@ def compute_aggregates(all_results: List[Dict[str, Any]], max_steps: int) -> Dic
         "freeze_H": {},
         "freeze_L": {},
     }
+    if all("baseline_maze_metrics" in r for r in all_results):
+        agg["baseline_maze_metrics"] = {
+            metric: bootstrap_ci([r["baseline_maze_metrics"][metric] for r in all_results])
+            for metric in MAZE_METRIC_KEYS
+        }
 
     for level in ["freeze_H", "freeze_L"]:
         for k in range(max_steps):
@@ -205,6 +231,24 @@ def compute_aggregates(all_results: List[Dict[str, Any]], max_steps: int) -> Dic
                     "delta_accuracy": bootstrap_ci(deltas),
                     "frozen_accuracy": bootstrap_ci(accs),
                 }
+                if all("baseline_maze_metrics" in r for r in all_results):
+                    metric_deltas = {}
+                    metric_values = {}
+                    for metric in MAZE_METRIC_KEYS:
+                        dvals = []
+                        vals = []
+                        for r in all_results:
+                            rk = str(k) if isinstance(list(r[level].keys())[0], str) else k
+                            row = r[level].get(rk)
+                            if row is None or "maze_metric_deltas" not in row:
+                                continue
+                            dvals.append(row["maze_metric_deltas"][metric])
+                            vals.append(row["maze_metrics"][metric])
+                        if dvals:
+                            metric_deltas[metric] = bootstrap_ci(dvals)
+                            metric_values[metric] = bootstrap_ci(vals)
+                    agg[level][k]["maze_metric_deltas"] = metric_deltas
+                    agg[level][k]["maze_metrics"] = metric_values
 
     return agg
 
@@ -235,7 +279,24 @@ def main():
     model_obj, test_loader, config = load_model_and_dataloader(args.checkpoint, device)
     runner = FreezeRunner(model_obj, device=device)
 
-    puzzles = collect_puzzles(test_loader, device, args.num_puzzles, seed=args.seed)
+    puzzles = collect_puzzles(
+        test_loader,
+        device,
+        args.num_puzzles,
+        seed=args.seed,
+        puzzle_indices_path=args.puzzle_indices,
+    )
+    if args.save_puzzle_indices:
+        save_puzzle_indices(
+            args.save_puzzle_indices,
+            [idx for idx, _batch in puzzles],
+            metadata={
+                "experiment": "controlled_freeze",
+                "seed": args.seed,
+                "num_puzzles": len(puzzles),
+                "source": args.puzzle_indices or "first_n_test_loader",
+            },
+        )
     print(f"Collected {len(puzzles)} puzzles")
 
     jsonl_path = os.path.join(args.output_dir, "per_puzzle.jsonl")
@@ -279,6 +340,20 @@ def main():
     with open(agg_path, "w") as f:
         json.dump(agg, f, indent=2)
     print(f"Aggregate saved to {agg_path}")
+
+    try:
+        from scripts.core.provenance import write_meta
+        write_meta(args.output_dir, "controlled_freeze", {
+            "num_puzzles": len(puzzles),
+            "requested_num_puzzles": args.num_puzzles,
+            "max_steps": args.max_steps,
+            "seed": args.seed,
+            "puzzle_indices": args.puzzle_indices,
+            "save_puzzle_indices": args.save_puzzle_indices,
+            "checkpoint": args.checkpoint,
+        })
+    except Exception as e:
+        print(f"  (could not write _meta.json: {e})")
 
     # Summary table
     print(f"\n{'Step':>6} {'Freeze z_H Δacc':>20} {'Freeze z_L Δacc':>20}")
