@@ -41,6 +41,14 @@ class HierarchicalReasoningModel_ACTV1Config(BaseModel):
     H_layers: int
     L_layers: int
 
+    # If True (default, the original HRM behaviour): all H/L cycles except the final
+    # one run inside torch.no_grad(), so only the last segment receives gradient
+    # (the "one-step gradient approximation"). If False, every H/L cycle within a
+    # step is differentiated -- within-step back-propagation through time (BPTT).
+    # The carry is still detached at the ACT-step boundary either way, so gradients
+    # do not flow across ACT steps.
+    one_step_grad: bool = True
+
     # Transformer config
     hidden_size: int
     expansion: float
@@ -185,32 +193,48 @@ class HierarchicalReasoningModel_ACTV1_Inner(nn.Module):
         # Input encoding
         input_embeddings = self._input_embeddings(batch["inputs"], batch["puzzle_identifiers"])
 
-        # Forward iterations
-        with torch.no_grad():
+        if self.config.one_step_grad:
+            # ── One-step gradient approximation (original HRM) ──
+            # All H/L cycles except the final one run without gradient; only the
+            # last L/H segment is differentiated.
+            with torch.no_grad():
+                z_H, z_L = carry.z_H, carry.z_L
+
+                for _H_step in range(self.config.H_cycles):
+                    for _L_step in range(self.config.L_cycles):
+                        if not ((_H_step == self.config.H_cycles - 1) and (_L_step == self.config.L_cycles - 1)):
+                            z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
+
+                    if not (_H_step == self.config.H_cycles - 1):
+                        z_H = self.H_level(z_H, z_L, **seq_info)
+
+                    # Optional probe capture during no-grad rollout
+                    if probe_recorder is not None and step_index is not None:
+                        try:
+                            probe_recorder.record_hidden(step_index=step_index, phase="nograd", z_H=z_H, z_L=z_L, batch=batch)
+                        except Exception:
+                            pass
+
+            assert not z_H.requires_grad and not z_L.requires_grad
+
+            # 1-step grad
+            z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
+            z_H = self.H_level(z_H, z_L, **seq_info)
+        else:
+            # ── Within-step BPTT ──
+            # Differentiate through every H/L cycle. The total computation is
+            # identical to the one-step path (H_cycles * L_cycles L-updates and
+            # H_cycles H-updates); only the gradient graph differs. The carry is
+            # still detached below, so gradients stop at the ACT-step boundary.
             z_H, z_L = carry.z_H, carry.z_L
 
             for _H_step in range(self.config.H_cycles):
                 for _L_step in range(self.config.L_cycles):
-                    if not ((_H_step == self.config.H_cycles - 1) and (_L_step == self.config.L_cycles - 1)):
-                        z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
+                    z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
 
-                if not (_H_step == self.config.H_cycles - 1):
-                    z_H = self.H_level(z_H, z_L, **seq_info)
+                z_H = self.H_level(z_H, z_L, **seq_info)
 
-                # Optional probe capture during no-grad rollout
-                if probe_recorder is not None and step_index is not None:
-                    try:
-                        probe_recorder.record_hidden(step_index=step_index, phase="nograd", z_H=z_H, z_L=z_L, batch=batch)
-                    except Exception:
-                        pass
-
-        assert not z_H.requires_grad and not z_L.requires_grad
-
-        # 1-step grad
-        z_L = self.L_level(z_L, z_H + input_embeddings, **seq_info)
-        z_H = self.H_level(z_H, z_L, **seq_info)
-
-        # Optional probe capture for 1-step grad states
+        # Optional probe capture for final (grad) states
         if probe_recorder is not None and step_index is not None:
             try:
                 probe_recorder.record_hidden(step_index=step_index, phase="grad", z_H=z_H, z_L=z_L, batch=batch)

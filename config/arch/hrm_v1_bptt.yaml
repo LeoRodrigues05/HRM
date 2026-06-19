@@ -1,0 +1,27 @@
+name: hrm.hrm_act_v1@HierarchicalReasoningModel_ACTV1
+loss:
+  name: losses@ACTLossHead
+  loss_type: stablemax_cross_entropy
+
+halt_exploration_prob: 0.1
+halt_max_steps: 16
+
+H_cycles: 2
+L_cycles: 2
+
+H_layers: 4
+L_layers: 4
+
+# Within-step BPTT: differentiate through every H/L cycle (vs the one-step
+# gradient approximation used by the stock hrm_v1 arch). Gradients still stop at
+# the ACT-step boundary (carry is detached). This is the only difference from
+# config/arch/hrm_v1.yaml.
+one_step_grad: false
+
+hidden_size: 512
+num_heads: 8  # min(2, hidden_size // 64)
+expansion: 4
+
+puzzle_emb_ndim: ${.hidden_size}
+
+pos_encodings: rope

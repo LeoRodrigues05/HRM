@@ -88,12 +88,16 @@ def train_sae(
     output_dir: str = "results/sae_study",
     activation: str = "relu",
     k: int = 64,
+    center_mean: bool = False,
 ) -> Dict[str, Any]:
     """Train an SAE on flattened activations.
 
     Args:
         activation: 'relu' for L1-penalized SAE, 'topk' for TopK SAE.
         k: Number of top activations to keep (only used when activation='topk').
+        center_mean: If True, subtract the empirical per-dimension activation mean
+            before encoding (mean-centering, arXiv:2605.31518) to avoid feature
+            death from dimension-level activation shift.
 
     Returns dict with trained model, training log, and feature statistics.
     """
@@ -116,12 +120,27 @@ def train_sae(
     # Move activations to device
     activations = activations.to(device)
 
+    # Activation-shift diagnostics (Simon, Adams & Zou, arXiv:2605.31518):
+    # gamma = ||mu|| / ||sigma|| strongly predicts feature-death rate at init.
+    with torch.no_grad():
+        act_mean = activations.mean(dim=0)
+        act_std = activations.std(dim=0)
+        gamma = (act_mean.norm() / act_std.norm().clamp(min=1e-8)).item()
+    logger.info(f"Activation shift: gamma=||mu||/||sigma|| = {gamma:.4f} "
+                f"(higher => more feature death at init)")
+
+    if center_mean:
+        sae.set_mean(act_mean)
+        logger.info("Mean-centering ENABLED: subtracting empirical activation mean "
+                    "before encoding (arXiv:2605.31518).")
+
     training_log = []
     global_step = 0
     best_recon_loss = float('inf')
 
     os.makedirs(output_dir, exist_ok=True)
-    tag = f"d{dict_size}_topk{k}" if activation == "topk" else f"d{dict_size}_l1{l1_coeff}"
+    suffix = "_mc" if center_mean else ""
+    tag = (f"d{dict_size}_topk{k}" if activation == "topk" else f"d{dict_size}_l1{l1_coeff}") + suffix
 
     t0 = time.time()
 
@@ -213,6 +232,7 @@ def train_sae(
                     'l1_coeff': l1_coeff,
                     'activation': activation,
                     'k': k,
+                    'center_mean': center_mean,
                 },
                 'epoch': epoch,
                 'global_step': global_step,
@@ -264,12 +284,14 @@ def train_sae(
             'training_time_sec': elapsed,
             'n_samples': n_samples,
             'best_recon_loss': best_recon_loss,
+            'activation_shift_gamma': gamma,
             'config': {
                 'input_dim': input_dim,
                 'dict_size': dict_size,
                 'l1_coeff': l1_coeff,
                 'activation': activation,
                 'k': k,
+                'center_mean': center_mean,
                 'lr': lr,
                 'batch_size': batch_size,
                 'epochs': epochs,
@@ -301,6 +323,9 @@ def main():
                         help="Activation mode: 'relu' (L1 penalty) or 'topk'")
     parser.add_argument("--k", type=int, default=64,
                         help="Number of top activations to keep (only for topk)")
+    parser.add_argument("--center_mean", action="store_true",
+                        help="Mean-center activations before encoding (arXiv:2605.31518) "
+                             "to reduce feature death from dimension-level activation shift")
     parser.add_argument("--lr", type=float, default=3e-4,
                         help="Learning rate")
     parser.add_argument("--batch_size", type=int, default=4096)
@@ -351,6 +376,7 @@ def main():
         output_dir=args.output_dir,
         activation=args.activation,
         k=args.k,
+        center_mean=args.center_mean,
     )
 
 

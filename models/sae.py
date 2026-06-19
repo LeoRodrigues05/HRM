@@ -51,6 +51,15 @@ class SparseAutoencoder(nn.Module):
         # Learnable bias subtracted from input before encoding (centering)
         self.pre_bias = nn.Parameter(torch.zeros(input_dim))
 
+        # Fixed (non-learnable) activation mean for mean-centering.
+        # Defaults to zeros (no-op, backward compatible). When set via set_mean()
+        # this subtracts the empirical per-dimension mean before encoding and adds
+        # it back in decode, addressing dimension-level activation shift that kills
+        # features at init (Simon, Adams & Zou, arXiv:2605.31518). Registered as a
+        # buffer so it is saved/loaded with the model and the encode/decode
+        # interface keeps operating on raw (un-centered) activations.
+        self.register_buffer('act_mean', torch.zeros(input_dim))
+
         # Initialization
         # Kaiming (He) init for encoder — designed for ReLU activations.
         # Uses fan_in to scale weights such that the variance of activations
@@ -83,6 +92,16 @@ class SparseAutoencoder(nn.Module):
         norms = self.decoder.weight.norm(dim=0, keepdim=True).clamp(min=1e-8)
         self.decoder.weight.div_(norms)
 
+    def set_mean(self, mean: torch.Tensor):
+        """Set the fixed mean-centering vector.
+
+        Args:
+            mean: [input_dim] empirical per-dimension activation mean. Subtracted
+                before encoding and added back in decode (see act_mean docstring).
+        """
+        with torch.no_grad():
+            self.act_mean.copy_(mean.detach().to(self.act_mean.device, self.act_mean.dtype).view(-1))
+
     def encode(self, x: torch.Tensor) -> torch.Tensor:
         """Encode input to sparse hidden activations.
 
@@ -92,7 +111,7 @@ class SparseAutoencoder(nn.Module):
         Returns:
             h: [*, dict_size] sparse hidden activations (post-ReLU)
         """
-        x_centered = x - self.pre_bias
+        x_centered = x - self.act_mean - self.pre_bias
         h = F.relu(self.encoder(x_centered))
         return h
 
@@ -105,7 +124,7 @@ class SparseAutoencoder(nn.Module):
         Returns:
             x_hat: [*, input_dim] reconstruction
         """
-        return self.decoder(h) + self.pre_bias
+        return self.decoder(h) + self.pre_bias + self.act_mean
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor, Dict[str, torch.Tensor]]:
         """Full forward pass: encode → decode, compute losses.
@@ -230,7 +249,7 @@ class SparseAutoencoder(nn.Module):
                 sample = data[sample_idx]
 
                 # Set encoder weight to point toward this sample (centered)
-                direction = sample - self.pre_bias
+                direction = sample - self.act_mean - self.pre_bias
                 direction = direction / direction.norm().clamp(min=1e-8)
                 self.encoder.weight[feat_idx] = direction * 0.1  # small scale
                 self.encoder.bias[feat_idx] = 0.0
@@ -277,7 +296,7 @@ class TopKSparseAutoencoder(SparseAutoencoder):
         Returns:
             h: [*, dict_size] sparse hidden activations (only K nonzero per row)
         """
-        x_centered = x - self.pre_bias
+        x_centered = x - self.act_mean - self.pre_bias
         pre_act = self.encoder(x_centered)  # [*, dict_size]
 
         # Keep only top-K values, zero the rest
