@@ -268,7 +268,13 @@ def maze_step_dynamics():
     if not d:
         return missing("maze step dynamics")
     ks = ["step", "exact_solved", "valid_sg_path", "connects_start_goal", "path_f1", "token_acc"]
-    rows = [[f(s.get(k), 3) if k != "step" else s.get("step") for k in ks] for s in d.get("per_step", [])]
+
+    def cell(s, k):  # step_dynamics metrics are {mean,std,n} dicts
+        if k == "step":
+            return s.get("step")
+        v = s.get(k)
+        return ci(v, nd=3) if isinstance(v, dict) else f(v, 3)
+    rows = [[cell(s, k) for k in ks] for s in d.get("per_step", [])]
     return f"<p>N={d.get('num_puzzles')}</p>" + '<div class="wrap">' + table(ks, rows) + "</div>"
 
 

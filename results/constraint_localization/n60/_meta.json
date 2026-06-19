@@ -1,0 +1,39 @@
+{
+  "experiment": "counterfactual_constraint_localization",
+  "git_sha": "d0c8136ebf60bed740538682589681c39af0756e",
+  "git_dirty": true,
+  "timestamp": "2026-06-16T04:16:07",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/patching/counterfactual_constraint_sudoku.py",
+    "--num_samples",
+    "60",
+    "--num_donors",
+    "5",
+    "--n_puzzles",
+    "60",
+    "--patch_level",
+    "H",
+    "--patch_steps",
+    "all",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/constraint_localization/n60"
+  ],
+  "params": {
+    "n_puzzles": 60,
+    "num_samples": 60,
+    "num_donors": 5,
+    "cells_per_puzzle": 4,
+    "forced_only": false,
+    "max_steps": 16,
+    "seed": 42,
+    "puzzle_emb_len": 1,
+    "sweep": false,
+    "patch_level": "H",
+    "patch_steps": "all"
+  }
+}
