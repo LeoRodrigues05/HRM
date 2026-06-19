@@ -52,9 +52,37 @@ DIGIT_OFFSET = 1
 # Model / Data loading (matches E8/E9 pattern)
 # ═══════════════════════════════════════════════════════════════════════════
 
-def load_model_and_data(device: torch.device):
-    """Load checkpoint and create test data loader (batch_size=1)."""
-    ckpt_dir = os.path.join(REPO_ROOT, "checkpoints", "sapientinc-sudoku-extreme")
+def _resolve_checkpoint_file(ckpt_dir: str, ckpt_file: Optional[str]) -> str:
+    """Return the path to the weights file inside ckpt_dir.
+
+    If ckpt_file is given, use it. Otherwise prefer checkpoint.pt, then fall back
+    to the latest pretrain.py-style `step_<N>` snapshot (highest N).
+    """
+    if ckpt_file:
+        return os.path.join(ckpt_dir, ckpt_file)
+    default = os.path.join(ckpt_dir, "checkpoint.pt")
+    if os.path.exists(default):
+        return default
+    step_files = [f for f in os.listdir(ckpt_dir) if f.startswith("step_") and "." not in f]
+    if not step_files:
+        raise FileNotFoundError(
+            f"No checkpoint.pt or step_<N> file found in {ckpt_dir}")
+    latest = max(step_files, key=lambda f: int(f.split("_")[1]))
+    return os.path.join(ckpt_dir, latest)
+
+
+def load_model_and_data(device: torch.device,
+                        ckpt_dir: Optional[str] = None,
+                        ckpt_file: Optional[str] = None):
+    """Load checkpoint and create test data loader (batch_size=1).
+
+    Args:
+        ckpt_dir: checkpoint directory. Defaults to the bundled sapientinc model.
+        ckpt_file: weights filename inside ckpt_dir. If None, auto-resolves to
+            checkpoint.pt or the latest step_<N> snapshot.
+    """
+    if ckpt_dir is None:
+        ckpt_dir = os.path.join(REPO_ROOT, "checkpoints", "sapientinc-sudoku-extreme")
     config_path = os.path.join(ckpt_dir, "config.yaml")
     if os.path.exists(os.path.join(ckpt_dir, "all_config.yaml")):
         config_path = os.path.join(ckpt_dir, "all_config.yaml")
@@ -78,8 +106,9 @@ def load_model_and_data(device: torch.device):
         model_raw = model_cls(model_cfg)
         model_full = loss_cls(model_raw, **config.arch.loss.__pydantic_extra__)
 
-    ckpt = torch.load(os.path.join(ckpt_dir, "checkpoint.pt"),
-                      map_location=device, weights_only=False)
+    weights_path = _resolve_checkpoint_file(ckpt_dir, ckpt_file)
+    logger.info(f"Loading weights from {weights_path}")
+    ckpt = torch.load(weights_path, map_location=device, weights_only=False)
     mk = set(model_full.state_dict().keys())
     ck = set(ckpt.keys())
     if any(k.startswith("_orig_mod.") for k in mk) and not any(
@@ -230,6 +259,11 @@ def main():
                         help="Device: auto, cpu, cuda")
     parser.add_argument("--output_dir", type=str, default="results/sae_study",
                         help="Output directory")
+    parser.add_argument("--checkpoint_dir", type=str, default=None,
+                        help="Checkpoint directory (default: bundled sapientinc model)")
+    parser.add_argument("--checkpoint_file", type=str, default=None,
+                        help="Weights filename inside checkpoint_dir "
+                             "(default: checkpoint.pt or latest step_<N>)")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
@@ -243,7 +277,8 @@ def main():
     logger.info(f"Device: {device}")
 
     # Load model and data
-    model, test_loader, test_meta = load_model_and_data(device)
+    model, test_loader, test_meta = load_model_and_data(
+        device, ckpt_dir=args.checkpoint_dir, ckpt_file=args.checkpoint_file)
     logger.info("Model loaded.")
 
     # Collect activations

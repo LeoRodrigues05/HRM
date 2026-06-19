@@ -48,6 +48,10 @@ def main():
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--batch_size", type=int, default=4096)
     parser.add_argument("--epochs", type=int, default=50)
+    parser.add_argument("--center_mean", action="store_true",
+                        help="Mean-center activations before encoding (arXiv:2605.31518)")
+    parser.add_argument("--compare_centering", action="store_true",
+                        help="Run each config twice (baseline vs mean-centered) for an A/B comparison")
     parser.add_argument("--steps_filter", type=str, default=None)
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--output_dir", type=str, default="results/sae_study")
@@ -68,8 +72,14 @@ def main():
     l1_coeffs = [float(x) for x in args.l1_coeffs.split(",")]
     steps_filter = [int(s) for s in args.steps_filter.split(",")] if args.steps_filter else None
 
-    logger.info(f"Sweep grid: dict_sizes={dict_sizes} × l1_coeffs={l1_coeffs}")
-    logger.info(f"Total configs: {len(dict_sizes) * len(l1_coeffs)}")
+    # Centering modes to sweep: A/B comparison runs both False and True.
+    if args.compare_centering:
+        center_modes = [False, True]
+    else:
+        center_modes = [args.center_mean]
+
+    logger.info(f"Sweep grid: dict_sizes={dict_sizes} × l1_coeffs={l1_coeffs} × center_mean={center_modes}")
+    logger.info(f"Total configs: {len(dict_sizes) * len(l1_coeffs) * len(center_modes)}")
 
     # Load activations once
     activations = load_activations(
@@ -83,41 +93,45 @@ def main():
 
     for dict_size in dict_sizes:
         for l1_coeff in l1_coeffs:
-            logger.info(f"\n{'='*60}")
-            logger.info(f"Training: dict_size={dict_size}, l1_coeff={l1_coeff}")
-            logger.info(f"{'='*60}")
+            for center_mean in center_modes:
+                logger.info(f"\n{'='*60}")
+                logger.info(f"Training: dict_size={dict_size}, l1_coeff={l1_coeff}, "
+                            f"center_mean={center_mean}")
+                logger.info(f"{'='*60}")
 
-            torch.manual_seed(args.seed)
+                torch.manual_seed(args.seed)
 
-            t0 = time.time()
-            result = train_sae(
-                activations=activations,
-                dict_size=dict_size,
-                l1_coeff=l1_coeff,
-                lr=args.lr,
-                batch_size=args.batch_size,
-                epochs=args.epochs,
-                device=device,
-                output_dir=args.output_dir,
-            )
-            elapsed = time.time() - t0
+                t0 = time.time()
+                result = train_sae(
+                    activations=activations,
+                    dict_size=dict_size,
+                    l1_coeff=l1_coeff,
+                    lr=args.lr,
+                    batch_size=args.batch_size,
+                    epochs=args.epochs,
+                    device=device,
+                    output_dir=args.output_dir,
+                    center_mean=center_mean,
+                )
+                elapsed = time.time() - t0
 
-            stats = result['final_stats']
-            row = {
-                'dict_size': dict_size,
-                'l1_coeff': l1_coeff,
-                'final_recon_loss': result['training_log'][-1]['reconstruction_loss'] if result['training_log'] else float('nan'),
-                'final_l1_loss': result['training_log'][-1]['l1_loss'] if result['training_log'] else float('nan'),
-                'alive_count': stats['alive_count'],
-                'alive_frac': stats['alive_frac'],
-                'dead_count': stats['dead_count'],
-                'mean_sparsity': stats['mean_sparsity'],
-                'L0': stats['L0'],
-                'mean_activation': stats['mean_activation'],
-                'training_time_sec': elapsed,
-            }
-            sweep_results.append(row)
-            logger.info(f"Result: {row}")
+                stats = result['final_stats']
+                row = {
+                    'dict_size': dict_size,
+                    'l1_coeff': l1_coeff,
+                    'center_mean': center_mean,
+                    'final_recon_loss': result['training_log'][-1]['reconstruction_loss'] if result['training_log'] else float('nan'),
+                    'final_l1_loss': result['training_log'][-1]['l1_loss'] if result['training_log'] else float('nan'),
+                    'alive_count': stats['alive_count'],
+                    'alive_frac': stats['alive_frac'],
+                    'dead_count': stats['dead_count'],
+                    'mean_sparsity': stats['mean_sparsity'],
+                    'L0': stats['L0'],
+                    'mean_activation': stats['mean_activation'],
+                    'training_time_sec': elapsed,
+                }
+                sweep_results.append(row)
+                logger.info(f"Result: {row}")
 
             # Free the trained SAE + cached allocations before the next config so
             # device memory does not accumulate/fragment across the sweep grid.
@@ -148,13 +162,14 @@ def main():
     logger.info("\n" + "="*90)
     logger.info("SWEEP SUMMARY")
     logger.info("="*90)
-    header = f"{'dict_size':>10} {'l1_coeff':>10} {'recon_loss':>12} {'alive':>8} {'L0':>8} {'sparsity':>10}"
+    header = f"{'dict_size':>10} {'l1_coeff':>10} {'center':>7} {'recon_loss':>12} {'alive':>8} {'dead':>8} {'L0':>8} {'sparsity':>10}"
     logger.info(header)
     logger.info("-" * 90)
     for row in sweep_results:
         line = (f"{row['dict_size']:>10} {row['l1_coeff']:>10.4f} "
+                f"{str(row['center_mean']):>7} "
                 f"{row['final_recon_loss']:>12.6f} "
-                f"{row['alive_count']:>8} {row['L0']:>8.1f} "
+                f"{row['alive_count']:>8} {row['dead_count']:>8} {row['L0']:>8.1f} "
                 f"{row['mean_sparsity']:>10.4f}")
         logger.info(line)
 
