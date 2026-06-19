@@ -22,9 +22,16 @@ elif [ -f ".venv/bin/activate" ]; then
 elif [ -d ".conda/bin" ]; then
     echo "[env] using ./.conda on PATH"
     export PATH="${PWD}/.conda/bin:$PATH"
-elif command -v conda >/dev/null 2>&1; then
+elif command -v conda >/dev/null 2>&1 || [ -n "${CONDA_EXE:-}" ]; then
     echo "[env] conda activate ${HRM_CONDA_ENV:-hrm}"
-    eval "$(conda shell.bash hook)"
+    # Initialise conda for this (often non-login) shell.
+    CONDA_BASE="$(conda info --base 2>/dev/null || dirname "$(dirname "${CONDA_EXE:-}")")"
+    if [ -f "${CONDA_BASE}/etc/profile.d/conda.sh" ]; then
+        # shellcheck disable=SC1091
+        source "${CONDA_BASE}/etc/profile.d/conda.sh"
+    else
+        eval "$(conda shell.bash hook)"
+    fi
     conda activate "${HRM_CONDA_ENV:-hrm}"
 else
     echo "[env] WARNING: no .venv/.conda/conda found; using system python on PATH"
