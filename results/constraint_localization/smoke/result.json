@@ -1,0 +1,84 @@
+{
+  "meta": {
+    "n_puzzles": 6,
+    "num_samples": 1,
+    "num_donors": 2,
+    "cells_per_puzzle": 4,
+    "forced_only": false,
+    "max_steps": 16,
+    "seed": 42,
+    "puzzle_emb_len": 1
+  },
+  "config": {
+    "patch_level": "H",
+    "patch_steps": "late"
+  },
+  "result": {
+    "patch_level": "H",
+    "patch_steps": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "n_samples": 1,
+    "unit_flip_rate": {
+      "mean": 1.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "std": 0.0,
+      "n": 1
+    },
+    "random_flip_rate": {
+      "mean": 1.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "std": 0.0,
+      "n": 1
+    },
+    "unit_minus_random": {
+      "mean": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "std": 0.0,
+      "n": 1
+    },
+    "flip_to_donor_rate": {
+      "mean": 0.0,
+      "ci_lower": 0.0,
+      "ci_upper": 0.0,
+      "std": 0.0,
+      "n": 1
+    },
+    "selectivity": {
+      "mean": 0.6833333333333333,
+      "ci_lower": 0.6833333333333333,
+      "ci_upper": 0.6833333333333333,
+      "std": 0.0,
+      "n": 1
+    },
+    "changed_outside_unit": {
+      "mean": 19.0,
+      "ci_lower": 19.0,
+      "ci_upper": 19.0,
+      "std": 0.0,
+      "n": 1
+    },
+    "wilcoxon_p": 1.0,
+    "per_sample": [
+      {
+        "cell": 0,
+        "unit_flip_rate": 1.0,
+        "random_flip_rate": 1.0,
+        "flip_to_donor_rate": 0.0,
+        "selectivity": 0.6833333333333333,
+        "changed_outside_unit": 19.0,
+        "n_donors": 2
+      }
+    ]
+  }
+}
