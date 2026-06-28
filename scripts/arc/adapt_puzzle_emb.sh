@@ -17,15 +17,20 @@ export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"
 export WANDB_MODE="${WANDB_MODE:-offline}"
 
+# Skip pretrain.py's built-in eval. That eval walks ALL ~165k augmented test
+# examples × halt_max_steps forward passes = HOURS, and (before the fix) it gated
+# the checkpoint save. We verify with measure_arc_accuracy.py (100-puzzle spot
+# check) instead. pretrain.py now saves the checkpoint BEFORE eval regardless.
+export HRM_SKIP_EVAL="${HRM_SKIP_EVAL:-1}"
+
 MODE="${1:-evalonly}"
 CKPT=checkpoints/sapientinc-hrm-arc-2/checkpoint
 OUT="${OUT:-checkpoints/arc2-adapted-$MODE}"
-# EVAL_INT defaults to EPOCHS so the pretrain.py eval loop runs only once (at the end).
-# The training eval iterates ALL ~165k augmented test examples with 16 halt steps each
-# which takes ~3h per cycle — far too expensive for 10 intermediate checks.
-# measure_arc_accuracy.py (step 3 below) does a cheap 100-puzzle spot-check instead.
+# With eval skipped, each "eval cycle" is just a cheap checkpoint save, so EVAL_INT
+# gives periodic crash-safe checkpoints. Default = EPOCHS/4 (4 saves). It MUST divide
+# EPOCHS evenly (pretrain.py asserts this).
 GBS="${GBS:-96}"; EPOCHS="${EPOCHS:-2000}"; PELR="${PELR:-1e-2}"; LR="${LR:-1e-9}"
-EVAL_INT="${EVAL_INT:-$EPOCHS}"
+EVAL_INT="${EVAL_INT:-$((EPOCHS / 4))}"
 
 if [ "$MODE" = full ]; then
     DATA=data/arc-2-aug-1000; RAW="dataset/raw-data/ARC-AGI-2/data"
