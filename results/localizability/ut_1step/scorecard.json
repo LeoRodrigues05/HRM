@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "tag": "ut_1step",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/baselines/universal_transformer/step_41664",
+    "task": "sudoku",
+    "num_puzzles": 300,
+    "probe_steps": [
+      0,
+      4,
+      8,
+      12,
+      15
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "max_steps": 16,
+    "one_step_grad": true,
+    "num_iterations": 4,
+    "hidden_size": 768,
+    "elapsed_s": 635.1,
+    "track_b_caveat": "Track B UT pair differs in both gradient regime AND recurrence layout (ut_1step: 16 outer steps \u00d7 4 inner iters; ut_bptt: 1 outer step \u00d7 16 iters). This is a strong but not airtight control. The airtight comparison is HRM-1step vs HRM-BPTT (identical arch), available via localizability_scorecard.py once the HRM-BPTT checkpoint lands."
+  },
+  "scorecard": {
+    "probe_decodability": {
+      "mean_val_acc": 0.9010322322448096,
+      "ci": {
+        "mean": 0.9010322322448096,
+        "ci_lower": 0.8523310177524884,
+        "ci_upper": 0.9395819575836261,
+        "std": 0.10818171245584647,
+        "n": 20
+      },
+      "per_target": {
+        "violated_in_row": 0.9639231721560162,
+        "violated_in_col": 0.9645816167195639,
+        "violated_in_box": 0.9617695411046345,
+        "per_cell_correct": 0.7138545989990235
+      }
+    },
+    "probe_causal_gap": {
+      "probe_mean_delta": -0.0037139917695473267,
+      "random_mean_delta": -0.004197530864197531,
+      "probe_causal_gap": 0.0004835390946502042,
+      "probe_ci": {
+        "mean": -0.0037139917695473267,
+        "ci_lower": -0.00783050411522634,
+        "ci_upper": 0.0004349279835390905,
+        "std": 0.07303836908827213,
+        "n": 1200
+      },
+      "random_ci": {
+        "mean": -0.004197530864197531,
+        "ci_lower": -0.007408024691358024,
+        "ci_upper": -0.0011763374485596707,
+        "std": 0.06350096939303049,
+        "n": 1500
+      }
+    },
+    "min_causal_rank": 512,
+    "subspace_linearity": 0.7376642402444353,
+    "delta_full": -0.07164609053497943,
+    "baseline_mean": 0.6790123456790124
+  }
+}

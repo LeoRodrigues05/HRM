@@ -1,0 +1,58 @@
+{
+  "experiment": "H1_scorecard_hrm_1step",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T17:22:41",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/localizability_scorecard.py",
+    "--tag",
+    "hrm_1step",
+    "--task",
+    "sudoku",
+    "--num_puzzles",
+    "300",
+    "--output_dir",
+    "results/localizability/hrm_1step",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "tag": "hrm_1step",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "task": "sudoku",
+    "num_puzzles": 300,
+    "probe_steps": [
+      0,
+      4,
+      8,
+      12,
+      15
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "max_steps": 16,
+    "one_step_grad": "unknown",
+    "hidden_size": 512,
+    "elapsed_s": 3064.8
+  }
+}

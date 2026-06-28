@@ -1,0 +1,27 @@
+{
+  "experiment": "H4_policy_decomposition",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T17:36:53",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/policy_decomposition.py",
+    "--task",
+    "maze",
+    "--num_puzzles",
+    "500",
+    "--output_dir",
+    "results/maze/policy_decomposition",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "task": "maze",
+    "num_puzzles": 500,
+    "max_steps": 16,
+    "eps": 0.01,
+    "elapsed_s": 96.8
+  }
+}

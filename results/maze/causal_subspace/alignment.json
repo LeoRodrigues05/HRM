@@ -1,0 +1,29 @@
+{
+  "alignment": {
+    "r_star": 128,
+    "probe_sae_energy": 0.2637507915496826,
+    "principal_angles_cos": [
+      0.5475098490715027,
+      0.5361589193344116,
+      0.5314556956291199,
+      0.4906294345855713,
+      0.45646312832832336
+    ],
+    "random_control_energy_mean": 0.2505320072174072,
+    "random_control_energy_std": 0.0025263534743875157
+  },
+  "r_star": {
+    "half": {
+      "pca_top": 2,
+      "pca_bottom": 512,
+      "random": 512,
+      "probe_sae": 5
+    },
+    "ninety": {
+      "pca_top": 128,
+      "pca_bottom": 512,
+      "random": 512,
+      "probe_sae": 5
+    }
+  }
+}

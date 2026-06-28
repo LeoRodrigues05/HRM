@@ -1,0 +1,5 @@
+H1 Scorecard Deltas (BPTT − 1step)
+
+========================================
+HRM: missing one or both scorecards
+UT: missing one or both scorecards

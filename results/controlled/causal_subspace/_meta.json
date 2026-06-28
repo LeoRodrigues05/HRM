@@ -1,0 +1,44 @@
+{
+  "experiment": "H2_causal_subspace",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T15:33:26",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/causal_subspace.py",
+    "--task",
+    "sudoku",
+    "--num_puzzles",
+    "300",
+    "--n_pca",
+    "300",
+    "--output_dir",
+    "results/controlled/causal_subspace",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "task": "sudoku",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "num_puzzles": 300,
+    "n_pca": 300,
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "n_random_bases": 5,
+    "max_steps": 16,
+    "seed": 42,
+    "elapsed_s": 3426.1
+  }
+}

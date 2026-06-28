@@ -1,0 +1,32 @@
+{
+  "experiment": "policy_improvement_A_D",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T01:15:39",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/policy_improvement.py",
+    "--task",
+    "maze",
+    "--num_puzzles",
+    "500",
+    "--output_dir",
+    "results/maze/policy_improvement",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "task": "maze",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint",
+    "num_puzzles": 500,
+    "max_steps": 16,
+    "device": "cuda",
+    "output_dir": "/home/leo.rodrigues/HRM/results/maze/policy_improvement",
+    "compute_step0_adv": true,
+    "eps": 0.01,
+    "eps_kl": 0.001,
+    "tau": 0.01
+  }
+}
