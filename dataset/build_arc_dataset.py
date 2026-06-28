@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from pathlib import Path
 import os
 import json
+import shutil
+import pickle
 import hashlib
 import numpy as np
 from glob import glob
@@ -81,7 +83,7 @@ def np_grid_to_seq_translational_augment(inp: np.ndarray, out: np.ndarray, do_tr
 def puzzle_hash(puzzle: dict):
     # Hash the puzzle for checking equivalence
     def _grid_hash(grid: np.ndarray):
-        buffer = [x.to_bytes(1) for x in grid.shape]
+        buffer = [x.to_bytes(1, "big") for x in grid.shape]
         buffer.append(grid.tobytes())
         
         return hashlib.sha256(b"".join(buffer)).hexdigest()
@@ -95,7 +97,7 @@ def puzzle_hash(puzzle: dict):
     return hashlib.sha256("|".join(hashes).encode()).hexdigest()
 
 
-def convert_single_arc_puzzle(results: dict, default_name: str, puzzle: dict, aug_count: int, dest_mapping: Dict[str, Tuple[str, str]]):
+def convert_single_arc_puzzle(results: dict, default_name: str, puzzle: dict, aug_count: int, dest_mapping: Dict[str, Tuple[str, str]], spill_handle):
     # Remove "name"
     name = puzzle.pop("name", default_name)
     
@@ -135,17 +137,24 @@ def convert_single_arc_puzzle(results: dict, default_name: str, puzzle: dict, au
         if len(group) < aug_count + 1:
             print (f"[Puzzle {name}] augmentation not full, only {len(group)}")
 
-    # Append
+    # Append (memory-lean): keep only the per-aug id strings in `results`; spill the
+    # actual grids to a per-(split,set) pickle stream so we never hold the whole
+    # augmented dataset in RAM. The RNG above is untouched, so the spilled content
+    # and identifier strings are byte-identical to the in-memory build.
     for dest in dests:
-        # Convert the examples
         dest_split, dest_set = dest
+        dest_group = [converted[dest] for converted in group]
 
         results.setdefault(dest_split, {})
         results[dest_split].setdefault(dest_set, [])
-        results[dest_split][dest_set].append([converted[dest] for converted in group])
+        results[dest_split][dest_set].append([p.id for p in dest_group])
+
+        pickle.dump([p.examples for p in dest_group],
+                    spill_handle(dest_split, dest_set),
+                    protocol=pickle.HIGHEST_PROTOCOL)
 
 
-def load_puzzles_arcagi(results: dict, dataset_path: str, config: DataProcessConfig):
+def load_puzzles_arcagi(results: dict, dataset_path: str, config: DataProcessConfig, spill_handle):
     train_examples_dest = ("train", "all")
     test_examples_map = {
         "evaluation": [(1.0, ("test", "all"))],
@@ -153,11 +162,14 @@ def load_puzzles_arcagi(results: dict, dataset_path: str, config: DataProcessCon
     }
     
     total_puzzles = 0
-    for subdir in os.scandir(dataset_path):
+    # Deterministic traversal: os.scandir / glob return filesystem order, which
+    # varies by machine and perturbs the augmentation RNG (and thus the unique-aug
+    # count) for borderline small-grid puzzles. Sorting makes the build reproducible.
+    for subdir in sorted(os.scandir(dataset_path), key=lambda e: e.name):
         if subdir.is_dir():
             # Load all puzzles in this directory
             puzzles = []
-            for filename in glob(os.path.join(subdir.path, "*.json")):
+            for filename in sorted(glob(os.path.join(subdir.path, "*.json"))):
                 with open(filename, "r") as f:
                     puzzles.append((Path(filename).stem, json.load(f)))
                     
@@ -175,7 +187,7 @@ def load_puzzles_arcagi(results: dict, dataset_path: str, config: DataProcessCon
                         
                 assert test_examples_dest is not None
                 
-                convert_single_arc_puzzle(results, default_name, puzzle, config.num_aug, {"train": train_examples_dest, "test": test_examples_dest})
+                convert_single_arc_puzzle(results, default_name, puzzle, config.num_aug, {"train": train_examples_dest, "test": test_examples_dest}, spill_handle)
                 total_puzzles += 1
 
     print (f"[{dataset_path}] total puzzles: {total_puzzles}")
@@ -183,29 +195,54 @@ def load_puzzles_arcagi(results: dict, dataset_path: str, config: DataProcessCon
 
 def convert_dataset(config: DataProcessConfig):
     np.random.seed(config.seed)
-    
-    # Read dataset
-    data = {}
+
+    # Memory-lean build: phase 1 augments puzzles (RNG identical to the original)
+    # but spills the grids to per-(split,set) pickle streams on disk, holding only
+    # the lightweight per-aug id strings in RAM. Phase 2 reads the grids back in the
+    # same order, applies the translational-augment RNG, and writes the .npy arrays.
+    # Peak RAM is one subset's output arrays instead of the whole augmented dataset.
+    os.makedirs(config.output_dir, exist_ok=True)
+    spill_dir = os.path.join(config.output_dir, "_spill")
+    if os.path.exists(spill_dir):
+        shutil.rmtree(spill_dir)
+    os.makedirs(spill_dir)
+
+    spill_files: Dict[Tuple[str, str], object] = {}
+    spill_paths: Dict[Tuple[str, str], str] = {}
+
+    def spill_handle(split_name: str, subset_name: str):
+        key = (split_name, subset_name)
+        if key not in spill_files:
+            path = os.path.join(spill_dir, f"{split_name}__{subset_name}.pkl")
+            spill_paths[key] = path
+            spill_files[key] = open(path, "wb")
+        return spill_files[key]
+
+    # Phase 1 — read + augment (grids -> disk, id strings -> memory)
+    data: Dict[str, Dict[str, list]] = {}
     for dataset_dir in config.dataset_dirs:
-        load_puzzles_arcagi(data, dataset_dir, config)
-    
-    # Map global puzzle identifiers
+        load_puzzles_arcagi(data, dataset_dir, config, spill_handle)
+    for f in spill_files.values():
+        f.close()
+
+    # Map global puzzle identifiers (split-major, group order, aug order — identical
+    # to the original in-memory iteration, so indices match the trained checkpoint).
     num_identifiers = 1  # 0 is blank
     identifier_map = {}
     for split_name, split in data.items():
         for subset_name, subset in split.items():
             for group in subset:
-                for puzzle in group:
-                    if puzzle.id not in identifier_map:
-                        identifier_map[puzzle.id] = num_identifiers
+                for pid in group:            # group is now a list of id strings
+                    if pid not in identifier_map:
+                        identifier_map[pid] = num_identifiers
                         num_identifiers += 1
 
-    print (f"Total puzzle IDs (including <blank>): {num_identifiers}")
+    print (f"Total puzzle IDs (including <blank>): {num_identifiers}", flush=True)
 
-    # Save
+    # Phase 2 — save (grids streamed back from disk)
     for split_name, split in data.items():
         os.makedirs(os.path.join(config.output_dir, split_name), exist_ok=True)
-        
+
         # Translational augmentations
         enable_translational_augment = split_name == "train"
 
@@ -213,59 +250,63 @@ def convert_dataset(config: DataProcessConfig):
         total_examples = 0
         total_puzzles = 0
         total_groups = 0
-        
+
         for subset_name, subset in split.items():
             # Construct subset
             results = {k: [] for k in ["inputs", "labels", "puzzle_identifiers", "puzzle_indices", "group_indices"]}
             results["puzzle_indices"].append(0)
             results["group_indices"].append(0)
-            
+
             example_id = 0
             puzzle_id = 0
-            
-            for group in subset:
-                for puzzle in group:
-                    # Push puzzle
-                    no_aug_id = np.random.randint(0, len(puzzle.examples))
-                    for _idx_ex, (inp, out) in enumerate(puzzle.examples):
-                        inp, out = np_grid_to_seq_translational_augment(inp, out, do_translation=enable_translational_augment and _idx_ex != no_aug_id)
-                            
-                        results["inputs"].append(inp)
-                        results["labels"].append(out)
-                        example_id += 1
-                        
-                        total_examples += 1
 
-                    results["puzzle_indices"].append(example_id)
-                    results["puzzle_identifiers"].append(identifier_map[puzzle.id])
-                    
-                    puzzle_id += 1
-                    
-                    total_puzzles += 1
-                    
-                # Push group
-                results["group_indices"].append(puzzle_id)
-                total_groups += 1
-            
-            for k, v in results.items():
+            with open(spill_paths[(split_name, subset_name)], "rb") as spill_f:
+                for group in subset:                       # group = list of id strings
+                    group_examples = pickle.load(spill_f)  # list (per aug) of examples
+                    for pid, examples in zip(group, group_examples):
+                        # Push puzzle
+                        no_aug_id = np.random.randint(0, len(examples))
+                        for _idx_ex, (inp, out) in enumerate(examples):
+                            inp, out = np_grid_to_seq_translational_augment(inp, out, do_translation=enable_translational_augment and _idx_ex != no_aug_id)
+
+                            results["inputs"].append(inp)
+                            results["labels"].append(out)
+                            example_id += 1
+
+                            total_examples += 1
+
+                        results["puzzle_indices"].append(example_id)
+                        results["puzzle_identifiers"].append(identifier_map[pid])
+
+                        puzzle_id += 1
+
+                        total_puzzles += 1
+
+                    # Push group
+                    results["group_indices"].append(puzzle_id)
+                    total_groups += 1
+
+            for k in list(results.keys()):
+                v = results.pop(k)        # drop the source list ref before stacking
                 if k in {"inputs", "labels"}:
                     v = np.stack(v, 0)
                 else:
                     v = np.array(v, dtype=np.int32)
-                
+
                 np.save(os.path.join(config.output_dir, split_name, f"{subset_name}__{k}.npy"), v)
-        
+                del v                       # free the stacked array before the next key
+
         # Metadata
         metadata = PuzzleDatasetMetadata(
             seq_len=ARCMaxGridSize * ARCMaxGridSize,
             vocab_size=10 + 2,  # PAD + EOS + "0" ... "9"
-            
+
             pad_id=0,
             ignore_label_id=0,
-            
+
             blank_identifier_id=0,
             num_puzzle_identifiers=num_identifiers,
-            
+
             total_groups=total_groups,
             mean_puzzle_examples=total_examples / total_puzzles,
             sets=list(split.keys())
@@ -274,12 +315,15 @@ def convert_dataset(config: DataProcessConfig):
         # Save metadata as JSON.
         with open(os.path.join(config.output_dir, split_name, "dataset.json"), "w") as f:
             json.dump(metadata.model_dump(), f)
-            
+
     # Save IDs mapping
     with open(os.path.join(config.output_dir, "identifiers.json"), "w") as f:
         ids_mapping = {v: k for k, v in identifier_map.items()}
-        
+
         json.dump([ids_mapping.get(i, "<blank>") for i in range(num_identifiers)], f)
+
+    # Clean up the grid spill.
+    shutil.rmtree(spill_dir, ignore_errors=True)
 
 
 @cli.command(singleton=True)
