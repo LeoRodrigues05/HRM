@@ -192,3 +192,20 @@ ls paper/figures/*.pdf
 
 The committed `paper/figures/*.pdf` files are the exact assets used in the
 manuscript; rebuilding them requires the corresponding `results/...` artefacts.
+
+---
+
+## 6. Large binary artefacts (gitignored — regenerate locally)
+
+All *text* results (JSON / JSONL / YAML / Markdown) and figures (PDF / PNG) are
+committed. The large binary caches are **gitignored** (`.pt` / `.npy` / `.npz`)
+because they exceed GitHub's 100 MB/file limit and are fully regenerable. None of
+these are needed for the ARC-AGI reproduction. To rebuild them:
+
+| Artefact (gitignored) | Size | Regenerate with |
+|---|---|---|
+| `results/{maze/,}sae_study/activations_zH.pt` | 2.5–8.5 GB | `scripts/sae/sae_collect_activations.py` (maze: `sae_collect_activations_maze.py`) |
+| `results/{maze/,}sae_study/sae_d*_l1*.pt` | ~32 MB each | `scripts/sae/sae_train.py` / `sae_sweep.py` |
+| `results/maze/hardened/probe_geometry/probe_weights.pt` | 1.5 MB | `scripts/maze/linear_probes_maze.py --save_probe_weights` |
+| `results/maze/hardened/trajectory_pca/trajectory_pca.npz` | 60 KB | `scripts/maze/` trajectory-PCA step |
+| `data/`, `checkpoints/` | — | submodule build + HF download (see [README §2](../README.md)) |
