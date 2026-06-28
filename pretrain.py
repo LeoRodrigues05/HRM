@@ -472,16 +472,21 @@ def launch(hydra_config: DictConfig):
                 wandb.log(metrics, step=train_state.step)
                 progress_bar.update(train_state.step - progress_bar.n)  # type: ignore
 
-        ############ Evaluation
-        train_state.model.eval()
-        metrics = evaluate(config, train_state, eval_loader, eval_metadata, rank=RANK, world_size=WORLD_SIZE)
-
-        if RANK == 0 and metrics is not None:
-            wandb.log(metrics, step=train_state.step)
-            
-        ############ Checkpointing
+        ############ Checkpointing (save BEFORE eval so the checkpoint is never gated by
+        ############ the cost of evaluate(); eval is read-only and does not change weights).
         if RANK == 0 and (config.checkpoint_every_eval or (_iter_id == total_iters - 1)):
             save_train_state(config, train_state)
+
+        ############ Evaluation (optionally skipped). The full augmented eval set can be
+        ############ ~165k examples × halt_max_steps forward passes = hours; set
+        ############ HRM_SKIP_EVAL=1 when an external verifier is used instead
+        ############ (e.g. scripts/arc/measure_arc_accuracy.py for the ARC adaptation).
+        if os.environ.get("HRM_SKIP_EVAL", "0") != "1":
+            train_state.model.eval()
+            metrics = evaluate(config, train_state, eval_loader, eval_metadata, rank=RANK, world_size=WORLD_SIZE)
+
+            if RANK == 0 and metrics is not None:
+                wandb.log(metrics, step=train_state.step)
 
     # finalize
     if dist.is_initialized():
