@@ -29,3 +29,11 @@ puzzle_emb_weight_decay: 0.1
 
 # Hyperparams - Puzzle embeddings training
 puzzle_emb_lr: 1e-2
+
+# Optional overrides (null = not set)
+checkpoint_path: null
+project_name: null
+run_name: null
+
+# Path A: init reasoning core from this checkpoint; puzzle_emb is re-learned from scratch.
+load_checkpoint: null

@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# Path A — recover a solving ARC-2 model from the released checkpoint by re-fitting
+# puzzle_emb on OUR dataset build, with the reasoning core FROZEN (lr=0).
+# See docs/PLAN_ARC_path_A_embedding_adaptation.md for the full rationale.
+#
+# Run ON A GPU NODE:
+#   bash scripts/arc/adapt_puzzle_emb.sh evalonly      # 120 eval tasks (recommended, cheap)
+#   bash scripts/arc/adapt_puzzle_emb.sh full           # all 1120 tasks (faithful, ~10x slower)
+#
+# Tunables (env): OUT, GBS (global_batch_size), EPOCHS, EVAL_INT, PELR (puzzle_emb_lr)
+# Steps budget is empirical: watch the verifier's exact_solved; raise EPOCHS if still rising.
+set -uo pipefail
+
+cd /home/leo.rodrigues/HRM
+PY=/home/leo.rodrigues/miniconda3/envs/hrm/bin/python
+export PYTHONPATH="$PWD:${PYTHONPATH:-}"
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"
+export WANDB_MODE="${WANDB_MODE:-offline}"
+
+MODE="${1:-evalonly}"
+CKPT=checkpoints/sapientinc-hrm-arc-2/checkpoint
+OUT="${OUT:-checkpoints/arc2-adapted-$MODE}"
+# EVAL_INT defaults to EPOCHS so the pretrain.py eval loop runs only once (at the end).
+# The training eval iterates ALL ~165k augmented test examples with 16 halt steps each
+# which takes ~3h per cycle — far too expensive for 10 intermediate checks.
+# measure_arc_accuracy.py (step 3 below) does a cheap 100-puzzle spot-check instead.
+GBS="${GBS:-96}"; EPOCHS="${EPOCHS:-2000}"; PELR="${PELR:-1e-2}"; LR="${LR:-1e-9}"
+EVAL_INT="${EVAL_INT:-$EPOCHS}"
+
+if [ "$MODE" = full ]; then
+    DATA=data/arc-2-aug-1000; RAW="dataset/raw-data/ARC-AGI-2/data"
+elif [ "$MODE" = evalonly ]; then
+    DATA=data/arc-2-evalonly
+    mkdir -p data/raw-arc2-evalonly
+    ln -sfn "$PWD/dataset/raw-data/ARC-AGI-2/data/evaluation" data/raw-arc2-evalonly/evaluation
+    RAW=data/raw-arc2-evalonly
+else
+    echo "usage: $0 [evalonly|full]"; exit 1
+fi
+
+if [ ! -f "$CKPT" ]; then echo "ERROR missing $CKPT"; exit 2; fi
+
+# 1) Build the dataset once (memory-lean; ~5-7 min) if absent.
+if [ ! -f "$DATA/test/dataset.json" ]; then
+    echo "[adapt] building $DATA (seed=42 num_aug=1000) ..."
+    PYTHONPATH="$PWD:$PWD/dataset" $PY -u -c "
+import sys; sys.path.insert(0,'dataset')
+import build_arc_dataset as b
+b.convert_dataset(b.DataProcessConfig(dataset_dirs=['$RAW'], output_dir='$DATA', seed=42, num_aug=1000))
+print('BUILD DONE', flush=True)
+" || { echo '[adapt] build failed'; exit 3; }
+else
+    echo "[adapt] dataset $DATA already present — reusing (do NOT rebuild between adapt and analysis)"
+fi
+
+# 2) Adaptation: frozen core (lr=0), train puzzle_emb (puzzle_emb_lr>0).
+echo "[adapt] training puzzle_emb on $DATA (core frozen) -> $OUT"
+$PY pretrain.py \
+    data_path="$DATA" \
+    load_checkpoint="$CKPT" \
+    checkpoint_path="$OUT" \
+    lr="$LR" \
+    puzzle_emb_lr="$PELR" \
+    puzzle_emb_weight_decay=0.1 \
+    lr_warmup_steps=200 \
+    global_batch_size="$GBS" \
+    epochs="$EPOCHS" \
+    eval_interval="$EVAL_INT" \
+    checkpoint_every_eval=True \
+    project_name=arc2_adapt run_name="$MODE"
+
+# 3) Verify recovered accuracy on the latest adapted checkpoint.
+ADAPTED=$(ls -t "$OUT"/step_* 2>/dev/null | head -1)
+if [ -z "$ADAPTED" ]; then echo "[adapt] no checkpoint produced in $OUT"; exit 4; fi
+echo "[adapt] verifying $ADAPTED"
+$PY scripts/arc/measure_arc_accuracy.py --checkpoint "$ADAPTED" --num_puzzles 100 --device cuda
+
+echo "[adapt] done. If exact_solved > 0, point scripts/arc/arc_common.py:ARC_CHECKPOINT"
+echo "[adapt] at '$ADAPTED', then run: bash scripts/arc/run_arc_end_to_end.sh full"

@@ -63,6 +63,9 @@ class PretrainConfig(pydantic.BaseModel):
     run_name: Optional[str] = None
     checkpoint_path: Optional[str] = None
 
+    # Init the reasoning core from a pretrained checkpoint (puzzle_emb is re-learned).
+    load_checkpoint: Optional[str] = None
+
     # Extras
     seed: int = 0
     checkpoint_every_eval: bool = False
@@ -175,6 +178,29 @@ def init_train_state(config: PretrainConfig, train_metadata: PuzzleDatasetMetada
 
     # Model
     model, optimizers, optimizer_lrs = create_model(config, train_metadata, world_size=world_size)
+
+    # Path A (transductive adaptation): initialise the reasoning CORE from a
+    # pretrained checkpoint but KEEP the freshly-initialised puzzle_emb table, so
+    # we re-learn per-puzzle embeddings for THIS dataset's identifier indexing on
+    # the frozen core. Train with lr=0 (core) and puzzle_emb_lr>0 (embeddings).
+    if config.load_checkpoint is not None:
+        sd = torch.load(config.load_checkpoint, map_location="cuda", weights_only=False)
+        model_keys = list(model.state_dict().keys())
+        m_has = any(k.startswith("_orig_mod.") for k in model_keys)
+        c_has = any(k.startswith("_orig_mod.") for k in sd)
+        if m_has and not c_has:
+            sd = {f"_orig_mod.{k}": v for k, v in sd.items()}
+        elif c_has and not m_has:
+            sd = {k.removeprefix("_orig_mod."): v for k, v in sd.items()}
+        # Drop the checkpoint's puzzle_emb so our fresh, trainable table is kept.
+        sd = {k: v for k, v in sd.items() if not k.endswith("puzzle_emb.weights")}
+        missing, unexpected = model.load_state_dict(sd, strict=False)
+        miss_non_pe = [k for k in missing if "puzzle_emb" not in k]
+        print(f"[load_checkpoint] init core from {config.load_checkpoint}: "
+              f"loaded={len(sd)} missing={len(missing)} unexpected={len(unexpected)}", flush=True)
+        print(f"[load_checkpoint] non-puzzle_emb missing (should be empty): {miss_non_pe}", flush=True)
+        assert not unexpected, f"unexpected checkpoint keys: {unexpected[:8]}"
+        assert not miss_non_pe, f"core weights failed to load: {miss_non_pe[:8]}"
 
     return TrainState(
         step=0,

@@ -95,7 +95,15 @@ Sudoku. All experiments share `scripts/core/activation_ablation.py` /
 | **E9b** | MLP / non-linear probes & their directed ablation | `scripts/probes/nonlinear_probes.py`, `scripts/directed_ablation/e9b_nonlinear_directed_ablation.py` | `results/directed_ablation/nonlinear/` |
 | **E10** | Sparse autoencoder study on z<sub>H</sub> (features + causal ablation) | `scripts/sae/sae_train.py`, `scripts/sae/sae_analyze_features.py`, `scripts/sae/sae_causal_ablation.py`, `scripts/sae/sae_sweep.py`, `scripts/sae/sae_plot.py` | `results/sae_study/` |
 | Maze | Maze variants of E1/E2/E5/E8/E9/E10 | `scripts/sae/sae_collect_activations_maze.py`, `results/maze/...` | `results/maze/` |
+| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/slurm_arc_suite.sbatch` (see `docs/PLAN_ARC_experiments.md`) | `results/arc/` |
 | Controlled | Single-variable, larger-N replications of E1/E2/E5/E9 with stats | `scripts/controlled/run_all_controlled_experiments.py` | `results/controlled/` |
+
+The ARC suite uses the HRM ARC-2 checkpoint
+(`checkpoints/sapientinc-hrm-arc-2/checkpoint`) and `data/arc-2-aug-1000`
+(rebuild with `seed=42 num_aug=1000` to align the puzzle-identifier embeddings).
+ARC-native probe features live in [`utils/arc_targets.py`](../utils/arc_targets.py)
+and ARC structural metrics in [`scripts/arc/arc_common.py`](../scripts/arc/arc_common.py).
+Run end-to-end with `sbatch -p gpu --gres=gpu:1 scripts/arc/slurm_arc_suite.sbatch`.
 
 ### Paper-replication baseline (Phase 7)
 
