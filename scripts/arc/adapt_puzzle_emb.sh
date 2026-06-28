@@ -77,8 +77,30 @@ $PY pretrain.py \
 # 3) Verify recovered accuracy on the latest adapted checkpoint.
 ADAPTED=$(ls -t "$OUT"/step_* 2>/dev/null | head -1)
 if [ -z "$ADAPTED" ]; then echo "[adapt] no checkpoint produced in $OUT"; exit 4; fi
+DIAG="${DIAG:-results/arc/diagnostics}"
 echo "[adapt] verifying $ADAPTED"
-$PY scripts/arc/measure_arc_accuracy.py --checkpoint "$ADAPTED" --num_puzzles 100 --device cuda
+$PY scripts/arc/measure_arc_accuracy.py --checkpoint "$ADAPTED" --num_puzzles 100 \
+    --device cuda --output_dir "$DIAG"
 
-echo "[adapt] done. If exact_solved > 0, point scripts/arc/arc_common.py:ARC_CHECKPOINT"
-echo "[adapt] at '$ADAPTED', then run: bash scripts/arc/run_arc_end_to_end.sh full"
+# 4) Optionally chain into the full interpretability suite, GATED on recovered
+#    accuracy. RUN_SUITE=1 enables it; GATE is the minimum exact_solved required
+#    (default 0.02 — a clear jump from the broken 0.0). Running the suite on a
+#    non-solving model wastes hours, hence the gate.
+ACC=$($PY -c "import json;print(json.load(open('$DIAG/arc_accuracy.json'))['exact_solved'])" 2>/dev/null || echo 0)
+echo "[adapt] exact_solved=$ACC  (checkpoint: $ADAPTED)"
+if [ "${RUN_SUITE:-0}" = "1" ]; then
+    GATE="${GATE:-0.02}"
+    PASS=$($PY -c "print(1 if float('$ACC') >= float('$GATE') else 0)" 2>/dev/null || echo 0)
+    if [ "$PASS" = "1" ]; then
+        echo "[adapt] exact_solved=$ACC >= gate $GATE -> launching full suite on adapted checkpoint"
+        ARC_CKPT="$ADAPTED" bash scripts/arc/run_arc_end_to_end.sh full
+        echo "[adapt] FULL PIPELINE COMPLETE (adapt + verify + suite)."
+    else
+        echo "[adapt] exact_solved=$ACC < gate $GATE -> NOT running suite (model not solving)."
+        echo "[adapt] Raise the budget (EPOCHS=4000) or PELR=2e-2 and rerun, then re-check."
+    fi
+else
+    echo "[adapt] done. To run the suite on this checkpoint:"
+    echo "        ARC_CKPT='$ADAPTED' bash scripts/arc/run_arc_end_to_end.sh full"
+    echo "        (or re-run this wrapper with RUN_SUITE=1 to auto-chain next time)"
+fi
