@@ -1,0 +1,67 @@
+{
+  "n_puzzles": 300,
+  "sae_path": "results/maze/sae_study/sae_d2048_l10.01.pt",
+  "metric": "valid_sg_path",
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_valid_sg_path": -0.029933333333333333,
+      "std": 0.22680555167978966,
+      "n": 15000,
+      "bootstrap_ci": {
+        "mean": -0.029933333333333333,
+        "ci_lower": -0.0334,
+        "ci_upper": -0.026266666666666667,
+        "std": 0.2267979913687264,
+        "n": 15000
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_valid_sg_path": -0.033466666666666665,
+      "std": 0.22468499678158488,
+      "n": 15000,
+      "bootstrap_ci": {
+        "mean": -0.033466666666666665,
+        "ci_lower": -0.037,
+        "ci_upper": -0.029798333333333336,
+        "std": 0.224677507156863,
+        "n": 15000
+      }
+    },
+    "probe_directions": {
+      "mean_delta_valid_sg_path": -0.001851851851851852,
+      "std": 0.16218079000893332,
+      "n": 2700,
+      "bootstrap_ci": {
+        "mean": -0.001851851851851852,
+        "ci_lower": -0.008148148148148147,
+        "ci_upper": 0.0044444444444444444,
+        "std": 0.1621507537479092,
+        "n": 2700
+      }
+    },
+    "random_directions": {
+      "mean_delta_valid_sg_path": 0.0022222222222222222,
+      "std": 0.08166479381597108,
+      "n": 900,
+      "bootstrap_ci": {
+        "mean": 0.0022222222222222222,
+        "ci_lower": -0.0033333333333333335,
+        "ci_upper": 0.0077777777777777776,
+        "std": 0.08161941187647538,
+        "n": 900
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_top_vs_random_features": {
+      "t_statistic": 1.3554758506758235,
+      "p_value": 0.17527620355806253,
+      "significant_0.05": false
+    },
+    "probe_vs_random_directions": {
+      "t_statistic": -0.9837240716329296,
+      "p_value": 0.32532905483923524,
+      "significant_0.05": false
+    }
+  }
+}
