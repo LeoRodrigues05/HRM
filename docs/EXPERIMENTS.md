@@ -95,7 +95,15 @@ Sudoku. All experiments share `scripts/core/activation_ablation.py` /
 | **E9b** | MLP / non-linear probes & their directed ablation | `scripts/probes/nonlinear_probes.py`, `scripts/directed_ablation/e9b_nonlinear_directed_ablation.py` | `results/directed_ablation/nonlinear/` |
 | **E10** | Sparse autoencoder study on z<sub>H</sub> (features + causal ablation) | `scripts/sae/sae_train.py`, `scripts/sae/sae_analyze_features.py`, `scripts/sae/sae_causal_ablation.py`, `scripts/sae/sae_sweep.py`, `scripts/sae/sae_plot.py` | `results/sae_study/` |
 | Maze | Maze variants of E1/E2/E5/E8/E9/E10 | `scripts/sae/sae_collect_activations_maze.py`, `results/maze/...` | `results/maze/` |
+| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/slurm_arc_suite.sbatch` (see `docs/PLAN_ARC_experiments.md`) | `results/arc/` |
 | Controlled | Single-variable, larger-N replications of E1/E2/E5/E9 with stats | `scripts/controlled/run_all_controlled_experiments.py` | `results/controlled/` |
+
+The ARC suite uses the HRM ARC-2 checkpoint
+(`checkpoints/sapientinc-hrm-arc-2/checkpoint`) and `data/arc-2-aug-1000`
+(rebuild with `seed=42 num_aug=1000` to align the puzzle-identifier embeddings).
+ARC-native probe features live in [`utils/arc_targets.py`](../utils/arc_targets.py)
+and ARC structural metrics in [`scripts/arc/arc_common.py`](../scripts/arc/arc_common.py).
+Run end-to-end with `sbatch -p gpu --gres=gpu:1 scripts/arc/slurm_arc_suite.sbatch`.
 
 ### Paper-replication baseline (Phase 7)
 
@@ -184,3 +192,20 @@ ls paper/figures/*.pdf
 
 The committed `paper/figures/*.pdf` files are the exact assets used in the
 manuscript; rebuilding them requires the corresponding `results/...` artefacts.
+
+---
+
+## 6. Large binary artefacts (gitignored — regenerate locally)
+
+All *text* results (JSON / JSONL / YAML / Markdown) and figures (PDF / PNG) are
+committed. The large binary caches are **gitignored** (`.pt` / `.npy` / `.npz`)
+because they exceed GitHub's 100 MB/file limit and are fully regenerable. None of
+these are needed for the ARC-AGI reproduction. To rebuild them:
+
+| Artefact (gitignored) | Size | Regenerate with |
+|---|---|---|
+| `results/{maze/,}sae_study/activations_zH.pt` | 2.5–8.5 GB | `scripts/sae/sae_collect_activations.py` (maze: `sae_collect_activations_maze.py`) |
+| `results/{maze/,}sae_study/sae_d*_l1*.pt` | ~32 MB each | `scripts/sae/sae_train.py` / `sae_sweep.py` |
+| `results/maze/hardened/probe_geometry/probe_weights.pt` | 1.5 MB | `scripts/maze/linear_probes_maze.py --save_probe_weights` |
+| `results/maze/hardened/trajectory_pca/trajectory_pca.npz` | 60 KB | `scripts/maze/` trajectory-PCA step |
+| `data/`, `checkpoints/` | — | submodule build + HF download (see [README §2](../README.md)) |

@@ -108,12 +108,31 @@ def load_model_and_dataloader(
 
     test_loader, test_meta = _create_eval_dataloader(config, pin_memory=(device.type == "cuda"))
 
+    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
+
+    # Puzzle-embedding reconciliation. The per-puzzle embedding table is sized by
+    # num_puzzle_identifiers, which for ARC depends on the exact dataset build (the
+    # augmentation unique-count of a few borderline puzzles varies with the build
+    # machine's file ordering, so a rebuilt dataset can differ from the checkpoint
+    # by a handful of rows). Size the model to max(checkpoint, dataset) so every
+    # trained weight loads cleanly AND every dataset identifier stays in range; any
+    # extra rows keep their fresh init. Sudoku/Maze sizes match, so this is a no-op.
+    pe_suffix = "puzzle_emb.weights"
+    ckpt_pe_key0 = next((k for k in ckpt if k.endswith(pe_suffix)), None)
+    ckpt_pe_rows = int(ckpt[ckpt_pe_key0].shape[0]) if ckpt_pe_key0 is not None else 0
+    data_pe_rows = int(test_meta.num_puzzle_identifiers)
+    model_pe_rows = max(ckpt_pe_rows, data_pe_rows)
+    if ckpt_pe_rows and ckpt_pe_rows != data_pe_rows:
+        print(f"[load_model] WARNING puzzle_emb mismatch: checkpoint={ckpt_pe_rows} "
+              f"dataset={data_pe_rows}; sizing model to {model_pe_rows} (extra rows keep "
+              f"fresh init; identifier indices may be shifted vs training).")
+
     model_cfg = dict(
         **config.arch.__pydantic_extra__,
         batch_size=1,
         vocab_size=test_meta.vocab_size,
         seq_len=test_meta.seq_len,
-        num_puzzle_identifiers=test_meta.num_puzzle_identifiers,
+        num_puzzle_identifiers=model_pe_rows,
         causal=False,
     )
     model_cls = load_model_class(config.arch.name)
@@ -123,7 +142,6 @@ def load_model_and_dataloader(
         model_raw = model_cls(model_cfg)
         model_full = loss_cls(model_raw, **config.arch.loss.__pydantic_extra__)
 
-    ckpt = torch.load(checkpoint_path, map_location=device, weights_only=False)
     mk = set(model_full.state_dict().keys())
     ck = set(ckpt.keys())
     if any(k.startswith("_orig_mod.") for k in mk) and not any(
@@ -134,6 +152,15 @@ def load_model_and_dataloader(
         k.startswith("_orig_mod.") for k in mk
     ):
         ckpt = {k.removeprefix("_orig_mod."): v for k, v in ckpt.items()}
+
+    # Pad the checkpoint's puzzle_emb to the model size, keeping the model's fresh
+    # init for any extra rows so all params still load with assign=True.
+    pe_key = next((k for k in ckpt if k.endswith(pe_suffix)), None)
+    if pe_key is not None and ckpt[pe_key].shape[0] < model_pe_rows:
+        model_pe = dict(model_full.state_dict())[pe_key]
+        padded = model_pe.clone()
+        padded[: ckpt[pe_key].shape[0]] = ckpt[pe_key].to(padded.dtype)
+        ckpt[pe_key] = padded
 
     model_full.load_state_dict(ckpt, assign=True)
     model_full.to(device).eval()

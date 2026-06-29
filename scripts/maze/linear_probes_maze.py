@@ -661,14 +661,28 @@ def main():
         json.dump(result, f, indent=2, default=lambda o: o.tolist() if hasattr(o, "tolist") else str(o))
 
     # E8-parity flat summary keyed by stream/step/target.
+    # Data-integrity fix #3: regression probes report R^2, which DIVERGES to large
+    # negative values on near-constant maze targets (path_f1 ~= 0.97 everywhere ->
+    # tiny variance). Those are NOT decodability; tag them `reportable=False`. For
+    # binary probes, record headroom over the majority baseline so probes pinned at
+    # baseline (is_dead_end, near_*_5) are not mistaken for real signal.
     summary = {}
     for row in result["global_probes"] + result["local_probes"]:
         key = f"{row['stream']}_step{row['step']}_{row['target']}"
-        summary[key] = {k: row.get(k) for k in (
+        entry = {k: row.get(k) for k in (
             "stream", "step", "target", "task", "probe_type", "status",
             "score_mean", "score_ci_lower", "score_ci_upper", "score_std",
             "baseline_mean", "linear_score_mean", "delta_mlp_minus_linear",
             "score_per_seed", "n_seeds", "n_train", "n_test")}
+        sc, bl = entry.get("score_mean"), entry.get("baseline_mean")
+        if entry.get("task") == "regression":
+            entry["reportable"] = False
+            entry["note"] = "R^2 unreliable on near-constant target; not a decodability measure"
+        else:  # binary
+            entry["reportable"] = True
+            entry["headroom"] = (None if (sc is None or bl is None) else round(float(sc) - float(bl), 4))
+            entry["informative"] = (entry["headroom"] is not None and entry["headroom"] >= 0.03)
+        summary[key] = entry
     with open(os.path.join(args.output_dir, "probe_summary.json"), "w") as f:
         json.dump(summary, f, indent=2)
 
