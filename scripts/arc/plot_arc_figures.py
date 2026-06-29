@@ -132,19 +132,38 @@ def plot_directed_ablation(analysis: dict, output_dir: str, metric: str = "colou
     _save(fig, output_dir, "fig_arc_directed_ablation")
 
 
+def _mean(x):
+    """Accept either a scalar or a bootstrap dict {'mean':..,'ci_lower':..}."""
+    return x.get("mean") if isinstance(x, dict) else x
+
+
 def plot_value_by_step(agg: dict, output_dir: str):
-    """Per-step task value (policy-improvement, optional)."""
-    per_step = agg.get("per_step") or agg.get("by_step")
+    """Per-step task value (policy-improvement). Reads policy_improvement aggregate:
+    agg['all']['per_step'] is a list of {step, value:{mean,ci_*}, ...}. Falls back to
+    older flat {per_step: {step: {value_mean}}} layouts."""
+    per_step = (agg.get("all", {}) or {}).get("per_step") or agg.get("per_step") or agg.get("by_step")
     if not per_step:
         print("[plot_arc] no per-step value in aggregate")
         return
-    steps = sorted(int(k) for k in per_step.keys())
-    vals = [per_step[str(s)].get("value_mean", per_step[str(s)].get("value")) for s in steps]
+
+    if isinstance(per_step, list):                 # current format: list of per-step dicts
+        rows = sorted(per_step, key=lambda r: int(r["step"]))
+        steps = [int(r["step"]) for r in rows]
+        vals = [_mean(r.get("value", r.get("value_mean"))) for r in rows]
+        los = [r.get("value", {}).get("ci_lower") if isinstance(r.get("value"), dict) else None for r in rows]
+        his = [r.get("value", {}).get("ci_upper") if isinstance(r.get("value"), dict) else None for r in rows]
+    else:                                          # legacy dict format
+        steps = sorted(int(k) for k in per_step.keys())
+        vals = [_mean(per_step[str(s)].get("value", per_step[str(s)].get("value_mean"))) for s in steps]
+        los = his = [None] * len(steps)
+
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.plot(steps, vals, "-o", color="#3b6ea5")
+    ax.plot(steps, vals, "-o", color="#3b6ea5", label="task value (colour-cell acc)")
+    if all(l is not None for l in los):
+        ax.fill_between(steps, los, his, color="#3b6ea5", alpha=0.2)
     ax.set_xlabel("ACT step")
     ax.set_ylabel("task value (colour-cell acc)")
-    ax.set_title("ARC value by reasoning step")
+    ax.set_title("ARC value by reasoning step (policy improvement)")
     ax.grid(alpha=0.3)
     _save(fig, output_dir, "fig_arc_value_by_step")
 

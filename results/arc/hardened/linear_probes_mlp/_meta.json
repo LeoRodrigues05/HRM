@@ -1,0 +1,62 @@
+{
+  "experiment": "arc_mlp_probes",
+  "git_sha": "cec861da1c273257f387ecce5b8a0d7dd35acc50",
+  "git_dirty": true,
+  "timestamp": "2026-06-29T02:56:51",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/arc/arc_linear_probes.py",
+    "--num_puzzles",
+    "500",
+    "--steps",
+    "0,1,2,4,8,15",
+    "--seeds",
+    "0,1,2,3,4",
+    "--epochs",
+    "30",
+    "--positions_per_sample",
+    "128",
+    "--probe_type",
+    "mlp",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/arc/hardened/linear_probes_mlp",
+    "--checkpoint",
+    "checkpoints/arc2-adapted-evalonly/step_7391"
+  ],
+  "params": {
+    "num_puzzles": 500,
+    "n_puzzles_collected": 500,
+    "steps": [
+      0,
+      1,
+      2,
+      4,
+      8,
+      15
+    ],
+    "max_steps": 16,
+    "probe_type": "mlp",
+    "mlp_hidden": 256,
+    "epochs": 30,
+    "lr": 0.001,
+    "val_frac": 0.2,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "streams": [
+      "z_H",
+      "z_L"
+    ],
+    "positions_per_sample": 128,
+    "split": "puzzle_disjoint",
+    "checkpoint": "checkpoints/arc2-adapted-evalonly/step_7391"
+  }
+}
