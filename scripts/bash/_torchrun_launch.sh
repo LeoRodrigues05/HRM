@@ -17,6 +17,10 @@ source scripts/bash/_activate_env.sh
 
 export DISABLE_COMPILE=1
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"
+# wandb defaults to online and will hang/error on compute nodes without internet
+# or a login. Default to offline (metrics saved locally; `wandb sync` later).
+# Override by exporting WANDB_MODE=online before sbatch if your nodes have egress.
+export WANDB_MODE="${WANDB_MODE:-offline}"
 
 NNODES="${SLURM_JOB_NUM_NODES:-1}"
 MASTER="${MASTER_ADDR:-127.0.0.1}"

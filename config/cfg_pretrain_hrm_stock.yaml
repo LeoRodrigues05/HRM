@@ -17,6 +17,9 @@ global_batch_size: 768
 epochs: 20000
 eval_interval: 2000
 checkpoint_every_eval: True
+# Save full state (model+optimizers+step) every N steps so a preempted/requeued
+# job resumes from here instead of restarting (cscc-gpu-qos is preemptible).
+checkpoint_steps: 500
 
 lr: 1e-4
 lr_min_ratio: 1.0
