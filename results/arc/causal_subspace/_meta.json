@@ -1,0 +1,48 @@
+{
+  "experiment": "H2_causal_subspace",
+  "git_sha": "658a38d2af8b1cd543124aa1f966c6061e9e26c0",
+  "git_dirty": true,
+  "timestamp": "2026-06-29T05:04:02",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/causal_subspace.py",
+    "--task",
+    "arc",
+    "--num_puzzles",
+    "500",
+    "--n_pca",
+    "500",
+    "--probe_weights",
+    "results/arc/hardened/linear_probes/probe_weights.pt",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/arc/causal_subspace",
+    "--checkpoint",
+    "checkpoints/arc2-adapted-evalonly/step_7391"
+  ],
+  "params": {
+    "task": "arc",
+    "checkpoint": "checkpoints/arc2-adapted-evalonly/step_7391",
+    "num_puzzles": 500,
+    "n_pca": 500,
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "n_random_bases": 5,
+    "max_steps": 16,
+    "seed": 42,
+    "elapsed_s": 5107.0
+  }
+}

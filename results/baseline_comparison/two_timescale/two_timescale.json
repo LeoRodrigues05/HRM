@@ -1,0 +1,318 @@
+{
+  "hrm": {
+    "mean_rate_H": 0.0,
+    "mean_rate_L": 0.0,
+    "mean_ratio_L_over_H": 0.0,
+    "per_step": {
+      "1": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "2": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "3": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "4": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "5": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "6": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "7": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "8": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "9": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "10": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "11": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "12": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "13": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "14": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      },
+      "15": {
+        "rate_H": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "rate_L": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 300
+        },
+        "ratio_L_over_H": 0.0
+      }
+    }
+  },
+  "ut": {
+    "per_iteration_change_rate": {
+      "1": {
+        "mean": 1.1232653113206228,
+        "ci_lower": 1.1218518810371556,
+        "ci_upper": 1.124691403567791,
+        "std": 0.013044120312234562,
+        "n": 300
+      },
+      "2": {
+        "mean": 0.9626651589075724,
+        "ci_lower": 0.9591905828714371,
+        "ci_upper": 0.9663010990818341,
+        "std": 0.03354245475533748,
+        "n": 300
+      },
+      "3": {
+        "mean": 0.9285737146933873,
+        "ci_lower": 0.9215297057231266,
+        "ci_upper": 0.9349204848110676,
+        "std": 0.05950903299546725,
+        "n": 300
+      },
+      "4": {
+        "mean": 0.6548539907733599,
+        "ci_lower": 0.6452531776428222,
+        "ci_upper": 0.6641319143474101,
+        "std": 0.08239029805026747,
+        "n": 300
+      }
+    },
+    "mean_rates": [
+      1.1232653113206228,
+      0.9626651589075724,
+      0.9285737146933873,
+      0.6548539907733599
+    ],
+    "coeff_of_variation": 0.18361516879528084,
+    "early_late_ratio": 0.7590989863116215,
+    "pca_trajectory": {
+      "pc1_pct": 0.6273395419120789,
+      "n_steps": 16
+    },
+    "num_iterations": 4,
+    "one_step_grad": true
+  },
+  "tag": "ut_1step",
+  "verdict": {
+    "hrm_two_timescale": false,
+    "hrm_L_over_H_ratio": 0.0,
+    "ut_emergent_timescale": false,
+    "ut_cv": 0.18361516879528084,
+    "conclusion": "HRM shows separable H/L timescales (L changes faster); UT does NOT show comparably separable iterations."
+  }
+}

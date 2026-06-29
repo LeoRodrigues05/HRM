@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "tag": "hrm_1step",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "task": "sudoku",
+    "num_puzzles": 300,
+    "probe_steps": [
+      0,
+      4,
+      8,
+      12,
+      15
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "max_steps": 16,
+    "one_step_grad": "unknown",
+    "hidden_size": 512,
+    "elapsed_s": 3064.8
+  },
+  "scorecard": {
+    "probe_decodability": {
+      "mean_val_acc": 0.8639917677640915,
+      "ci": {
+        "mean": 0.8639917677640915,
+        "ci_lower": 0.8536550911664963,
+        "ci_upper": 0.8742790116369726,
+        "std": 0.025060806155523068,
+        "n": 20
+      },
+      "per_target": {
+        "violated_in_row": 0.8820740747451783,
+        "violated_in_col": 0.878098759651184,
+        "violated_in_box": 0.8728888893127442,
+        "per_cell_correct": 0.8229053473472596
+      }
+    },
+    "probe_causal_gap": {
+      "probe_mean_delta": 0.005102880658436214,
+      "probe_ci": {
+        "mean": 0.005102880658436214,
+        "ci_lower": 6.095679012346005e-05,
+        "ci_upper": 0.01014583333333333,
+        "std": 0.08600945122885775,
+        "n": 1200
+      },
+      "random_mean_delta": 0.005374485596707821,
+      "random_ci": {
+        "mean": 0.005374485596707821,
+        "ci_lower": 0.0017522633744856005,
+        "ci_upper": 0.008913991769547325,
+        "std": 0.07147051902359419,
+        "n": 1500
+      },
+      "probe_causal_gap": -0.00027160493827160705
+    },
+    "min_causal_rank": 4,
+    "subspace_linearity": 0.07425881836719694,
+    "delta_full": -0.18098765432098765,
+    "baseline_mean": 0.807119341563786,
+    "h2_r_star": {
+      "half": {
+        "pca_top": 4,
+        "pca_bottom": 512,
+        "random": 512,
+        "probe_sae": 5
+      },
+      "ninety": {
+        "pca_top": 4,
+        "pca_bottom": 512,
+        "random": 512,
+        "probe_sae": 5
+      }
+    },
+    "h2_alignment": {
+      "r_star": 4,
+      "probe_sae_energy": 0.0003791518392972648,
+      "principal_angles_cos": [
+        0.03643333539366722,
+        0.018867172300815582,
+        0.013348642736673355,
+        0.00584933627396822
+      ],
+      "random_control_energy_mean": 0.00767461434006691,
+      "random_control_energy_std": 0.001976833038363749
+    }
+  }
+}

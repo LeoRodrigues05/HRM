@@ -1,0 +1,33 @@
+{
+  "experiment": "maze_directed_ablation",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-20T16:48:00",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/maze/directed_ablation_maze.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint",
+    "--num_puzzles",
+    "500",
+    "--z_level",
+    "H",
+    "--probe_weights",
+    "results/maze/hardened/probe_geometry/probe_weights.pt",
+    "--output_dir",
+    "results/maze/hardened/directed_ablation/zH",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "num_puzzles": 500,
+    "z_level": "H",
+    "max_steps": 16,
+    "probe_weights": "results/maze/hardened/probe_geometry/probe_weights.pt",
+    "n_random_controls": 10,
+    "seed": 42,
+    "metric": "valid_sg_path"
+  }
+}

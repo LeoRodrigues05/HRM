@@ -1,0 +1,24 @@
+{
+  "experiment": "H4_two_timescale_baseline",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T17:37:48",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/two_timescale_baseline.py",
+    "--tag",
+    "ut_1step",
+    "--num_puzzles",
+    "300",
+    "--output_dir",
+    "results/baseline_comparison/two_timescale",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "tag": "ut_1step",
+    "num_puzzles": 300
+  }
+}

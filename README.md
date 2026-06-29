@@ -88,7 +88,7 @@ huggingface-cli download sapientinc/HRM-checkpoint-sudoku-extreme \
 huggingface-cli download sapientinc/HRM-checkpoint-maze-30x30-hard \
     --local-dir checkpoints/sapientinc-hrm-maze-30x30-hard
 huggingface-cli download sapientinc/HRM-checkpoint-ARC-2 \
-    --local-dir checkpoints/sapientinc-arc-2          # only if you want ARC results
+    --local-dir checkpoints/sapientinc-hrm-arc-2     # only if you want ARC results
 ```
 
 Datasets are reproducible from source:
@@ -97,7 +97,9 @@ Datasets are reproducible from source:
 python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000 \
     --subsample-size 1000 --num-aug 1000              # used by every interpretability script
 python dataset/build_maze_dataset.py                  # for maze MI experiments
-python dataset/build_arc_dataset.py                   # ARC-1 / ARC-2 (requires submodules)
+python dataset/build_arc_dataset.py                   # ARC-1 (default dirs); requires submodules
+# ARC-2 is built by the ARC wrapper scripts directly (explicit ARC-AGI-2 paths) —
+# see docs/PLAN_ARC_path_A_embedding_adaptation.md; no manual build needed.
 ```
 
 You can re-train HRM (and the four baselines) yourself instead — exact commands
