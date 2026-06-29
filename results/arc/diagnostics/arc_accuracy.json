@@ -1,13 +1,13 @@
 {
-  "token_acc": 0.42828473471034106,
-  "exact_solved": 0.0,
-  "colour_cell_acc": 0.4755722639933166,
-  "eos_acc": 0.10708874458874458,
+  "token_acc": 0.9088122605363985,
+  "exact_solved": 0.02,
+  "colour_cell_acc": 0.9020576131687242,
+  "eos_acc": 1.0,
   "background_acc": 0.0,
   "shape_correct": 0.0,
-  "height_correct": 0.0,
+  "height_correct": 0.13,
   "width_correct": 0.0,
-  "num_colours_correct": 0.66,
-  "colour_iou": 0.0749963100187236,
+  "num_colours_correct": 0.01,
+  "colour_iou": 0.7631368298926959,
   "n_puzzles": 100
 }

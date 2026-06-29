@@ -202,6 +202,9 @@ def main():
     maze_data = _load(os.path.join(
         args.results_root, "maze", "policy_decomposition", "aggregate.json"
     ))
+    arc_data = _load(os.path.join(
+        args.results_root, "arc", "policy_decomposition", "aggregate.json"
+    ))
     ts_data = _load(os.path.join(
         args.results_root, "baseline_comparison", "two_timescale", "two_timescale.json"
     ))
@@ -226,6 +229,15 @@ def main():
         fig_decomposition(
             maze_data, os.path.join(outdir, "fig_h4_decomp_maze_all.png"), "maze", "all"
         )
+
+    if arc_data:
+        for split in ["all", "solved", "failed"]:
+            fig_decomposition(
+                arc_data, os.path.join(outdir, f"fig_h4_decomp_arc_{split}.pdf"), "arc", split
+            )
+            fig_decomposition(
+                arc_data, os.path.join(outdir, f"fig_h4_decomp_arc_{split}.png"), "arc", split
+            )
 
     if ts_data:
         fig_two_timescale(ts_data, os.path.join(outdir, "fig_h4_two_timescale.pdf"))

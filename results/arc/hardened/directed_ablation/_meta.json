@@ -1,0 +1,33 @@
+{
+  "experiment": "arc_directed_ablation",
+  "git_sha": "658a38d2af8b1cd543124aa1f966c6061e9e26c0",
+  "git_dirty": true,
+  "timestamp": "2026-06-29T03:17:56",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/arc/directed_ablation_arc.py",
+    "--num_puzzles",
+    "500",
+    "--z_level",
+    "H",
+    "--probe_weights",
+    "results/arc/hardened/linear_probes/probe_weights.pt",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/arc/hardened/directed_ablation",
+    "--checkpoint",
+    "checkpoints/arc2-adapted-evalonly/step_7391"
+  ],
+  "params": {
+    "num_puzzles": 500,
+    "z_level": "H",
+    "max_steps": 16,
+    "probe_weights": "results/arc/hardened/linear_probes/probe_weights.pt",
+    "n_random_controls": 10,
+    "seed": 42,
+    "metric": "colour_cell_acc"
+  }
+}

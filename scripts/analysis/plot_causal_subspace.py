@@ -118,16 +118,18 @@ def fig_alignment_bar(results: dict, output_path: str, task: str):
 
 def main():
     parser = argparse.ArgumentParser(description="H2 figures")
-    parser.add_argument("--task", choices=["sudoku", "maze"], default="sudoku")
+    parser.add_argument("--task", choices=["sudoku", "maze", "arc"], default="sudoku")
     parser.add_argument("--input_dir", default=None)
     parser.add_argument("--outdir", default=None)
     args = parser.parse_args()
 
     if args.input_dir is None:
-        if args.task == "sudoku":
-            args.input_dir = os.path.join(REPO_ROOT, "results", "controlled", "causal_subspace")
-        else:
-            args.input_dir = os.path.join(REPO_ROOT, "results", "maze", "causal_subspace")
+        _default_in = {
+            "sudoku": os.path.join(REPO_ROOT, "results", "controlled", "causal_subspace"),
+            "maze": os.path.join(REPO_ROOT, "results", "maze", "causal_subspace"),
+            "arc": os.path.join(REPO_ROOT, "results", "arc", "causal_subspace"),
+        }
+        args.input_dir = _default_in[args.task]
 
     outdir = args.outdir or os.path.join(REPO_ROOT, "results", "reports", "causal_subspace_figures")
     os.makedirs(outdir, exist_ok=True)

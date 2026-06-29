@@ -1,0 +1,19 @@
+{
+  "alignment": {
+    "r_star": 4,
+    "random_control_energy_mean": 0.008450795244425536,
+    "random_control_energy_std": 0.001614611549551968
+  },
+  "r_star": {
+    "half": {
+      "pca_top": 4,
+      "pca_bottom": 512,
+      "random": 512
+    },
+    "ninety": {
+      "pca_top": 4,
+      "pca_bottom": 512,
+      "random": 512
+    }
+  }
+}

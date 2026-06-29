@@ -1,0 +1,13 @@
+{
+  "token_acc": 0.89610472541507,
+  "exact_solved": 0.016666666666666666,
+  "colour_cell_acc": 0.8884087791495199,
+  "eos_acc": 1.0,
+  "background_acc": 0.0,
+  "shape_correct": 0.0,
+  "height_correct": 0.15,
+  "width_correct": 0.0,
+  "num_colours_correct": 0.0,
+  "colour_iou": 0.7499550218208715,
+  "n_puzzles": 60
+}
