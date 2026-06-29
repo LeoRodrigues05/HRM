@@ -27,7 +27,10 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 from models.sae import SparseAutoencoder, TopKSparseAutoencoder
-from models.hrm.hrm_act_v1 import HierarchicalReasoningModel_ACTV1_Inner
+from models.hrm.hrm_act_v1 import (
+    HierarchicalReasoningModel_ACTV1_Inner,
+    HierarchicalReasoningModel_ACTV1Config,
+)
 from scripts.core.activation_ablation import _patch_attention_for_cpu
 
 
@@ -89,7 +92,8 @@ def _make_inner(one_step_grad, device):
         forward_dtype="float32",  # float32 so attention runs on CPU/GPU without flash-attn
     )
     torch.manual_seed(123)
-    inner = HierarchicalReasoningModel_ACTV1_Inner(cfg).to(device)
+    inner = HierarchicalReasoningModel_ACTV1_Inner(
+        HierarchicalReasoningModel_ACTV1Config(**cfg)).to(device)
     # flash_attn is CUDA/fp16-only; swap in SDPA so this runs in float32 anywhere.
     _patch_attention_for_cpu(inner)
     return inner
