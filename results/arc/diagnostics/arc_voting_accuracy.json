@@ -1,0 +1,11 @@
+{
+  "pass@1": 0.0,
+  "pass@2": 0.0,
+  "pass@10": 0.0,
+  "pass@100": 0.0,
+  "pass@1000": 0.0,
+  "n_puzzles": 120,
+  "dump_files": [
+    "checkpoints/arc2-adapted-evalonly/step_7391_all_preds.0"
+  ]
+}

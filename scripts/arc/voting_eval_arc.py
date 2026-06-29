@@ -59,10 +59,16 @@ def load_identifiers_and_preds(dataset_path: str, checkpoint_path: str):
             f"No prediction dump found at {checkpoint_path}_all_preds.* — run evaluate.py first "
             f"(see this file's docstring)."
         )
+    # evaluate() always records an "intermediate_preds" tensor of shape
+    # [steps, N, seq] (a leading ACT-step axis) alongside the per-example tensors,
+    # because "intermediate_preds_step" is always requested. Voting never uses it
+    # and its leading dim breaks the per-example mask, so keep only what we need.
+    NEEDED = ("puzzle_identifiers", "inputs", "labels", "logits", "q_halt_logits")
     for filename in files:
         preds = torch.load(filename, map_location="cpu")
         for k, v in preds.items():
-            all_preds.setdefault(k, []).append(v)
+            if k in NEEDED:
+                all_preds.setdefault(k, []).append(v)
         del preds
     all_preds = {k: torch.cat(v, dim=0) for k, v in all_preds.items()}
 
