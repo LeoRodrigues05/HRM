@@ -1,0 +1,11 @@
+{
+  "geometry_stats": {
+    "mean_pairwise_cosine": -0.00026309513486921787,
+    "max_pairwise_cosine": 0.32649239897727966,
+    "std_pairwise_cosine": 0.04200780764222145,
+    "median_pairwise_cosine": -0.00027043698355555534,
+    "frac_above_0.5": 0.0,
+    "frac_above_0.9": 0.0
+  },
+  "probe_comparison": {}
+}

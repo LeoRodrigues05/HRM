@@ -12,9 +12,10 @@
 # Knobs (env vars):
 #   ENV_NAME=hrm     # conda env name
 #   PYVER=3.10       # python version
-#   CU=cu121         # PyTorch CUDA wheel tag. cu121 matches the cluster's
-#                    # driver 535 / CUDA 12.2 (see the CIAI nvidia-smi output).
-#   SKIP_FA=1        # skip FlashAttention install
+#   CU=cu124         # PyTorch CUDA wheel tag. cu124 runs on the cluster's
+#                    # driver 535 via CUDA-12 minor-version compatibility, and
+#                    # matches the prebuilt flash-attn wheel below.
+#   SKIP_FA=1        # skip FlashAttention install (SDPA fallback is used instead)
 #   SKIP_DATA=1      # skip dataset build
 set -eo pipefail
 
@@ -22,12 +23,32 @@ cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 ENV_NAME="${ENV_NAME:-hrm}"
 PYVER="${PYVER:-3.10}"
-CU="${CU:-cu121}"
+CU="${CU:-cu124}"
+TORCH_VER="${TORCH_VER:-2.5.1}"
+TV_VER="${TV_VER:-0.20.1}"
+# Prebuilt flash-attn wheel matched to torch 2.5 / CUDA 12 / cp310 / cxx11abiFALSE.
+# Building from source needs nvcc (not available on login nodes), so we use the
+# official prebuilt wheel. Must stay consistent with TORCH_VER/CU/PYVER above.
+FA_WHEEL_URL="${FA_WHEEL_URL:-https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.5cxx11abiFALSE-cp310-cp310-linux_x86_64.whl}"
+
+# Make conda available even when it is not on PATH (CIAI hides it behind
+# `module load anaconda3` at /apps/local/anaconda3).
+if ! command -v conda >/dev/null 2>&1; then
+    for _init in /usr/share/lmod/lmod/init/bash /etc/profile.d/modules.sh \
+                 /usr/share/Modules/init/bash; do
+        [ -f "${_init}" ] && source "${_init}" 2>/dev/null && break
+    done
+    command -v module >/dev/null 2>&1 && { module load anaconda3 2>/dev/null || true; }
+    if ! command -v conda >/dev/null 2>&1 && [ -x /apps/local/anaconda3/bin/conda ]; then
+        export PATH="/apps/local/anaconda3/bin:$PATH"
+    fi
+fi
 
 if ! command -v conda >/dev/null 2>&1; then
-    echo "ERROR: conda not found on PATH. Load/install miniconda first." >&2
+    echo "ERROR: conda still not found. Try 'module load anaconda3' manually, then re-run." >&2
     exit 1
 fi
+echo "Using conda: $(command -v conda) ($(conda --version 2>&1))"
 
 eval "$(conda shell.bash hook)"
 
@@ -44,10 +65,12 @@ echo "Using python: $(command -v python)"
 
 python -m pip install --upgrade pip
 
-# 2) PyTorch with CUDA wheels matched to the cluster driver (535 / CUDA 12.2)
-echo "Installing torch (${CU}) ..."
+# 2) PyTorch (force the exact CUDA build). Pinning the +${CU} local version makes
+#    pip switch builds even if a different torch ${TORCH_VER} is already present
+#    (a plain `torch==2.5.1` is considered "already satisfied" by +cu118).
+echo "Installing torch ${TORCH_VER}+${CU} ..."
 python -m pip install --index-url "https://download.pytorch.org/whl/${CU}" \
-    torch torchvision torchaudio
+    "torch==${TORCH_VER}+${CU}" "torchvision==${TV_VER}+${CU}" "torchaudio==${TORCH_VER}+${CU}"
 
 # 3) Build helpers (needed by flash-attn) + project requirements
 python -m pip install packaging ninja wheel setuptools setuptools-scm psutil
@@ -57,17 +80,29 @@ python -m pip install -r requirements.txt
 #    (requirements.txt's `adam-atan2` is a DIFFERENT module and is not enough).
 python -m pip install adam-atan2-pytorch
 
-# 5) FlashAttention (imported by models/layers.py; not in requirements.txt)
+# 5) FlashAttention — install the prebuilt wheel (no nvcc needed). If it fails
+#    for any reason the model still runs via the built-in PyTorch SDPA fallback,
+#    so this step never blocks setup. Set SKIP_FA=1 to skip entirely.
 if [ "${SKIP_FA:-0}" != "1" ]; then
-    echo "Installing flash-attn (this can take a while) ..."
-    python -m pip install flash-attn --no-build-isolation
+    echo "Installing prebuilt flash-attn wheel ..."
+    python -m pip install "${FA_WHEEL_URL}" \
+        || python -m pip install flash-attn --no-build-isolation \
+        || echo "WARN: flash-attn install failed — continuing with SDPA fallback."
 fi
 
-# 6) Quick import smoke test
+# 6) Quick import smoke test (flash_attn is optional)
 python - <<'PY'
-import torch, flash_attn, adam_atan2_pytorch, hydra, omegaconf, pydantic, wandb, coolname
+import torch, adam_atan2_pytorch, hydra, omegaconf, pydantic, wandb, coolname
 print("torch", torch.__version__, "cuda_available", torch.cuda.is_available())
-print("flash_attn", getattr(flash_attn, "__version__", "?"))
+try:
+    import flash_attn
+    print("flash_attn", getattr(flash_attn, "__version__", "?"))
+except Exception:
+    print("flash_attn: NOT installed -> using PyTorch SDPA fallback")
+# Verify the model imports and attention path resolves either way.
+from models.layers import _HAS_FLASH_ATTN
+print("Attention backend:", "flash-attn" if _HAS_FLASH_ATTN else "SDPA fallback")
+import models.hrm.hrm_act_v1  # must import cleanly
 print("imports OK")
 PY
 

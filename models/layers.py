@@ -6,9 +6,18 @@ import torch.nn.functional as F
 
 try:
     from flash_attn_interface import flash_attn_func  # type: ignore[import]
+    _HAS_FLASH_ATTN = True
 except ImportError:
-    # Fallback to FlashAttention 2
-    from flash_attn import flash_attn_func  # type: ignore[import]
+    try:
+        # Fallback to FlashAttention 2
+        from flash_attn import flash_attn_func  # type: ignore[import]
+        _HAS_FLASH_ATTN = True
+    except ImportError:
+        # No flash-attn available — Attention falls back to PyTorch SDPA, which
+        # uses flash / memory-efficient kernels natively on Ampere+ for fp16/bf16.
+        # Same attention math; removes the fragile flash-attn build dependency.
+        flash_attn_func = None  # type: ignore[assignment]
+        _HAS_FLASH_ATTN = False
 
 from models.common import trunc_normal_init_
 
@@ -126,10 +135,25 @@ class Attention(nn.Module):
             cos, sin = cos_sin
             query, key = apply_rotary_pos_emb(query, key, cos, sin)
 
-        # flash attn
-        attn_output = flash_attn_func(q=query, k=key, v=value, causal=self.causal)
-        if isinstance(attn_output, tuple):  # fa2 and fa3 compatibility
-            attn_output = attn_output[0]
+        # Attention
+        if _HAS_FLASH_ATTN:
+            attn_output = flash_attn_func(q=query, k=key, v=value, causal=self.causal)
+            if isinstance(attn_output, tuple):  # fa2 and fa3 compatibility
+                attn_output = attn_output[0]
+        else:
+            # PyTorch SDPA fallback (no flash-attn needed). SDPA wants [B, H, S, D];
+            # flash_attn uses [B, S, H, D]. On Ampere+ with fp16/bf16 this dispatches
+            # to flash / mem-efficient kernels. Cast to float only on CPU.
+            q = query.transpose(1, 2)
+            k = key.transpose(1, 2)
+            v = value.transpose(1, 2)
+            if not q.is_cuda:
+                q, k, v = q.float(), k.float(), v.float()
+            attn_output = F.scaled_dot_product_attention(
+                q, k, v, is_causal=self.causal,
+                enable_gqa=(self.num_heads != self.num_key_value_heads),
+            )
+            attn_output = attn_output.transpose(1, 2).to(query.dtype)
 
         attn_output = attn_output.view(batch_size, seq_len, self.output_size)  # type: ignore
         return self.o_proj(attn_output)
