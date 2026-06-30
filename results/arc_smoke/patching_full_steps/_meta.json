@@ -1,0 +1,37 @@
+{
+  "experiment": "arc_patching",
+  "git_sha": "3bc8c8daac914cb8c8ccac402d089683a9e7d4ad",
+  "git_dirty": true,
+  "timestamp": "2026-06-30T03:20:52",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/arc/patching_arc.py",
+    "--num_pairs",
+    "4",
+    "--patch_levels",
+    "H,L",
+    "--patch_steps",
+    "0,8,15",
+    "--output_dir",
+    "results/arc_smoke/patching_full_steps"
+  ],
+  "params": {
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/arc2-adapted-evalonly/step_7391",
+    "num_pairs": 4,
+    "max_steps": 16,
+    "patch_levels": [
+      "H",
+      "L"
+    ],
+    "patch_steps": [
+      0,
+      8,
+      15
+    ],
+    "seed": 42,
+    "primary_metric": "colour_cell_acc",
+    "n_positions": 900
+  }
+}

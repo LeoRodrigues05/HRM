@@ -1,0 +1,510 @@
+{
+  "task": "arc",
+  "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/arc2-adapted-evalonly/step_7391",
+  "num_puzzles": 8,
+  "max_steps": 16,
+  "primary_metric": "colour_cell_acc",
+  "freeze_steps": [
+    0,
+    8,
+    15
+  ],
+  "baseline_accuracy": {
+    "mean": 0.862482853223594,
+    "ci_lower": 0.7266075102880659,
+    "ci_upper": 0.9499356995884773,
+    "std": 0.17594263738990829,
+    "n": 8
+  },
+  "baseline_arc_metrics": {},
+  "freeze_H": {
+    "0": {
+      "delta_accuracy": {
+        "mean": 0.024348422496570633,
+        "ci_lower": -0.011831275720164597,
+        "ci_upper": 0.08950617283950618,
+        "std": 0.08447567833438074,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 0.022669220945083016,
+          "ci_lower": -0.011015325670498066,
+          "ci_upper": 0.0833333333333333,
+          "std": 0.07864976948373374,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": 0.024348422496570633,
+          "ci_lower": -0.011831275720164597,
+          "ci_upper": 0.08950617283950618,
+          "std": 0.08447567833438074,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.375,
+          "std": 0.33071891388307384,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": 0.0009428435452230773,
+          "ci_lower": -0.03331142495052415,
+          "ci_upper": 0.05321621089839168,
+          "std": 0.06786925983056266,
+          "n": 8
+        }
+      }
+    },
+    "8": {
+      "delta_accuracy": {
+        "mean": 0.011145404663923185,
+        "ci_lower": -0.00034293552812071637,
+        "ci_upper": 0.03309327846364884,
+        "std": 0.028489976585565447,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 0.010376756066411252,
+          "ci_lower": -0.0003192848020434069,
+          "ci_upper": 0.03081098339719031,
+          "std": 0.026525150614147144,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": 0.011145404663923185,
+          "ci_lower": -0.00034293552812071637,
+          "ci_upper": 0.03309327846364884,
+          "std": 0.028489976585565447,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": 0.006734026268148185,
+          "ci_lower": -0.0010884148521129733,
+          "ci_upper": 0.019717232923295556,
+          "std": 0.016111384984911135,
+          "n": 8
+        }
+      }
+    },
+    "15": {
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        }
+      }
+    }
+  },
+  "freeze_L": {
+    "0": {
+      "delta_accuracy": {
+        "mean": 0.003600823045267508,
+        "ci_lower": -0.001543209876543189,
+        "ci_upper": 0.013031550068587132,
+        "std": 0.012171795969767705,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 0.003352490421455946,
+          "ci_lower": -0.0014367816091953867,
+          "ci_upper": 0.012132822477650067,
+          "std": 0.011332361764956115,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": 0.003600823045267508,
+          "ci_lower": -0.001543209876543189,
+          "ci_upper": 0.013031550068587132,
+          "std": 0.012171795969767705,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.125,
+          "ci_lower": 0.0,
+          "ci_upper": 0.375,
+          "std": 0.33071891388307384,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": 0.0006949553713388422,
+          "ci_lower": -0.0036999029657857896,
+          "ci_upper": 0.00721129054930816,
+          "std": 0.008005784028254758,
+          "n": 8
+        }
+      }
+    },
+    "8": {
+      "delta_accuracy": {
+        "mean": -6.938893903907228e-18,
+        "ci_lower": -0.0005144032921810954,
+        "ci_upper": 0.0005144032921810746,
+        "std": 0.0006858710562414466,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 6.938893903907228e-18,
+          "ci_lower": -0.00047892720306510345,
+          "ci_upper": 0.0004789272030651312,
+          "std": 0.0006385696040868277,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": -6.938893903907228e-18,
+          "ci_lower": -0.0005144032921810954,
+          "ci_upper": 0.0005144032921810746,
+          "std": 0.0006858710562414466,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": -0.00041779274868460406,
+          "ci_lower": -0.001549586776859499,
+          "ci_upper": 0.0002962085308056868,
+          "std": 0.0014275352633993578,
+          "n": 8
+        }
+      }
+    },
+    "15": {
+      "delta_accuracy": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 8
+      },
+      "arc_metric_deltas": {
+        "token_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "exact_solved": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_cell_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "eos_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "background_acc": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "shape_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "height_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "width_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "num_colours_correct": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        },
+        "colour_iou": {
+          "mean": 0.0,
+          "ci_lower": 0.0,
+          "ci_upper": 0.0,
+          "std": 0.0,
+          "n": 8
+        }
+      }
+    }
+  }
+}
