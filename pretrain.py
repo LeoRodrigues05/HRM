@@ -72,6 +72,11 @@ class PretrainConfig(pydantic.BaseModel):
     eval_interval: Optional[int] = None
     eval_save_outputs: List[str] = []
 
+    # Preemption resilience: save a full-state checkpoint (model + optimizers +
+    # step) every N optimizer steps so a preempted/requeued job resumes from the
+    # latest one instead of restarting. 0 disables (only the per-eval save).
+    checkpoint_steps: int = 0
+
 
 @dataclass
 class TrainState:
@@ -220,6 +225,48 @@ def save_train_state(config: PretrainConfig, train_state: TrainState):
 
     os.makedirs(config.checkpoint_path, exist_ok=True)
     torch.save(train_state.model.state_dict(), os.path.join(config.checkpoint_path, f"step_{train_state.step}"))
+
+
+def _latest_ckpt_path(config: PretrainConfig) -> str:
+    return os.path.join(config.checkpoint_path, "latest.pt")
+
+
+def save_full_state(config: PretrainConfig, train_state: TrainState):
+    """Atomically save full training state (step + model + optimizers) for resume.
+
+    Written by rank 0 only. Atomic via tmp-file + os.replace so a preemption
+    mid-write can never corrupt latest.pt.
+    """
+    if config.checkpoint_path is None:
+        return
+    os.makedirs(config.checkpoint_path, exist_ok=True)
+    payload = {
+        "step": train_state.step,
+        "model": train_state.model.state_dict(),
+        "optimizers": [opt.state_dict() for opt in train_state.optimizers],
+    }
+    path = _latest_ckpt_path(config)
+    tmp = path + ".tmp"
+    torch.save(payload, tmp)
+    os.replace(tmp, path)
+
+
+def try_resume(config: PretrainConfig, train_state: TrainState) -> int:
+    """Load latest.pt into train_state if present. Returns the resumed step (0 if none)."""
+    if config.checkpoint_path is None:
+        return 0
+    path = _latest_ckpt_path(config)
+    if not os.path.exists(path):
+        return 0
+    ckpt = torch.load(path, map_location="cpu", weights_only=False)
+    train_state.model.load_state_dict(ckpt["model"])
+    try:
+        for opt, sd in zip(train_state.optimizers, ckpt.get("optimizers", [])):
+            opt.load_state_dict(sd)
+    except Exception as e:
+        print(f"[resume] WARNING: could not restore optimizer state ({e}); continuing with fresh optimizer state.")
+    train_state.step = int(ckpt["step"])
+    return train_state.step
 
 
 def compute_lr(base_lr: float, config: PretrainConfig, train_state: TrainState):
@@ -459,23 +506,50 @@ def launch(hydra_config: DictConfig):
         wandb.log({"num_params": sum(x.numel() for x in train_state.model.parameters())}, step=0)
         save_code_and_config(config)
 
+    # Resume from latest full-state checkpoint if one exists (all ranks read the
+    # shared file). Then fast-forward the deterministic dataloader past the steps
+    # already done so data order continues exactly where it stopped.
+    resume_step = try_resume(config, train_state)
+    if resume_step > 0:
+        print(f"[Rank {RANK}] resuming from step {resume_step}/{train_state.total_steps}")
+        if RANK == 0:
+            progress_bar.update(resume_step)  # type: ignore
+    processed = 0  # train batches consumed (for fast-forward alignment)
+
     # Training Loop
     for _iter_id in range(total_iters):
         print (f"[Rank {RANK}, World Size {WORLD_SIZE}]: Epoch {_iter_id * train_epochs_per_iter}")
 
         ############ Train Iter
         train_state.model.train()
+        block_has_real = False
         for set_name, batch, global_batch_size in train_loader:
+            # Fast-forward: skip batches already completed before the resume point.
+            if processed < resume_step:
+                processed += 1
+                continue
+            processed += 1
+            block_has_real = True
+
             metrics = train_batch(config, train_state, batch, global_batch_size, rank=RANK, world_size=WORLD_SIZE)
 
             if RANK == 0 and metrics is not None:
                 wandb.log(metrics, step=train_state.step)
                 progress_bar.update(train_state.step - progress_bar.n)  # type: ignore
 
+            # Periodic full-state checkpoint for preemption resilience.
+            if RANK == 0 and config.checkpoint_steps and (train_state.step % config.checkpoint_steps == 0):
+                save_full_state(config, train_state)
+
+        # If this whole block was skipped during fast-forward, don't eval/save.
+        if not block_has_real:
+            continue
+
         ############ Checkpointing (save BEFORE eval so the checkpoint is never gated by
         ############ the cost of evaluate(); eval is read-only and does not change weights).
         if RANK == 0 and (config.checkpoint_every_eval or (_iter_id == total_iters - 1)):
-            save_train_state(config, train_state)
+            save_train_state(config, train_state)   # model-only step_<N> (for downstream collection)
+            save_full_state(config, train_state)    # full state (for resume)
 
         ############ Evaluation (optionally skipped). The full augmented eval set can be
         ############ ~165k examples × halt_max_steps forward passes = hours; set

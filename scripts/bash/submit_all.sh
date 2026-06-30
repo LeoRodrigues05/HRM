@@ -2,10 +2,10 @@
 # Submit the full pipeline to the CIAI cluster, in the recommended order, with
 # Slurm dependencies so each stage waits for the previous one.
 #
-#   prep  (1 GPU)  : sanity checks + build dataset
-#     -> stock (1 node / 4 GPU)   \  run concurrently (4 + 8 = 12 GPUs, the cap)
-#     -> bptt  (2 nodes / 8 GPU)  /
-#       -> post (1 GPU) : collect activations + SAE A/B (baseline vs mean-centered)
+#   prep  (1 GPU)        : sanity checks + GPU flash-attn check + build dataset
+#     -> stock (1 node / 4 GPU)
+#       -> bptt (1 node / 4 GPU)   # SEQUENTIAL: cscc-gpu-qos caps a user at 4 GPUs
+#         -> post (1 GPU) : collect activations + SAE A/B (baseline vs mean-centered)
 #
 # Run this on the LOGIN node (it only calls sbatch):
 #   bash scripts/bash/submit_all.sh
@@ -27,8 +27,9 @@ echo "  prep   : ${PREP}"
 STOCK=$(sbatch --parsable --dependency=afterok:${PREP} scripts/bash/train_hrm_stock.sh)
 echo "  stock  : ${STOCK}  (after ${PREP})"
 
-BPTT=$(sbatch --parsable --dependency=afterok:${PREP} scripts/bash/train_hrm_bptt.sh)
-echo "  bptt   : ${BPTT}  (after ${PREP})"
+# BPTT runs AFTER stock — the 4-GPU/user cap prevents concurrent 4+4 GPU jobs.
+BPTT=$(sbatch --parsable --dependency=afterok:${STOCK} scripts/bash/train_hrm_bptt.sh)
+echo "  bptt   : ${BPTT}  (after ${STOCK})"
 
 POST=$(sbatch --parsable --dependency=afterok:${STOCK}:${BPTT} scripts/bash/post_collect_and_sae_ab.sh)
 echo "  post   : ${POST}  (after ${STOCK} & ${BPTT})"

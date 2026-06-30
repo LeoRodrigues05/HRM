@@ -51,6 +51,7 @@ if REPO_ROOT not in sys.path:
 import yaml
 from pretrain import PretrainConfig, create_dataloader
 from utils.functions import load_model_class
+from scripts.sae.sae_collect_activations import _resolve_checkpoint_file
 from models.hrm.hrm_act_v1 import (
     HierarchicalReasoningModel_ACTV1,
     HierarchicalReasoningModel_ACTV1InnerCarry,
@@ -115,8 +116,20 @@ def cell_accuracy(preds_tok, targets_tok):
 # Model loading
 # ═══════════════════════════════════════════════════════════════════════════
 
-def load_model_and_data(device: torch.device):
-    ckpt_dir = os.path.join(REPO_ROOT, "checkpoints", "sapientinc-sudoku-extreme")
+def load_model_and_data(device: torch.device,
+                        ckpt_dir: Optional[str] = None,
+                        ckpt_file: Optional[str] = None):
+    """Load checkpoint and test loader.
+
+    Args:
+        ckpt_dir: checkpoint directory. Defaults to the bundled sapientinc model.
+            Pass e.g. checkpoints/bptt_study/hrm_bptt to ablate a model trained
+            here (so the SAE is tested against the model it was fit on).
+        ckpt_file: weights filename inside ckpt_dir. If None, auto-resolves to
+            checkpoint.pt or the latest pretrain.py-style step_<N> snapshot.
+    """
+    if ckpt_dir is None:
+        ckpt_dir = os.path.join(REPO_ROOT, "checkpoints", "sapientinc-sudoku-extreme")
     config_path = os.path.join(ckpt_dir, "config.yaml")
     if os.path.exists(os.path.join(ckpt_dir, "all_config.yaml")):
         config_path = os.path.join(ckpt_dir, "all_config.yaml")
@@ -140,8 +153,9 @@ def load_model_and_data(device: torch.device):
         model_raw = model_cls(model_cfg)
         model_full = loss_cls(model_raw, **config.arch.loss.__pydantic_extra__)
 
-    ckpt = torch.load(os.path.join(ckpt_dir, "checkpoint.pt"),
-                      map_location=device, weights_only=False)
+    weights_path = _resolve_checkpoint_file(ckpt_dir, ckpt_file)
+    logger.info(f"Loading weights from {weights_path}")
+    ckpt = torch.load(weights_path, map_location=device, weights_only=False)
     mk = set(model_full.state_dict().keys())
     ck = set(ckpt.keys())
     if any(k.startswith("_orig_mod.") for k in mk) and not any(
@@ -704,6 +718,12 @@ def compute_aggregate(results: List[Dict[str, Any]]) -> Dict[str, Any]:
 def main():
     parser = argparse.ArgumentParser(description="SAE E10: Causal validation")
     parser.add_argument("--sae_path", type=str, required=True)
+    parser.add_argument("--checkpoint_dir", type=str, default=None,
+                        help="HRM checkpoint dir to ablate (default: bundled sapientinc). "
+                             "Use the SAE's own model, e.g. checkpoints/bptt_study/hrm_bptt")
+    parser.add_argument("--checkpoint_file", type=str, default=None,
+                        help="Weights filename inside checkpoint_dir "
+                             "(default: checkpoint.pt or latest step_<N>)")
     parser.add_argument("--activations_path", type=str,
                         default="results/sae_study/activations_zH.pt")
     parser.add_argument("--probe_weights_path", type=str,
@@ -754,8 +774,9 @@ def main():
         sae, args.activations_path, top_k=args.top_k, device=device,
     )
 
-    # Load model
-    model, test_loader, test_meta = load_model_and_data(device)
+    # Load model (the SAE's own HRM, so ablation is tested on the right model)
+    model, test_loader, test_meta = load_model_and_data(
+        device, ckpt_dir=args.checkpoint_dir, ckpt_file=args.checkpoint_file)
     logger.info("Model loaded.")
 
     # Run experiment
@@ -803,6 +824,7 @@ def main():
         from scripts.core.provenance import write_meta
         write_meta(args.output_dir, "sae_causal_ablation", {
             "sae_path": args.sae_path,
+            "checkpoint_dir": args.checkpoint_dir,
             "activations_path": args.activations_path,
             "probe_weights_path": args.probe_weights_path,
             "n_puzzles": args.n_puzzles,

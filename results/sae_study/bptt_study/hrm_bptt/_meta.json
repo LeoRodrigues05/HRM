@@ -1,0 +1,39 @@
+{
+  "experiment": "sae_sweep",
+  "git_sha": "9f0c3f327a5b7ae73a4271ca48a89966009b5d33",
+  "git_dirty": true,
+  "timestamp": "2026-06-29T18:54:49",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.80-ql-generic-14-8-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA A100-SXM4-40GB",
+  "argv": [
+    "scripts/sae/sae_sweep.py",
+    "--compare_centering",
+    "--activations_path",
+    "results/sae_study/bptt_study/hrm_bptt/activations_zH.pt",
+    "--output_dir",
+    "results/sae_study/bptt_study/hrm_bptt",
+    "--dict_sizes",
+    "1024,2048,4096",
+    "--l1_coeffs",
+    "0.003,0.01,0.03"
+  ],
+  "params": {
+    "dict_sizes": [
+      1024,
+      2048,
+      4096
+    ],
+    "l1_coeffs": [
+      0.003,
+      0.01,
+      0.03
+    ],
+    "activation_level": "z_H",
+    "lr": 0.0003,
+    "batch_size": 4096,
+    "epochs": 50,
+    "seed": 42,
+    "activations_path": "results/sae_study/bptt_study/hrm_bptt/activations_zH.pt"
+  }
+}

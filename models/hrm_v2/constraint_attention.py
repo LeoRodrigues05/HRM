@@ -26,7 +26,13 @@ import torch.nn.functional as F
 try:
     from flash_attn_interface import flash_attn_func
 except ImportError:
-    from flash_attn import flash_attn_func
+    try:
+        from flash_attn import flash_attn_func
+    except ImportError:
+        # Optional: HRM v2 is not used in the BPTT/SAE training path. Guard the
+        # import so modules that transitively import this file still load without
+        # flash-attn installed.
+        flash_attn_func = None  # type: ignore[assignment]
 
 from models.common import trunc_normal_init_
 from models.layers import CastedLinear, apply_rotary_pos_emb, CosSin
