@@ -22,7 +22,7 @@ import sys
 import json
 import time
 import argparse
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
@@ -40,12 +40,77 @@ from scripts.core.activation_patching import compute_metrics
 from scripts.maze.maze_common import MAZE_METRIC_KEYS, maybe_maze_batch_metrics
 
 
+def estimate_mean_vectors(
+    ablator: ActivationAblator,
+    puzzles: List[Tuple[int, Dict[str, torch.Tensor]]],
+    max_steps: int,
+    levels: Tuple[str, ...] = ("H", "L"),
+) -> Dict[int, Dict[str, torch.Tensor]]:
+    """Population mean activation per (step, level) for mean-ablation (R2 control).
+
+    Averaged over every token position of every puzzle in ``puzzles`` (the batch
+    dimension is 1 per puzzle in this driver, so we pool over puzzles here rather
+    than within a single batch). Returns ``{step: {level: [1, 1, D]}}``.
+    """
+    sums: Dict[int, Dict[str, torch.Tensor]] = {}
+    counts: Dict[int, Dict[str, int]] = {}
+    for _idx, batch in puzzles:
+        cache: Dict[int, ActivationCache] = {}
+        ablator.run_and_cache_activations(batch, cache, max_steps=max_steps)
+        for s, c in cache.items():
+            for lv, z in (("H", c.z_H), ("L", c.z_L)):
+                if lv not in levels:
+                    continue
+                zf = z.reshape(-1, z.shape[-1]).float().cpu()  # [B*seq, D]
+                if s not in sums:
+                    sums[s], counts[s] = {}, {}
+                if lv not in sums[s]:
+                    sums[s][lv] = torch.zeros(zf.shape[-1])
+                    counts[s][lv] = 0
+                sums[s][lv] += zf.sum(dim=0)
+                counts[s][lv] += zf.shape[0]
+    return {
+        s: {lv: (sums[s][lv] / max(counts[s][lv], 1)).view(1, 1, -1) for lv in sums[s]}
+        for s in sums
+    }
+
+
+def _build_replacements(
+    base_cache: Dict[int, ActivationCache],
+    ablate_level: str,
+    ablation_mode: str,
+    mean_vectors: Optional[Dict[int, Dict[str, torch.Tensor]]],
+) -> Optional[Dict[int, Dict[str, torch.Tensor]]]:
+    """Replacement tensors per (step, level) for the active ablation mode."""
+    if ablation_mode == "zero":
+        return None
+    replacements: Dict[int, Dict[str, torch.Tensor]] = {}
+    for s, c in base_cache.items():
+        entry: Dict[str, torch.Tensor] = {}
+        for lv, _z in (("H", c.z_H), ("L", c.z_L)):
+            if ablate_level not in (lv, "both"):
+                continue
+            if ablation_mode == "mean":
+                if not mean_vectors or s not in mean_vectors or lv not in mean_vectors[s]:
+                    raise ValueError(f"mean ablation needs mean_vectors[{s}]['{lv}']")
+                entry[lv] = mean_vectors[s][lv]
+            else:
+                raise ValueError(
+                    f"ablation_mode={ablation_mode!r} not wired in this driver; "
+                    "resample-ablation is provided by the cross-puzzle "
+                    "patching_full_steps experiment.")
+        replacements[s] = entry
+    return replacements
+
+
 def run_ablation_for_puzzle(
     ablator: ActivationAblator,
     batch: Dict[str, torch.Tensor],
     puzzle_idx: int,
     ablate_level: str,
     max_steps: int,
+    ablation_mode: str = "zero",
+    mean_vectors: Optional[Dict[int, Dict[str, torch.Tensor]]] = None,
 ) -> Dict[str, Any]:
     """Run baseline + all single-step ablations + all-steps ablation for one level."""
     labels = batch["labels"]
@@ -58,6 +123,9 @@ def run_ablation_for_puzzle(
     base_acc = compute_metrics(base_preds, labels)["accuracy"]
     base_maze_metrics = maybe_maze_batch_metrics(base_preds, labels, batch.get("inputs"))
 
+    # R2: replacement tensors for mean/resample ablation (None for plain zeroing).
+    replacements = _build_replacements(base_cache, ablate_level, ablation_mode, mean_vectors)
+
     # Per-step baseline accuracy
     base_step_accs = []
     for s in range(num_steps):
@@ -69,6 +137,7 @@ def run_ablation_for_puzzle(
     # All-steps ablation
     all_out, all_cache, _ = ablator.run_with_ablation(
         batch, ablate_level=ablate_level, ablate_steps=None, max_steps=max_steps,
+        ablation_mode=ablation_mode, replacements=replacements,
     )
     all_preds = all_out["logits"].argmax(-1)
     all_acc = compute_metrics(all_preds, labels)["accuracy"]
@@ -83,6 +152,7 @@ def run_ablation_for_puzzle(
     for step_k in range(num_steps):
         abl_out, abl_cache, _ = ablator.run_with_ablation(
             batch, ablate_level=ablate_level, ablate_steps=[step_k], max_steps=max_steps,
+            ablation_mode=ablation_mode, replacements=replacements,
         )
         abl_preds = abl_out["logits"].argmax(-1)
         abl_acc = compute_metrics(abl_preds, labels)["accuracy"]
@@ -202,6 +272,14 @@ def main():
     parser.add_argument("--z_level", type=str, default="both",
                         choices=["H", "L", "both"],
                         help="Which level to ablate: H, L, or both (default)")
+    parser.add_argument("--ablation_mode", type=str, default="zero",
+                        choices=["zero", "mean"],
+                        help="R2 control. 'zero' (default) fills with 0; 'mean' "
+                             "fills with the population mean activation. "
+                             "resample-ablation is covered by patching_full_steps.")
+    parser.add_argument("--mean_estimation_puzzles", type=int, default=256,
+                        help="#puzzles used to estimate the mean vector for "
+                             "--ablation_mode mean (default 256).")
     args = resolve_args(parser.parse_args())
 
     if args.quick:
@@ -247,10 +325,19 @@ def main():
         )
     print(f"Collected {len(puzzles)} puzzles")
 
+    # R2: precompute the population mean vector once (shared across levels/puzzles).
+    mean_vectors = None
+    if args.ablation_mode == "mean":
+        n_mean = min(args.mean_estimation_puzzles, len(puzzles))
+        print(f"Estimating mean-activation vectors from {n_mean} puzzles...")
+        mean_vectors = estimate_mean_vectors(
+            ablator, puzzles[:n_mean], args.max_steps, levels=("H", "L"))
+
     # Run for z_H and/or z_L
+    mode_suffix = "" if args.ablation_mode == "zero" else f"_{args.ablation_mode}"
     levels = ["H", "L"] if args.z_level == "both" else [args.z_level]
     for level in levels:
-        level_dir = os.path.join(args.output_dir, f"z{level}")
+        level_dir = os.path.join(args.output_dir, f"z{level}{mode_suffix}")
         os.makedirs(level_dir, exist_ok=True)
 
         jsonl_path = os.path.join(level_dir, "per_puzzle.jsonl")
@@ -264,6 +351,7 @@ def main():
                 result = run_ablation_for_puzzle(
                     ablator, batch, puzzle_idx,
                     ablate_level=level, max_steps=args.max_steps,
+                    ablation_mode=args.ablation_mode, mean_vectors=mean_vectors,
                 )
                 all_results.append(result)
                 f.write(json.dumps(result) + "\n")
@@ -298,6 +386,9 @@ def main():
                 "num_puzzles": len(puzzles),
                 "requested_num_puzzles": args.num_puzzles,
                 "ablate_level": level,
+                "ablation_mode": args.ablation_mode,
+                "mean_estimation_puzzles": (args.mean_estimation_puzzles
+                                            if args.ablation_mode == "mean" else None),
                 "max_steps": args.max_steps,
                 "seed": args.seed,
                 "puzzle_indices": args.puzzle_indices,

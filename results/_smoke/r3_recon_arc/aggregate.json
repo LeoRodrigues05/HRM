@@ -1,0 +1,89 @@
+{
+  "task": "arc",
+  "n_puzzles": 2,
+  "sae_path": "results/ARC/arc/sae_study/sae_d2048_l10.01.pt",
+  "checkpoint": "checkpoints/arc2-adapted-evalonly/step_7391",
+  "metric": "colour_cell_acc",
+  "baseline_accuracy": {
+    "mean": 0.9224965706447188,
+    "ci_lower": 0.877914951989026,
+    "ci_upper": 0.9670781893004116,
+    "std": 0.04458161865569277,
+    "n": 2
+  },
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_colour_cell_acc": -0.005715592135345208,
+      "std": 0.009677022441116673,
+      "n": 6,
+      "bootstrap_ci": {
+        "mean": -0.005715592135345208,
+        "ci_lower": -0.013488797439414724,
+        "ci_upper": -0.0004572473708276033,
+        "std": 0.008833872467472184,
+        "n": 6
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_colour_cell_acc": -0.0027434842249656755,
+      "std": 0.0030053363923465567,
+      "n": 6,
+      "bootstrap_ci": {
+        "mean": -0.0027434842249656755,
+        "ci_lower": -0.004572473708276126,
+        "ci_upper": -0.0009144947416552252,
+        "std": 0.0027434842249656755,
+        "n": 6
+      }
+    },
+    "probe_directions": {
+      "mean_delta_colour_cell_acc": NaN,
+      "std": 0.0,
+      "n": 0,
+      "bootstrap_ci": {
+        "mean": NaN
+      }
+    },
+    "random_directions": {
+      "mean_delta_colour_cell_acc": 0.0013717421124828655,
+      "std": 0.0019399362995515881,
+      "n": 2,
+      "bootstrap_ci": {
+        "mean": 0.0013717421124828655,
+        "ci_lower": 0.0,
+        "ci_upper": 0.002743484224965731,
+        "std": 0.0013717421124828655,
+        "n": 2
+      }
+    },
+    "reconstruction_only": {
+      "mean_delta_colour_cell_acc": -0.0027434842249656755,
+      "std": 0.0038798725991030978,
+      "n": 2,
+      "bootstrap_ci": {
+        "mean": -0.0027434842249656755,
+        "ci_lower": -0.005486968449931351,
+        "ci_upper": 0.0,
+        "std": 0.0027434842249656755,
+        "n": 2
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_top_vs_random_features": {
+      "t_statistic": -0.7184623504771512,
+      "p_value": 0.49967496331761374,
+      "significant_0.05": false
+    },
+    "probe_vs_random_directions": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant_0.05": false
+    },
+    "sae_top_vs_reconstruction": {
+      "t_statistic": -0.6179276767119601,
+      "p_value": 0.5632750617659104,
+      "significant_0.05": false
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "n_puzzles": 2,
+  "sae_path": "results/Maze/sae_study/sae_d2048_l10.01.pt",
+  "metric": "valid_sg_path",
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_valid_sg_path": 0.0,
+      "std": 0.0,
+      "n": 6,
+      "bootstrap_ci": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 6
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_valid_sg_path": 0.0,
+      "std": 0.0,
+      "n": 6,
+      "bootstrap_ci": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 6
+      }
+    },
+    "probe_directions": {
+      "mean_delta_valid_sg_path": NaN,
+      "std": 0.0,
+      "n": 0,
+      "bootstrap_ci": {
+        "mean": NaN
+      }
+    },
+    "random_directions": {
+      "mean_delta_valid_sg_path": 0.0,
+      "std": 0.0,
+      "n": 2,
+      "bootstrap_ci": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 2
+      }
+    },
+    "reconstruction_only": {
+      "mean_delta_valid_sg_path": 0.0,
+      "std": 0.0,
+      "n": 2,
+      "bootstrap_ci": {
+        "mean": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "std": 0.0,
+        "n": 2
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_top_vs_random_features": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant_0.05": false
+    },
+    "probe_vs_random_directions": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant_0.05": false
+    },
+    "sae_top_vs_reconstruction": {
+      "t_statistic": NaN,
+      "p_value": NaN,
+      "significant_0.05": false
+    }
+  }
+}

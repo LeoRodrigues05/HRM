@@ -1,0 +1,41 @@
+[
+  {
+    "global_step": 100,
+    "epoch": 0,
+    "reconstruction_loss": 0.26467275619506836,
+    "l1_loss": 0.0,
+    "total_loss": 0.26467275619506836,
+    "alive_count": 256,
+    "alive_frac": 1.0,
+    "dead_count": 0,
+    "mean_sparsity": 0.03125,
+    "mean_activation": 0.11724777221679687,
+    "L0": 8.0
+  },
+  {
+    "global_step": 200,
+    "epoch": 0,
+    "reconstruction_loss": 0.15342848002910614,
+    "l1_loss": 0.0,
+    "total_loss": 0.15342848002910614,
+    "alive_count": 256,
+    "alive_frac": 1.0,
+    "dead_count": 0,
+    "mean_sparsity": 0.03125,
+    "mean_activation": 0.14485762596130372,
+    "L0": 8.0
+  },
+  {
+    "global_step": 300,
+    "epoch": 0,
+    "reconstruction_loss": 0.12325844168663025,
+    "l1_loss": 0.0,
+    "total_loss": 0.12325844168663025,
+    "alive_count": 256,
+    "alive_frac": 1.0,
+    "dead_count": 0,
+    "mean_sparsity": 0.03125,
+    "mean_activation": 0.15127614339192708,
+    "L0": 8.0
+  }
+]

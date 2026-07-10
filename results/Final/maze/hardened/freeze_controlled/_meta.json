@@ -1,0 +1,31 @@
+{
+  "experiment": "controlled_freeze",
+  "git_sha": "d0c8136ebf60bed740538682589681c39af0756e",
+  "git_dirty": true,
+  "timestamp": "2026-06-15T19:53:27",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/controlled/controlled_freeze.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint",
+    "--num_puzzles",
+    "1000",
+    "--max_steps",
+    "16",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/maze/hardened/freeze_controlled"
+  ],
+  "params": {
+    "num_puzzles": 1000,
+    "requested_num_puzzles": 1000,
+    "max_steps": 16,
+    "seed": 42,
+    "puzzle_indices": null,
+    "save_puzzle_indices": null,
+    "checkpoint": "checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint"
+  }
+}

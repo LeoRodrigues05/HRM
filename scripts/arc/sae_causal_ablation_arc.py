@@ -62,7 +62,9 @@ def load_sae(path, device):
         sae = TopKSparseAutoencoder(input_dim=cfg["input_dim"], dict_size=cfg["dict_size"], k=cfg["k"])
     else:
         sae = SparseAutoencoder(input_dim=cfg["input_dim"], dict_size=cfg["dict_size"], l1_coeff=cfg["l1_coeff"])
-    sae.load_state_dict(ckpt["model_state_dict"])
+    # strict=False: SAEs trained before the act_mean buffer was added lack that
+    # key; it defaults to zeros (no mean-centering), which is correct for them.
+    sae.load_state_dict(ckpt["model_state_dict"], strict=False)
     return sae.to(device).eval(), cfg
 
 
@@ -117,16 +119,25 @@ def main():
     print(f"[arc_sae] {len(puzzles)} puzzles | top_k={len(top_features)} rand_feat={len(random_features)} "
           f"probe_dirs={len(directions)}")
 
+    # R3 control: reconstruction_only = encode->decode with NO feature zeroed,
+    # isolating the SAE's reconstruction error from any causal feature effect.
     cond = {"sae_top_features": [], "random_sae_features": [],
-            "probe_directions": [], "random_directions": []}
+            "probe_directions": [], "random_directions": [],
+            "reconstruction_only": []}
     base_primary: List[float] = []
     t0 = time.time()
+    # Per-puzzle records survive a mid-run kill; aggregate.json is regenerable from them.
+    jsonl = open(os.path.join(args.output_dir, "per_puzzle.jsonl"), "w")
     for pi, (idx, batch) in enumerate(puzzles):
         inp, label = _flat(batch["inputs"]), _flat(batch["labels"])
         base_cache: Dict[int, ActivationCache] = {}
         ablator.run_and_cache_activations(batch, base_cache, max_steps=args.max_steps)
         bm = score(base_cache, label, inp)
         base_primary.append(bm[PRIMARY])
+        n_before = {k: len(v) for k, v in cond.items()}
+        # Reconstruction-only control: pass an empty feature list (nothing zeroed).
+        _, ac = ablator.run_with_sae_feature_ablation(batch, [], max_steps=args.max_steps)
+        cond["reconstruction_only"].append(score(ac, label, inp)[PRIMARY] - bm[PRIMARY])
         for feats, key in ((top_features, "sae_top_features"), (random_features, "random_sae_features")):
             for fi in feats:
                 _, ac = ablator.run_with_sae_feature_ablation(batch, [int(fi)], max_steps=args.max_steps)
@@ -137,8 +148,15 @@ def main():
         for _name, d in rand_dirs.items():
             _, ac = ablator.run_with_direction_ablation(batch, d, max_steps=args.max_steps)
             cond["random_directions"].append(score(ac, label, inp)[PRIMARY] - bm[PRIMARY])
-        if (pi + 1) % 25 == 0:
-            print(f"  {pi+1}/{len(puzzles)} | top Δ{PRIMARY} so far = {np.mean(cond['sae_top_features']):+.4f}")
+        jsonl.write(json.dumps({
+            "pi": pi, "puzzle_idx": idx, "baseline_" + PRIMARY: bm[PRIMARY],
+            "deltas": {k: cond[k][n_before[k]:] for k in cond}}, default=float) + "\n")
+        jsonl.flush()
+        if (pi + 1) % 10 == 0 or pi == 0:
+            print(f"  {pi+1}/{len(puzzles)} | top Δ{PRIMARY} so far = "
+                  f"{np.mean(cond['sae_top_features']):+.4f} | "
+                  f"{(pi+1)/(time.time()-t0):.3f} puzzle/s", flush=True)
+    jsonl.close()
     print(f"[arc_sae] done in {time.time()-t0:.1f}s")
 
     def tt(a, b):
@@ -156,6 +174,7 @@ def main():
         "statistical_tests": {
             "sae_top_vs_random_features": tt("sae_top_features", "random_sae_features"),
             "probe_vs_random_directions": tt("probe_directions", "random_directions"),
+            "sae_top_vs_reconstruction": tt("sae_top_features", "reconstruction_only"),
         },
     }
     with open(os.path.join(args.output_dir, "aggregate.json"), "w") as f:

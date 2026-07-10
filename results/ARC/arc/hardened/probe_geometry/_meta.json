@@ -1,0 +1,15 @@
+{
+  "experiment": "arc_probe_geometry",
+  "git_sha": "c8d79812a04aaf450141fe42fcf7e1ef5f68ec76",
+  "git_dirty": true,
+  "timestamp": "2026-07-06T01:55:41",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "cpu",
+  "argv": [
+    "scripts/arc/probe_geometry_arc.py"
+  ],
+  "params": {
+    "probe_weights": "results/arc/hardened/linear_probes/probe_weights.pt"
+  }
+}

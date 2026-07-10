@@ -464,6 +464,13 @@ def run_experiment(
             'random_direction_ablations': {},
         }
 
+        # R3 control: reconstruction-only (encode->decode with nothing zeroed)
+        # isolates SAE reconstruction error from any causal feature effect.
+        _, recon_cache = ablator.run_with_sae_feature_ablation(batch, [], max_steps=max_steps)
+        _recon_preds = recon_cache[max(recon_cache.keys())].preds[:, -SUDOKU_CELLS:].cpu()
+        puzzle_result['reconstruction_only_delta_acc'] = (
+            cell_accuracy(_recon_preds, targets_tok) - baseline_acc)
+
         # 2. Ablate top SAE features individually
         for feat_idx in top_features:
             _, abl_cache = ablator.run_with_sae_feature_ablation(
@@ -765,7 +772,9 @@ def main():
             dict_size=cfg['dict_size'],
             l1_coeff=cfg['l1_coeff'],
         )
-    sae.load_state_dict(ckpt['model_state_dict'])
+    # strict=False: SAEs trained before the act_mean buffer was added lack that
+    # key; it defaults to zeros (no mean-centering), which is correct for them.
+    sae.load_state_dict(ckpt['model_state_dict'], strict=False)
     sae.to(device).eval()
     logger.info(f"SAE: dict_size={cfg['dict_size']}, activation={cfg.get('activation', 'relu')}")
 
