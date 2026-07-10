@@ -59,7 +59,9 @@ def load_sae(path, device):
         sae = TopKSparseAutoencoder(input_dim=cfg["input_dim"], dict_size=cfg["dict_size"], k=cfg["k"])
     else:
         sae = SparseAutoencoder(input_dim=cfg["input_dim"], dict_size=cfg["dict_size"], l1_coeff=cfg["l1_coeff"])
-    sae.load_state_dict(ckpt["model_state_dict"])
+    # strict=False: SAEs trained before the act_mean buffer was added lack that
+    # key; it defaults to zeros (no mean-centering), which is correct for them.
+    sae.load_state_dict(ckpt["model_state_dict"], strict=False)
     return sae.to(device).eval(), cfg
 
 
@@ -115,8 +117,11 @@ def main():
     print(f"[maze_e10] {len(puzzles)} puzzles | top_k={len(top_features)} rand_feat={len(random_features)} "
           f"probe_dirs={len(directions)}")
 
+    # R3 control: reconstruction_only = encode->decode with NO feature zeroed,
+    # isolating the SAE's reconstruction error from any causal feature effect.
     cond = {"sae_top_features": [], "random_sae_features": [],
-            "probe_directions": [], "random_directions": []}
+            "probe_directions": [], "random_directions": [],
+            "reconstruction_only": []}
     per_puzzle = []
     t0 = time.time()
     for pi, (idx, batch) in enumerate(puzzles):
@@ -125,6 +130,10 @@ def main():
         ablator.run_and_cache_activations(batch, base_cache, max_steps=args.max_steps)
         bm = score(base_cache, label, inp)
         rec = {"puzzle_idx": idx, "baseline_valid_sg_path": bm[PRIMARY]}
+
+        # Reconstruction-only control: pass an empty feature list (nothing zeroed).
+        _, ac = ablator.run_with_sae_feature_ablation(batch, [], max_steps=args.max_steps)
+        cond["reconstruction_only"].append(score(ac, label, inp)[PRIMARY] - bm[PRIMARY])
 
         for feats, key in ((top_features, "sae_top_features"), (random_features, "random_sae_features")):
             for fi in feats:
@@ -154,6 +163,7 @@ def main():
         "statistical_tests": {
             "sae_top_vs_random_features": tt("sae_top_features", "random_sae_features"),
             "probe_vs_random_directions": tt("probe_directions", "random_directions"),
+            "sae_top_vs_reconstruction": tt("sae_top_features", "reconstruction_only"),
         },
     }
     with open(os.path.join(args.output_dir, "aggregate.json"), "w") as f:

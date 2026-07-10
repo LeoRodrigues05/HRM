@@ -1,0 +1,36 @@
+{
+  "experiment": "arc_sae_causal_ablation",
+  "git_sha": "c8d79812a04aaf450141fe42fcf7e1ef5f68ec76",
+  "git_dirty": true,
+  "timestamp": "2026-07-10T18:52:12",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/arc/sae_causal_ablation_arc.py",
+    "--sae_path",
+    "results/ARC/arc/sae_study/sae_d2048_l10.01.pt",
+    "--checkpoint",
+    "checkpoints/arc2-adapted-evalonly/step_7391",
+    "--activations_path",
+    "results/ARC/arc/sae_study/activations_zH.pt",
+    "--n_puzzles",
+    "2",
+    "--top_k",
+    "3",
+    "--n_random_features",
+    "3",
+    "--output_dir",
+    "results/_smoke/r3_recon_arc"
+  ],
+  "params": {
+    "sae_path": "results/ARC/arc/sae_study/sae_d2048_l10.01.pt",
+    "checkpoint": "checkpoints/arc2-adapted-evalonly/step_7391",
+    "n_puzzles": 2,
+    "top_k": 3,
+    "n_random_features": 3,
+    "max_steps": 16,
+    "seed": 42,
+    "metric": "colour_cell_acc"
+  }
+}

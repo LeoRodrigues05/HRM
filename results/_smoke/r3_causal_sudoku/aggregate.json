@@ -1,0 +1,119 @@
+{
+  "n_puzzles": 2,
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_acc": 0.0720164676507314,
+      "std_delta_acc": 0.08535996482739847,
+      "ci_lower_delta_acc": 0.01440329353014628,
+      "ci_upper_delta_acc": 0.15020578106244406,
+      "n_samples": 6,
+      "delta_acc": {
+        "mean": 0.0720164676507314,
+        "std": 0.08535996482739847,
+        "ci_lower": 0.01440329353014628,
+        "ci_upper": 0.15020578106244406,
+        "n": 6
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_acc": -0.004115233818689982,
+      "std_delta_acc": 0.16589008372142058,
+      "ci_lower_delta_acc": -0.16049384077390036,
+      "ci_upper_delta_acc": 0.092592587073644,
+      "n_samples": 6,
+      "delta_acc": {
+        "mean": -0.004115233818689982,
+        "std": 0.16589008372142058,
+        "ci_lower": -0.16049384077390036,
+        "ci_upper": 0.092592587073644,
+        "n": 6
+      }
+    },
+    "probe_directions": {
+      "mean_delta_acc": 0.0,
+      "std_delta_acc": 0.0,
+      "ci_lower_delta_acc": 0.0,
+      "ci_upper_delta_acc": 0.0,
+      "n_samples": 0,
+      "delta_acc": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "n": 0
+      }
+    },
+    "random_directions": {
+      "mean_delta_acc": 0.0,
+      "std_delta_acc": 0.0,
+      "ci_lower_delta_acc": 0.0,
+      "ci_upper_delta_acc": 0.0,
+      "n_samples": 0,
+      "delta_acc": {
+        "mean": 0.0,
+        "std": 0.0,
+        "ci_lower": 0.0,
+        "ci_upper": 0.0,
+        "n": 0
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_vs_random_features": {
+      "t_statistic": 0.9124823164383637,
+      "p_value": 0.3829861598597277,
+      "significant_0.05": false,
+      "n_pairs": 2,
+      "paired_t_statistic": 1.7619053311900181,
+      "paired_p_value": 0.32864256371213113,
+      "wilcoxon_stat": 0.0,
+      "wilcoxon_p_value": 0.5,
+      "cohens_d_paired": 1.2458552074931915,
+      "mean_paired_delta": {
+        "mean": 0.07613170146942139,
+        "std": 0.04320987065633138,
+        "ci_lower": 0.03292183081309,
+        "ci_upper": 0.11934157212575276,
+        "n": 2
+      }
+    }
+  },
+  "per_item_means": {
+    "sae_225": {
+      "mean_delta_acc": 0.11728397011756897,
+      "std_delta_acc": 0.11728397011756897,
+      "n": 2,
+      "delta_acc": {
+        "mean": 0.11728397011756897,
+        "std": 0.11728397011756897,
+        "ci_lower": 0.0,
+        "ci_upper": 0.23456794023513794,
+        "n": 2
+      }
+    },
+    "sae_191": {
+      "mean_delta_acc": 0.0555555522441864,
+      "std_delta_acc": 0.0555555522441864,
+      "n": 2,
+      "delta_acc": {
+        "mean": 0.0555555522441864,
+        "std": 0.0555555522441864,
+        "ci_lower": 0.0,
+        "ci_upper": 0.1111111044883728,
+        "n": 2
+      }
+    },
+    "sae_36": {
+      "mean_delta_acc": 0.04320988059043884,
+      "std_delta_acc": 0.04320988059043884,
+      "n": 2,
+      "delta_acc": {
+        "mean": 0.04320988059043884,
+        "std": 0.04320988059043884,
+        "ci_lower": 0.0,
+        "ci_upper": 0.08641976118087769,
+        "n": 2
+      }
+    }
+  }
+}

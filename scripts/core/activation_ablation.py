@@ -254,12 +254,30 @@ class ActivationAblator:
         max_steps: Optional[int] = None,
         *,
         ablation_value: float = 0.0,      # value to fill (0 = zero ablation)
+        ablation_mode: str = "zero",      # "zero" | "mean" | "resample"
+        replacements: Optional[Dict[int, Dict[str, torch.Tensor]]] = None,
     ) -> Tuple[Dict[str, torch.Tensor], Dict[int, ActivationCache], Dict[int, Dict[str, float]]]:
-        """Forward pass with activations replaced by a constant (default: zero).
+        """Forward pass with activations replaced at the chosen steps.
 
-        Mirror of ``run_with_patching`` but the replacement source is a constant
-        tensor instead of another puzzle's cached activations.
+        ``ablation_mode`` selects the replacement distribution — the point of
+        review comment R2 is that plain zeroing is off-distribution, so we also
+        support within-distribution controls:
+          - "zero"     : fill with the constant ``ablation_value`` (default;
+                         backwards-compatible with every existing caller).
+          - "mean"     : fill with a mean activation vector supplied per
+                         step/level via ``replacements[step][level]`` with a
+                         shape broadcastable to the activation (e.g. [1, 1, D]).
+          - "resample" : fill with a donor activation tensor (broadcastable to
+                         the activation) via ``replacements[step][level]``.
+        For "mean"/"resample" the caller precomputes ``replacements`` (see
+        ``controlled_ablation.py``). Mirror of ``run_with_patching`` but the
+        replacement source is a control tensor rather than another puzzle's
+        cached activations.
         """
+        if ablation_mode not in ("zero", "mean", "resample"):
+            raise ValueError(f"ablation_mode must be zero|mean|resample, got {ablation_mode!r}")
+        if ablation_mode != "zero" and replacements is None:
+            raise ValueError(f"ablation_mode={ablation_mode!r} requires `replacements`")
         ablated_cache: Dict[int, ActivationCache] = {}
         ablation_info: Dict[int, Dict[str, float]] = {}
 
@@ -289,25 +307,41 @@ class ActivationAblator:
                         if ablate_level in ("L", "both"):
                             pre_norm_L = float(inner_in.z_L.norm().item())
 
+                        # Replacement tensor for one level under the active mode.
+                        def _replacement(ref: torch.Tensor, level: str) -> torch.Tensor:
+                            if ablation_mode == "zero":
+                                return torch.full_like(ref, ablation_value)
+                            step_rep = (replacements or {}).get(step, {})
+                            if level not in step_rep:
+                                raise ValueError(
+                                    f"ablation_mode={ablation_mode!r} missing "
+                                    f"replacements[{step}]['{level}']")
+                            rep = step_rep[level].to(device=ref.device, dtype=ref.dtype)
+                            if rep.shape != ref.shape:
+                                rep = rep.expand_as(ref)
+                            return rep.clone()
+
                         # Perform the ablation
                         if ablate_level in ("H", "both"):
+                            rep_H = _replacement(inner_in.z_H, "H")
                             if ablate_positions is None:
-                                z_H_new = torch.full_like(inner_in.z_H, ablation_value)
+                                z_H_new = rep_H
                             else:
                                 z_H_new = inner_in.z_H.clone()
                                 for pos in ablate_positions:
-                                    z_H_new[:, pos, :] = ablation_value
+                                    z_H_new[:, pos, :] = rep_H[:, pos, :]
                             inner_in = _make_inner_carry(
                                 self.model, z_H=z_H_new, z_L=inner_in.z_L,
                             )
 
                         if ablate_level in ("L", "both"):
+                            rep_L = _replacement(inner_in.z_L, "L")
                             if ablate_positions is None:
-                                z_L_new = torch.full_like(inner_in.z_L, ablation_value)
+                                z_L_new = rep_L
                             else:
                                 z_L_new = inner_in.z_L.clone()
                                 for pos in ablate_positions:
-                                    z_L_new[:, pos, :] = ablation_value
+                                    z_L_new[:, pos, :] = rep_L[:, pos, :]
                             inner_in = _make_inner_carry(
                                 self.model, z_H=inner_in.z_H, z_L=z_L_new,
                             )
@@ -316,6 +350,7 @@ class ActivationAblator:
                             "pre_norm_H": float("nan") if pre_norm_H is None else pre_norm_H,
                             "pre_norm_L": float("nan") if pre_norm_L is None else pre_norm_L,
                             "ablation_value": ablation_value,
+                            "ablation_mode": ablation_mode,
                         }
 
                     # Forward with (possibly ablated) inner_in

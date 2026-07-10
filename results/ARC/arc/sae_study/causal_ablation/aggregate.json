@@ -1,0 +1,76 @@
+{
+  "task": "arc",
+  "n_puzzles": 150,
+  "sae_path": "results/arc/sae_study/sae_d2048_l10.01.pt",
+  "checkpoint": "checkpoints/arc2-adapted-evalonly/step_7391",
+  "metric": "colour_cell_acc",
+  "baseline_accuracy": {
+    "mean": 0.9090809327846364,
+    "ci_lower": 0.891200045724737,
+    "ci_upper": 0.9238324188385918,
+    "std": 0.10227238195410972,
+    "n": 150
+  },
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_colour_cell_acc": 0.01272354823959762,
+      "std": 0.06358380752097725,
+      "n": 7500,
+      "bootstrap_ci": {
+        "mean": 0.01272354823959762,
+        "ci_lower": 0.01130981252857796,
+        "ci_upper": 0.01415433927754915,
+        "std": 0.06357956845916908,
+        "n": 7500
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_colour_cell_acc": 0.012794513031550065,
+      "std": 0.06215437249251006,
+      "n": 7500,
+      "bootstrap_ci": {
+        "mean": 0.012794513031550065,
+        "ci_lower": 0.011326268861454047,
+        "ci_upper": 0.01417106081390032,
+        "std": 0.062150228729547195,
+        "n": 7500
+      }
+    },
+    "probe_directions": {
+      "mean_delta_colour_cell_acc": -0.0016343327454438562,
+      "std": 0.021738321997014757,
+      "n": 1050,
+      "bootstrap_ci": {
+        "mean": -0.0016343327454438562,
+        "ci_lower": -0.002751322751322751,
+        "ci_upper": -0.00019834737735972228,
+        "std": 0.021727967949274708,
+        "n": 1050
+      }
+    },
+    "random_directions": {
+      "mean_delta_colour_cell_acc": 0.0012162780064014613,
+      "std": 0.025860694963461012,
+      "n": 450,
+      "bootstrap_ci": {
+        "mean": 0.0012162780064014613,
+        "ci_lower": -0.00068914799573236,
+        "ci_upper": 0.003743712848651117,
+        "std": 0.02583194487679233,
+        "n": 450
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_top_vs_random_features": {
+      "t_statistic": -0.06911834511387482,
+      "p_value": 0.9448963405797147,
+      "significant_0.05": false
+    },
+    "probe_vs_random_directions": {
+      "t_statistic": -2.048616080175353,
+      "p_value": 0.04085514035045601,
+      "significant_0.05": true
+    }
+  }
+}

@@ -1,0 +1,33 @@
+# Baseline training config — Vanilla RNN on Maze 30×30-hard
+# Mirrors the HRM Maze budget (epochs=20000, eval_interval=2000) and the Sudoku
+# baseline hyperparameters. seq_len / vocab_size / num_puzzle_identifiers are
+# taken from the dataset metadata at runtime — no arch changes needed.
+
+defaults:
+  - arch: vanilla_rnn
+  - _self_
+
+hydra:
+  output_subdir: null
+
+data_path: data/maze-30x30-hard-1k
+
+global_batch_size: 768
+
+epochs: 20000
+eval_interval: 2000
+checkpoint_every_eval: True
+
+lr: 1e-4
+lr_min_ratio: 1.0
+lr_warmup_steps: 2000
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 1.0
+puzzle_emb_weight_decay: 1.0
+
+puzzle_emb_lr: 1e-4
+
+project_name: Maze-baselines
+checkpoint_path: checkpoints/baselines-maze/vanilla_rnn

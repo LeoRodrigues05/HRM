@@ -1,0 +1,39 @@
+# Baseline training config — Vanilla RNN on ARC-AGI-2
+# Mirrors the HRM ARC hyperparameters (weight_decay=0.1, puzzle_emb_lr=1e-2,
+# puzzle_emb_weight_decay=0.1) — these differ from Sudoku/Maze because ARC has a
+# ~1.05M-entry puzzle-embedding table (num_puzzle_identifiers), learned via the
+# sparse SignSGD optimizer.
+#
+# COST WARNING: epochs=100000 mirrors HRM exactly but is ~600k optimizer steps
+# (total_groups*mean_puzzle_examples/gbs ≈ 6.05 steps/epoch), which is weeks of
+# wall-clock for the recurrent baselines. For a cost-bounded but still
+# representative baseline ceiling, override at launch, e.g. EPOCHS=20000.
+
+defaults:
+  - arch: vanilla_rnn
+  - _self_
+
+hydra:
+  output_subdir: null
+
+data_path: data/arc-2-aug-1000
+
+global_batch_size: 768
+
+epochs: 100000
+eval_interval: 10000
+checkpoint_every_eval: True
+
+lr: 1e-4
+lr_min_ratio: 1.0
+lr_warmup_steps: 2000
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+puzzle_emb_weight_decay: 0.1
+
+puzzle_emb_lr: 1e-2
+
+project_name: ARC-baselines
+checkpoint_path: checkpoints/baselines-arc/vanilla_rnn

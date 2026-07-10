@@ -1,0 +1,76 @@
+{
+  "task": "arc",
+  "n_puzzles": 3,
+  "sae_path": "results/arc_smoke/sae_study/sae_d256_l10.01.pt",
+  "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/arc2-adapted-evalonly/step_7391",
+  "metric": "colour_cell_acc",
+  "baseline_accuracy": {
+    "mean": 0.9382716049382717,
+    "ci_lower": 0.877914951989026,
+    "ci_upper": 0.9698216735253772,
+    "std": 0.042693292547736454,
+    "n": 3
+  },
+  "conditions": {
+    "sae_top_features": {
+      "mean_delta_colour_cell_acc": -0.004115226337448529,
+      "std": 0.0034972698995835165,
+      "n": 9,
+      "bootstrap_ci": {
+        "mean": -0.004115226337448529,
+        "ci_lower": -0.006249047401310727,
+        "ci_upper": -0.0018289894833104503,
+        "std": 0.003297257682180134,
+        "n": 9
+      }
+    },
+    "random_sae_features": {
+      "mean_delta_colour_cell_acc": -0.003810394756896793,
+      "std": 0.0035491940320667467,
+      "n": 9,
+      "bootstrap_ci": {
+        "mean": -0.003810394756896793,
+        "ci_lower": -0.005944215820758991,
+        "ci_upper": -0.0015203475080018097,
+        "std": 0.003346212223761629,
+        "n": 9
+      }
+    },
+    "probe_directions": {
+      "mean_delta_colour_cell_acc": -0.0021555947481873257,
+      "std": 0.004059323742758182,
+      "n": 21,
+      "bootstrap_ci": {
+        "mean": -0.0021555947481873257,
+        "ci_lower": -0.004049905284473169,
+        "ci_upper": -0.0007185315827290962,
+        "std": 0.0039614943366794225,
+        "n": 21
+      }
+    },
+    "random_directions": {
+      "mean_delta_colour_cell_acc": 1.2335811384723961e-17,
+      "std": 0.0011879635168510765,
+      "n": 9,
+      "bootstrap_ci": {
+        "mean": 1.2335811384723961e-17,
+        "ci_lower": -0.0006096631611034711,
+        "ci_upper": 0.0009144947416552437,
+        "std": 0.0011200227447568207,
+        "n": 9
+      }
+    }
+  },
+  "statistical_tests": {
+    "sae_top_vs_random_features": {
+      "t_statistic": -0.18353258709644454,
+      "p_value": 0.8566863491934005,
+      "significant_0.05": false
+    },
+    "probe_vs_random_directions": {
+      "t_statistic": -2.2215800869959117,
+      "p_value": 0.03516406516137832,
+      "significant_0.05": true
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "experiment": "baseline_eval",
+  "git_sha": "a34e5172d06559e854aae0b005c796e7cab4734e",
+  "git_dirty": true,
+  "timestamp": "2026-06-07T02:30:43",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/evaluate_baselines.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "--model_name",
+    "HRM",
+    "--n_puzzles",
+    "500",
+    "--device",
+    "cuda",
+    "--output_dir",
+    "results/baseline_comparison"
+  ],
+  "params": {
+    "model_name": "HRM",
+    "checkpoint": "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "n_puzzles": 500,
+    "max_steps": 16,
+    "n_patching_pairs": 100
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "experiment": "sae_causal_ablation",
+  "git_sha": "c8d79812a04aaf450141fe42fcf7e1ef5f68ec76",
+  "git_dirty": true,
+  "timestamp": "2026-07-10T18:51:36",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/sae/sae_causal_ablation.py",
+    "--sae_path",
+    "results/_smoke/topk_train/sae_d256_topk8.pt",
+    "--activations_path",
+    "results/Sudoku/sae_study/activations_zH.pt",
+    "--n_puzzles",
+    "2",
+    "--top_k",
+    "3",
+    "--n_random_features",
+    "3",
+    "--output_dir",
+    "results/_smoke/r3_causal_sudoku"
+  ],
+  "params": {
+    "sae_path": "results/_smoke/topk_train/sae_d256_topk8.pt",
+    "checkpoint_dir": null,
+    "activations_path": "results/Sudoku/sae_study/activations_zH.pt",
+    "probe_weights_path": "results/probes/e8_constraint_probes/probe_weights.pt",
+    "n_puzzles": 2,
+    "num_puzzles_collected": 2,
+    "top_k": 3,
+    "n_random_features": 3,
+    "max_steps": 16,
+    "seed": 42,
+    "puzzle_indices": null,
+    "save_puzzle_indices": null
+  }
+}

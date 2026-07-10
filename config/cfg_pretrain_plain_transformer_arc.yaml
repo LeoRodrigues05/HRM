@@ -1,0 +1,35 @@
+# Baseline training config — Plain Transformer on ARC-AGI-2
+# Mirrors the HRM ARC hyperparameters (weight_decay=0.1, puzzle_emb_lr=1e-2,
+# puzzle_emb_weight_decay=0.1). ARC has a ~1.05M-entry puzzle-embedding table.
+#
+# COST WARNING: epochs=100000 mirrors HRM exactly but is ~600k optimizer steps.
+# For a cost-bounded run, override at launch, e.g. EPOCHS=20000.
+
+defaults:
+  - arch: plain_transformer
+  - _self_
+
+hydra:
+  output_subdir: null
+
+data_path: data/arc-2-aug-1000
+
+global_batch_size: 768
+
+epochs: 100000
+eval_interval: 10000
+checkpoint_every_eval: True
+
+lr: 1e-4
+lr_min_ratio: 1.0
+lr_warmup_steps: 2000
+
+beta1: 0.9
+beta2: 0.95
+weight_decay: 0.1
+puzzle_emb_weight_decay: 0.1
+
+puzzle_emb_lr: 1e-2
+
+project_name: ARC-baselines
+checkpoint_path: checkpoints/baselines-arc/plain_transformer

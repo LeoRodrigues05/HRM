@@ -1,0 +1,37 @@
+{
+  "experiment": "maze_sae_causal_ablation",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-20T19:15:34",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/maze/sae_causal_ablation_maze.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint",
+    "--sae_path",
+    "results/maze/sae_study/sae_d2048_l10.01.pt",
+    "--activations_path",
+    "results/maze/sae_study/activations_zH.pt",
+    "--probe_weights",
+    "results/maze/hardened/probe_geometry/probe_weights.pt",
+    "--n_puzzles",
+    "300",
+    "--top_k",
+    "50",
+    "--output_dir",
+    "results/maze/sae_study/causal_ablation",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "sae_path": "results/maze/sae_study/sae_d2048_l10.01.pt",
+    "n_puzzles": 300,
+    "top_k": 50,
+    "n_random_features": 50,
+    "max_steps": 16,
+    "seed": 42,
+    "metric": "valid_sg_path"
+  }
+}

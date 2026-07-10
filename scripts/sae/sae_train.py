@@ -70,7 +70,9 @@ def load_activations(
     n_puzzles, n_steps, n_cells, dim = activations.shape
     flat = activations.reshape(n_puzzles * n_steps * n_cells, dim)
     logger.info(f"  Flattened shape: {flat.shape} ({flat.shape[0]:,} samples × {dim} dims)")
-    return flat
+    # Activations are stored as float16 on disk to save space; SAE training (and its
+    # autograd) requires float32, so upcast here. No-op for float32 dumps.
+    return flat.float()
 
 
 def train_sae(

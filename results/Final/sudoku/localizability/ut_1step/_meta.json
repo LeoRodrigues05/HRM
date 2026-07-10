@@ -1,0 +1,56 @@
+{
+  "experiment": "H1_ut_scorecard_ut_1step",
+  "git_sha": "db37caa6bf0be11d85bca02a726ab1e8d80850ca",
+  "git_dirty": true,
+  "timestamp": "2026-06-21T17:33:22",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/analysis/baseline_localizability.py",
+    "--tag",
+    "ut_1step",
+    "--num_puzzles",
+    "300",
+    "--output_dir",
+    "results/localizability/ut_1step",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "tag": "ut_1step",
+    "checkpoint": "/home/leo.rodrigues/HRM/checkpoints/baselines/universal_transformer/step_41664",
+    "task": "sudoku",
+    "num_puzzles": 300,
+    "probe_steps": [
+      0,
+      4,
+      8,
+      12,
+      15
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "ranks": [
+      1,
+      2,
+      4,
+      8,
+      16,
+      32,
+      64,
+      128,
+      256,
+      512
+    ],
+    "max_steps": 16,
+    "one_step_grad": true,
+    "num_iterations": 4,
+    "hidden_size": 768,
+    "elapsed_s": 635.1,
+    "track_b_caveat": "Track B UT pair differs in both gradient regime AND recurrence layout (ut_1step: 16 outer steps \u00d7 4 inner iters; ut_bptt: 1 outer step \u00d7 16 iters). This is a strong but not airtight control. The airtight comparison is HRM-1step vs HRM-BPTT (identical arch), available via localizability_scorecard.py once the HRM-BPTT checkpoint lands."
+  }
+}

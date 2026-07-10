@@ -106,6 +106,15 @@ def fig_patching(output_dir):
     ax.axhline(0, color="0.7", lw=0.8)
     any_plotted = False
 
+    sd = _load("results/patching/patching_full_steps/aggregate.json")
+    if sd and "patch_H" in sd:
+        node = sd["patch_H"]
+        steps = sorted((int(k) for k in node), key=int)
+        ys = [node[str(s)]["delta_accuracy"]["mean"] * 100 for s in steps]
+        ax.plot(steps, ys, "-^", ms=4, color=TASK_COLOR["Sudoku"], label="Sudoku (cell acc)")
+        any_plotted = True
+        print(f"   Sudoku patch Δ: s{steps[0]}={ys[0]:+.2f}%  s{steps[-1]}={ys[-1]:+.2f}%")
+
     mz = _load("results/maze/hardened/patching_full_steps/aggregate.json")
     if mz:
         node = (mz.get("maze_metric_deltas_by_group_level_step") or {}).get(
@@ -130,8 +139,7 @@ def fig_patching(output_dir):
         plt.close(fig); print("   nothing to plot"); return
     ax.set_xlabel("donor z_H patched at step k"); ax.set_ylabel("Δ task metric (%)")
     ax.set_title("Finding 1: cross-puzzle z_H patch\n"
-                 "z_H is replaceable mid-trajectory, decisive at the readout "
-                 "(Sudoku: −53% to −62%, off-axis)")
+                 "Sudoku: destructive at every step; Maze/ARC: decisive only at the readout")
     ax.legend(fontsize=9); ax.grid(alpha=0.3)
     _save(fig, output_dir, "fig_crosstask_patching")
 
