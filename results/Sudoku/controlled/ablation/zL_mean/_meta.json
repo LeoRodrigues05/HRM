@@ -1,0 +1,32 @@
+{
+  "experiment": "controlled_ablation_zL",
+  "git_sha": "7cba8918cd50918a0fe32650f7bb59ca2227334f",
+  "git_dirty": true,
+  "timestamp": "2026-07-11T04:11:33",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.89-ql-generic-14-10-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/controlled/controlled_ablation.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "--ablation_mode",
+    "mean",
+    "--num_puzzles",
+    "5000",
+    "--output_dir",
+    "results/Sudoku/controlled/ablation"
+  ],
+  "params": {
+    "num_puzzles": 5000,
+    "requested_num_puzzles": 5000,
+    "ablate_level": "L",
+    "ablation_mode": "mean",
+    "mean_estimation_puzzles": 256,
+    "max_steps": 16,
+    "seed": 42,
+    "puzzle_indices": null,
+    "save_puzzle_indices": null,
+    "checkpoint": "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt"
+  }
+}
