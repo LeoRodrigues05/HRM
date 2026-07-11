@@ -111,21 +111,23 @@ if want A3; then
     declare -a POOL_PID=()   # POOL_PID[gpu] = pid currently using that gpu (or empty)
 
     # pool_submit <label> <command-string>: block until a GPU frees, then launch.
+    # Uses `wait -n` (blocks on job completion) instead of a poll/sleep loop.
     pool_submit() {
-        local label="$1" cmd="$2" g pid
-        while true; do
+        local label="$1" cmd="$2" g pid free_gpu=-1
+        while [ "${free_gpu}" -lt 0 ]; do
             for g in $(seq 0 $((NGPU-1))); do
                 pid="${POOL_PID[$g]:-}"
                 if [ -z "$pid" ] || ! kill -0 "$pid" 2>/dev/null; then
-                    local log="logs/a3_${label}_gpu${g}_${TS}.log"
-                    echo "[A3] GPU${g} <- ${label}  (log: ${log})"
-                    CUDA_VISIBLE_DEVICES=$g bash -c "$cmd" > "$log" 2>&1 &
-                    POOL_PID[$g]=$!
-                    return 0
+                    free_gpu=$g
+                    break
                 fi
             done
-            sleep 5
+            [ "${free_gpu}" -lt 0 ] && wait -n
         done
+        local log="logs/a3_${label}_gpu${free_gpu}_${TS}.log"
+        echo "[A3] GPU${free_gpu} <- ${label}  (log: ${log})"
+        CUDA_VISIBLE_DEVICES=$free_gpu bash -c "$cmd" > "$log" 2>&1 &
+        POOL_PID[$free_gpu]=$!
     }
 
     MAZE_CKPT=checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint
