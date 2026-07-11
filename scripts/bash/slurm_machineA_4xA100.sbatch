@@ -6,11 +6,15 @@
 #SBATCH --cpus-per-task=64
 #SBATCH --mem=230G
 #SBATCH --time=48:00:00
+#SBATCH -p cscc-gpu-p
+#SBATCH -q cscc-gpu-qos
 #SBATCH --output=logs/machineA_%x_%j.out
 #SBATCH --error=logs/machineA_%x_%j.err
-# >>> EDIT THESE FOR THE 4xA100 CLUSTER (uncomment + fill in) <<<
-###SBATCH --partition=YOUR_PARTITION
-###SBATCH --qos=YOUR_QOS
+# Partition/QOS above match the real 4xA100 jobs (see train_hrm_bptt.sh). This
+# cluster needs no --account. NOTE: cscc-gpu-qos caps a user at 4 GPUs total, so
+# the gpu:4 request below is exactly at the cap -- separately-submitted phases
+# will QUEUE (not co-run), which is fine. A100s here are 40 GB: if training OOMs,
+# lower the batch with GBS=384 (see train_hrm_bptt.sh).
 #
 # Batch version of the "Machine A - 4xA100 node" interactive workflow.
 # Replaces `salloc -N1 --gres=gpu:4 --cpus-per-task=64 --mem=230G --time=48:00:00`
@@ -52,6 +56,7 @@ elif command -v conda >/dev/null 2>&1; then
     conda activate "${HRM_CONDA_ENV:-hrm}"
 fi
 set -u
+export PYTHONPATH="$PWD:${PYTHONPATH:-}"   # A3 scripts under scripts/** import repo-root modules
 export DISABLE_COMPILE=1
 export WANDB_MODE="${WANDB_MODE:-offline}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"
