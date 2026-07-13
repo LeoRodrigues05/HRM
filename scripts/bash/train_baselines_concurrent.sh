@@ -26,16 +26,15 @@ TASK="${TASK:?set TASK=maze or TASK=arc}"
 MODELS="${MODELS:-vanilla_rnn standard_rnn plain_transformer universal_transformer}"
 mkdir -p logs
 
-# --- activate environment (prefer .venv, fallback to conda env "hrm") ---
-# Relax -u: conda activate.d cuda hooks reference unbound vars (NVCC_PREPEND_FLAGS).
+# --- activate environment ---
+# Relax -u: conda activate.d CUDA hooks reference unbound variables.
 set +u
-if [ -f ".venv/bin/activate" ]; then
-    source .venv/bin/activate
-elif command -v conda >/dev/null 2>&1; then
-    eval "$(conda shell.bash hook)"
-    conda activate "${HRM_CONDA_ENV:-hrm}"
-fi
+source scripts/bash/_activate_env.sh
 set -u
+if ! command -v python >/dev/null 2>&1; then
+    echo "[error] Python environment activation failed; 'python' is not on PATH" >&2
+    exit 127
+fi
 
 export DISABLE_COMPILE=1
 export WANDB_MODE="${WANDB_MODE:-offline}"
@@ -44,7 +43,11 @@ export WANDB_MODE="${WANDB_MODE:-offline}"
 OV=""
 [ -n "${EPOCHS:-}" ] && OV="$OV epochs=${EPOCHS}"
 [ -n "${GBS:-}" ]    && OV="$OV global_batch_size=${GBS}"
-[ -n "${SEED:-}" ]   && OV="$OV seed=${SEED}"   # multi-seed baselines (R6)
+if [ -n "${SEED:-}" ]; then
+    # Keep ensemble members independent. pretrain.py automatically resumes
+    # latest.pt, so sharing the config's checkpoint_path would merge seeds.
+    OV="$OV ++seed=${SEED}"
+fi
 
 echo "[info] TASK=$TASK  EPOCHS=${EPOCHS:-config}  GBS=${GBS:-config}  SEED=${SEED:-config}  models: $MODELS"
 echo "[info] $(nvidia-smi --query-gpu=index,name --format=csv,noheader 2>/dev/null | tr '\n' '|')"
@@ -60,8 +63,12 @@ for m in $MODELS; do
     fi
     ts="$(date +%Y%m%d_%H%M%S)"
     log="logs/baseline_${TASK}_${m}_seed${SEED:-0}_${ts}.log"
+    model_ov="${OV}"
+    if [ -n "${SEED:-}" ]; then
+        model_ov="$model_ov ++checkpoint_path=checkpoints/baselines-${TASK}/${m}/seed${SEED} ++run_name=${TASK}-${m}-seed${SEED}"
+    fi
     echo "[launch] GPU ${gpu} -> ${cfg}   (log: ${log})"
-    CUDA_VISIBLE_DEVICES="${gpu}" python pretrain.py --config-name "${cfg}" ${OV} > "${log}" 2>&1 &
+    CUDA_VISIBLE_DEVICES="${gpu}" python pretrain.py --config-name "${cfg}" ${model_ov} > "${log}" 2>&1 &
     pids+=("$!")
     names+=("${m}")
     gpu=$((gpu + 1))
