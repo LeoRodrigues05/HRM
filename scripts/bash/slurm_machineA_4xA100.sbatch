@@ -209,6 +209,7 @@ if want A3; then
 
     # pool_submit <label> <command-string>: block until a GPU frees, then launch.
     # Uses `wait -n` (blocks on job completion) instead of a poll/sleep loop.
+    # Uses `wait -n` (blocks on job completion) instead of a poll/sleep loop.
     pool_submit() {
         local label="$1" cmd="$2" g free_gpu=-1
         while [ "${free_gpu}" -lt 0 ]; do
