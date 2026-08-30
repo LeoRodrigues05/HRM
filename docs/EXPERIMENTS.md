@@ -293,3 +293,32 @@ bash scripts/arc/adapt_puzzle_emb.sh full       # all 1120 tasks, ~10x slower
 
 Recovered accuracy is verified with `scripts/arc/measure_arc_accuracy.py` before the
 interpretability suite runs; `RUN_SUITE=1` chains the two behind an accuracy gate.
+
+---
+
+## 8. Provenance across the release history rewrite
+
+Every result directory carries a `_meta.json` recording the git SHA, seed, sample
+size, GPU, and argv of the run that produced it. Preparing this repository for
+release rewrote history (to purge private state and multi-GB blobs), so the SHAs
+recorded in those files predate the rewrite. The mapping:
+
+| SHA in `_meta.json` | Commit in this history | Subject |
+|---|---|---|
+| `3bc8c8daac` | `ca95b6f04a` | ARC-AGI updates, intermediate-result documentation |
+| `658a38d2af` | `4972ee83e8` | ARC figures for newly-retrieved data |
+| `7cba8918cd` | `06d83c16a4` | (untitled) |
+| `9f0c3f327a` | `727aaeb990` | Cluster setup: conda bootstrap + env activation |
+| `983d027793` | `a56757ea20` | Merge; became degenerate under filtering and collapsed |
+| `a34e5172d0` | `74c0d889e6` | Move paper drafts out of the tracked tree |
+| `c8d79812a0` | `565fd9e3f9` | Merge branch 'main' |
+| `cec861da1c` | `4aec62f0d3` | TTA-voting eval for ARC |
+| `d0c8136ebf` | `ac7dcbe558` | Maze experiments, report generation, results |
+| `db37caa6bf` | `34d0c94e0a` | Constraint-localization study, maze/comparison figures |
+
+`9f0c3f327a` is the SHA behind the BPTT-vs-stock comparison (paper Tables 2, 18,
+19), which ran on separate A100 hardware — the only two `_meta.json` files
+recording `NVIDIA A100-SXM4-40GB`; every other run used an RTX 5000 Ada.
+
+The complete pre-rewrite history is preserved outside this repository as a git
+bundle and can be restored with `git clone pre-cleanup-history.bundle`.
