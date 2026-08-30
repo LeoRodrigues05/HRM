@@ -1,0 +1,78 @@
+{
+  "patch_step": 8,
+  "max_steps": 16,
+  "src_puzzle_idx": 10,
+  "tgt_puzzle_idx": 11,
+  "patch_positions": "all 900 maze cells",
+  "n_cells_changed_vs_baseline": {
+    "zL": 34,
+    "zH": 0
+  },
+  "baseline_equals_ground_truth": true,
+  "donor_endpoint_imprint": {
+    "n_donor_unique_endpoints": 2,
+    "n_imprinted_zL": 1,
+    "n_imprinted_zH": 0,
+    "rate_zL": 0.5,
+    "imprinted_tokens": [
+      "GOAL"
+    ],
+    "imprinted_cells_rc": [
+      [
+        6,
+        7
+      ]
+    ],
+    "target_endpoints_retained": true
+  },
+  "metrics": {
+    "baseline": {
+      "token_acc": 1.0,
+      "exact_solved": 1.0,
+      "path_cell_acc": 1.0,
+      "path_precision": 1.0,
+      "path_recall": 1.0,
+      "path_f1": 1.0,
+      "path_jaccard": 1.0,
+      "pred_path_length": 114.0,
+      "path_length_ratio": 1.0,
+      "wall_path_rate": 0.0,
+      "connects_start_goal": 1.0,
+      "no_branch": 1.0,
+      "valid_sg_path": 1.0,
+      "valid_optimal_path": 1.0
+    },
+    "patched_L": {
+      "token_acc": 0.9622222222222222,
+      "exact_solved": 0.0,
+      "path_cell_acc": 0.7719298245614035,
+      "path_precision": 0.9166666666666666,
+      "path_recall": 0.7719298245614035,
+      "path_f1": 0.838095238095238,
+      "path_jaccard": 0.7213114754098361,
+      "pred_path_length": 96.0,
+      "path_length_ratio": 0.8421052631578947,
+      "wall_path_rate": 0.010416666666666666,
+      "connects_start_goal": 0.0,
+      "no_branch": 1.0,
+      "valid_sg_path": 0.0,
+      "valid_optimal_path": 0.0
+    },
+    "patched_H": {
+      "token_acc": 1.0,
+      "exact_solved": 1.0,
+      "path_cell_acc": 1.0,
+      "path_precision": 1.0,
+      "path_recall": 1.0,
+      "path_f1": 1.0,
+      "path_jaccard": 1.0,
+      "pred_path_length": 114.0,
+      "path_length_ratio": 1.0,
+      "wall_path_rate": 0.0,
+      "connects_start_goal": 1.0,
+      "no_branch": 1.0,
+      "valid_sg_path": 1.0,
+      "valid_optimal_path": 1.0
+    }
+  }
+}

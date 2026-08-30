@@ -50,6 +50,12 @@ def main():
     p.add_argument("--num_pairs", type=int, default=20)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--patch_steps", type=str, default="4,8,12")
+    p.add_argument(
+        "--patch_groups",
+        type=str,
+        default=None,
+        help="comma-separated spatial groups to evaluate (default: all groups)",
+    )
     p.add_argument("--near_dist", type=int, default=5)
     p.add_argument("--output_dir", type=str, default="results/maze/patching_spatial")
     p.add_argument("--device", type=str, default="cuda")
@@ -57,8 +63,15 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
     patch_steps = [int(x) for x in args.patch_steps.split(",") if x.strip()]
+    patch_groups = (
+        [x.strip() for x in args.patch_groups.split(",") if x.strip()]
+        if args.patch_groups is not None else None
+    )
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")
-    print(f"[patch_maze] device={device} patch_steps={patch_steps}")
+    print(
+        f"[patch_maze] device={device} patch_steps={patch_steps} "
+        f"patch_groups={patch_groups if patch_groups is not None else 'all'}"
+    )
 
     model, test_loader, _ = load_model_and_dataloader(args.checkpoint, device)
     pel = get_puzzle_emb_len(model)
@@ -110,6 +123,14 @@ def main():
 
         masks = build_spatial_masks(tgt_batch, pel, near_dist=args.near_dist)
         masks["all"] = all_positions
+        if patch_groups is not None:
+            unknown_groups = sorted(set(patch_groups) - set(masks))
+            if unknown_groups:
+                raise ValueError(
+                    f"Unknown patch groups: {unknown_groups}; "
+                    f"available groups: {sorted(masks)}"
+                )
+            masks = {group: masks[group] for group in patch_groups}
 
         pair_rec = {
             "pair": pair_i, "src_idx": idx_s, "tgt_idx": idx_t,

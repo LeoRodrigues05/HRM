@@ -18,7 +18,7 @@
 #   [4] full sweep     (patch_level{H,L,both} × patch_steps{all,early,late,final})
 # Runs each independently so a failure is logged and the rest still run.
 set -o pipefail
-cd "${SLURM_SUBMIT_DIR:-.}"
+cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export NVCC_PREPEND_FLAGS="${NVCC_PREPEND_FLAGS:-}"
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate hrm
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"

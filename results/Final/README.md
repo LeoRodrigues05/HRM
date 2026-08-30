@@ -3,12 +3,19 @@
 Curated snapshot of the results that directly back the cross-task HRM
 interpretability paper (Sudoku · Maze · ARC). Small artifacts only: aggregate
 JSONs, provenance (`_meta.json`), summary CSVs, paper figures, and the two HTML
-reports. Raw activation dumps (`*.pt`, ~16 GB) and per-puzzle JSONL are **not**
-copied here — they live in the per-task folders (`results/{Sudoku,Maze,ARC}/`).
+reports.
+
+Raw activation dumps (`*.pt`) and per-example records (`per_puzzle.jsonl`,
+`per_pair.jsonl`, `per_direction_results.json`) are not in the repository at all —
+see [`docs/EXPERIMENTS.md §6`](../../docs/EXPERIMENTS.md) for the command that
+regenerates each. The per-task folders (`results/{Sudoku,Maze,ARC}/`) remain the
+source of truth for the aggregates mirrored here.
 
 ## Layout
 
-- `figures/`  — cross-task paper figures (`fig_crosstask_*`) + ARC paper figures.
+- `figures/`  — the canonical destination for every manuscript figure. This
+  includes the cross-task/ARC figures and the supporting Sudoku/Maze panels;
+  there is no separate root-level `paper/figures` or `figure_final` tree.
 - `reports/`  — `sudoku_report.html`, `maze_report.html`.
 - `sudoku/`, `maze/`, `arc/` — curated aggregates, mirroring each experiment's
   path under its task folder (source of truth).
@@ -33,3 +40,6 @@ copied here — they live in the per-task folders (`results/{Sudoku,Maze,ARC}/`)
   `localizability/{hrm_1step,ut_1step}`, `sae_study/bptt_study/*` (BPTT-vs-stock).
 
 Provenance (git SHA, seed, N, GPU) is in each `_meta.json`.
+
+Regeneration commands and the distinction between CPU-only and GPU-backed
+figure generators are documented in `docs/EXPERIMENTS.md`.

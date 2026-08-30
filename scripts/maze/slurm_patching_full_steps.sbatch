@@ -14,7 +14,7 @@
 #SBATCH -e logs/maze/%x_%j.err
 
 set -euo pipefail
-cd "${SLURM_SUBMIT_DIR:-.}"
+cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 mkdir -p logs/maze results/maze/hardened/patching_full_steps
 

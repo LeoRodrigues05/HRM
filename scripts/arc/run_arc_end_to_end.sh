@@ -17,7 +17,7 @@
 # Env overrides: N, N_POLICY, STEPS, SEEDS, DEVICE, FORCE_REBUILD=1, PY
 set -uo pipefail
 
-REPO=.
+REPO="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$REPO"
 export PYTHONPATH="$REPO:${PYTHONPATH:-}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"

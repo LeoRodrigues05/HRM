@@ -31,20 +31,13 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-# Publication style
-plt.rcParams.update({
-    "font.size": 11,
-    "axes.titlesize": 12,
-    "axes.labelsize": 11,
-    "xtick.labelsize": 10,
-    "ytick.labelsize": 10,
-    "legend.fontsize": 9,
-    "figure.dpi": 150,
-    "savefig.dpi": 300,
-    "savefig.bbox": "tight",
-    "axes.grid": True,
-    "grid.alpha": 0.3,
-})
+import os as _os
+import sys as _sys
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__))))
+from paper_style import apply_paper_style, COL_W, TEXT_W
+
+# Single source of truth for all paper figures; keep the grid these figures use.
+apply_paper_style(**{"axes.grid": True, "grid.alpha": 0.3})
 
 MODEL_STYLES = {
     "HRM": {"color": "#2196F3", "marker": "o", "linestyle": "-"},
@@ -54,12 +47,16 @@ MODEL_STYLES = {
     "SRNN_best": {"color": "#9C27B0", "marker": "v", "linestyle": ":"},
 }
 
+# Naming scheme carried over from the earlier version of this work. Note these
+# are not just shorter: `RNN_best` is VanillaRNNModel, which applies a
+# Transformer block recurrently (hence "Recurrent Trans", not "Vanilla RNN"),
+# and `SRNN_best` is StandardRNNModel, which is an nn.GRU (hence "GRU").
 MODEL_LABELS = {
-    "HRM": "HRM (Hierarchical)",
-    "UT_best": "Universal Transformer",
-    "RNN_best": "Vanilla RNN",
-    "PT_best": "Plain Transformer",
-    "SRNN_best": "Standard RNN",
+    "HRM": "HRM",
+    "UT_best": "Univ. Trans",
+    "RNN_best": "Recurrent Trans",
+    "PT_best": "Plain Trans",
+    "SRNN_best": "GRU",
 }
 
 # For trajectory plots (all checkpoints of each family)
@@ -82,13 +79,18 @@ def load_results(results_dir):
     return models
 
 
+# Legend/plot order. Matplotlib fills a multi-column legend COLUMN-major, so with
+# ncol=3 this order lays the five models out as
+#     row 1:  HRM             GRU            Plain Trans
+#     row 2:  Recurrent Trans Univ. Trans
+# which is the arrangement used across all three baseline figures.
+MODEL_ORDER = ["HRM", "RNN_best", "SRNN_best", "UT_best", "PT_best"]
+LEGEND_NCOL = 3
+
+
 def get_primary_models(models):
-    """Return HRM + best checkpoints for all baselines."""
-    primary = {}
-    for name in ("HRM", "UT_best", "RNN_best", "PT_best", "SRNN_best"):
-        if name in models:
-            primary[name] = models[name]
-    return primary
+    """Return HRM + best checkpoints for all baselines, in MODEL_ORDER."""
+    return {name: models[name] for name in MODEL_ORDER if name in models}
 
 
 def get_family_checkpoints(models, family_prefix):
@@ -130,9 +132,11 @@ def plot_accuracy_vs_step(models, output_dir):
     if not primary:
         print("  Skipping fig1 (no primary models)")
         return
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
+    # Included at \columnwidth in 09appendix.tex and authored at COL_W, so
+    # LaTeX applies a 1.0x scale and PAPER_RC sizes land as-is.
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(COL_W, 2.3))
 
-    for name, data in sorted(primary.items()):
+    for name, data in primary.items():
         steps_data = data["per_step_metrics"]
         steps = sorted([int(s) for s in steps_data.keys()])
         style = get_style(name)
@@ -140,25 +144,29 @@ def plot_accuracy_vs_step(models, output_dir):
 
         # Cell accuracy
         cell_accs = [steps_data[str(s)]["cell_accuracy"]["mean"] for s in steps]
-        ax1.plot(steps, cell_accs, label=label, markersize=4, **style)
+        ax1.plot(steps, cell_accs, label=label, markersize=3, markevery=3, **style)
 
         # Unknown-cell accuracy
         unk_accs = [steps_data[str(s)]["unknown_cell_accuracy"]["mean"] for s in steps]
-        ax2.plot(steps, unk_accs, label=label, markersize=4, **style)
+        ax2.plot(steps, unk_accs, label=label, markersize=3, markevery=3, **style)
 
-    ax1.set_xlabel("Reasoning Step")
-    ax1.set_ylabel("Cell Accuracy")
-    ax1.set_title("(a) Cell Accuracy vs. Step")
-    ax1.legend()
+    ax1.set_xlabel("Reasoning step")
+    ax1.set_ylabel("Cell accuracy")
+    ax1.set_title("(a) Cell accuracy")
     ax1.set_ylim(0, 1.05)
 
-    ax2.set_xlabel("Reasoning Step")
-    ax2.set_ylabel("Unknown-Cell Accuracy")
-    ax2.set_title("(b) Unknown-Cell Accuracy vs. Step")
-    ax2.legend()
+    ax2.set_xlabel("Reasoning step")
+    ax2.set_ylabel("Unknown-cell accuracy")
+    ax2.set_title("(b) Unknown-cell accuracy")
     ax2.set_ylim(0, 1.05)
 
-    fig.tight_layout()
+    # One shared legend below both panels (fits the narrow column better than
+    # two in-axes legends); see MODEL_ORDER for the row layout ncol=3 produces.
+    handles, labels = ax1.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=LEGEND_NCOL,
+               frameon=False, bbox_to_anchor=(0.5, -0.02), handlelength=1.2,
+               handletextpad=0.3, columnspacing=0.7)
+    fig.tight_layout(rect=(0, 0.12, 1, 1), w_pad=0.4)
     for ext in ("png", "pdf"):
         fig.savefig(os.path.join(output_dir, f"fig1_accuracy_vs_step.{ext}"))
     plt.close(fig)
@@ -171,23 +179,27 @@ def plot_hamming_convergence(models, output_dir):
     if not primary:
         print("  Skipping fig2 (no primary models)")
         return
-    fig, ax = plt.subplots(figsize=(6, 4.5))
+    fig, ax = plt.subplots(figsize=(COL_W, 2.75))
 
-    for name, data in sorted(primary.items()):
+    for name, data in primary.items():
         steps_data = data["per_step_metrics"]
         steps = sorted([int(s) for s in steps_data.keys()])
         style = get_style(name)
         label = get_label(name)
 
         hamming = [steps_data[str(s)]["hamming_distance"]["mean"] for s in steps]
-        ax.plot(steps, hamming, label=label, markersize=4, **style)
+        ax.plot(steps, hamming, label=label, markersize=3, markevery=3, **style)
 
-    ax.set_xlabel("Reasoning Step")
-    ax.set_ylabel("Hamming Distance to Solution")
-    ax.set_title("Hamming Distance Convergence")
-    ax.legend()
+    ax.set_xlabel("Reasoning step")
+    ax.set_ylabel("Hamming distance to solution")
+    ax.set_title("Hamming distance convergence")
 
-    fig.tight_layout()
+    # Match the reference legend used by every baseline figure; see MODEL_ORDER.
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc="lower center", ncol=LEGEND_NCOL,
+               frameon=False, bbox_to_anchor=(0.5, -0.01), handlelength=1.2,
+               handletextpad=0.3, columnspacing=0.7)
+    fig.tight_layout(rect=(0, 0.13, 1, 1))
     for ext in ("png", "pdf"):
         fig.savefig(os.path.join(output_dir, f"fig2_hamming_convergence.{ext}"))
     plt.close(fig)
@@ -248,7 +260,7 @@ def plot_constraint_violations(models, output_dir):
     titles = ["Row Violations", "Column Violations", "Box Violations"]
 
     for ax, vkey, title in zip(axes, violation_keys, titles):
-        for name, data in sorted(primary.items()):
+        for name, data in primary.items():
             steps_data = data["per_step_metrics"]
             steps = sorted([int(s) for s in steps_data.keys()])
             style = get_style(name)
@@ -279,8 +291,8 @@ def plot_training_trajectory(models, output_dir):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
 
     for family, ax, title in [
-        ("UT", ax1, "Universal Transformer"),
-        ("RNN", ax2, "Vanilla RNN"),
+        ("UT", ax1, "Univ. Trans"),
+        ("RNN", ax2, "Recurrent Trans"),
         # PT and SRNN families can be added here if needed
     ]:
         ckpts = get_family_checkpoints(models, family)

@@ -1,0 +1,48 @@
+{
+  "experiment": "sudoku_patching_full_steps",
+  "git_sha": "983d02779322ef1b0e7bb284d36f8bb2620eab31",
+  "git_dirty": true,
+  "timestamp": "2026-08-02T23:20:49",
+  "python": "3.10.20",
+  "platform": "Linux-6.12.95-ql-generic-14-12-x86_64-with-glibc2.39",
+  "gpu": "NVIDIA RTX 5000 Ada Generation",
+  "argv": [
+    "scripts/patching/patching_sudoku_full_steps.py",
+    "--checkpoint",
+    "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "--num_pairs",
+    "250",
+    "--max_steps",
+    "16",
+    "--patch_levels",
+    "H,L",
+    "--patch_steps",
+    "1,2,4,8,12,14,15",
+    "--seed",
+    "42",
+    "--output_dir",
+    "results/Sudoku/patching/patching_shared_steps",
+    "--device",
+    "cuda"
+  ],
+  "params": {
+    "checkpoint": "checkpoints/sapientinc-sudoku-extreme/checkpoint.pt",
+    "num_pairs": 250,
+    "max_steps": 16,
+    "patch_levels": [
+      "H",
+      "L"
+    ],
+    "patch_steps": [
+      1,
+      2,
+      4,
+      8,
+      12,
+      14,
+      15
+    ],
+    "seed": 42,
+    "primary_metric": "cell_acc"
+  }
+}

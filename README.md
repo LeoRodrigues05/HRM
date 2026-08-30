@@ -36,9 +36,9 @@ distribution, and is competitive on ARC-AGI-2.
   re-derive every claim in the original HRM paper from the released
   checkpoint.
 
-A complete experiment ↔ script ↔ output map lives in
-[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md). Open follow-ups and architectural
-extensions are catalogued in [`docs/FUTURE_WORK.md`](docs/FUTURE_WORK.md).
+A complete experiment ↔ script ↔ output map — including how to regenerate every
+artefact that is not committed here — lives in
+[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
 
 ---
 
@@ -78,8 +78,7 @@ wandb login
 
 ### 2. Get the model checkpoints and data
 
-The interpretability experiments are designed to run against the released
-pretrained HRM checkpoints:
+The interpretability experiments run against the *released* HRM checkpoints:
 
 ```bash
 mkdir -p checkpoints
@@ -91,16 +90,34 @@ huggingface-cli download sapientinc/HRM-checkpoint-ARC-2 \
     --local-dir checkpoints/sapientinc-hrm-arc-2     # only if you want ARC results
 ```
 
-Datasets are reproducible from source:
+The models trained *for this paper* — the four Sudoku baselines, the ARC-2
+puzzle-embedding-adapted checkpoint, the stock/BPTT pair, and the trained SAEs —
+are published separately:
+
+```bash
+huggingface-cli download LeoRodrigues05/hrm-interpretability-checkpoints \
+    --local-dir checkpoints/paper
+```
+
+Sudoku and Maze datasets are reproducible from source:
 
 ```bash
 python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000 \
     --subsample-size 1000 --num-aug 1000              # used by every interpretability script
 python dataset/build_maze_dataset.py                  # for maze MI experiments
 python dataset/build_arc_dataset.py                   # ARC-1 (default dirs); requires submodules
-# ARC-2 is built by the ARC wrapper scripts directly (explicit ARC-AGI-2 paths) —
-# see docs/PLAN_ARC_path_A_embedding_adaptation.md; no manual build needed.
 ```
+
+**ARC-2 is different.** Its puzzle-identifier embeddings are bound to the exact
+dataset build ordering, so the built set is published rather than rebuilt:
+
+```bash
+huggingface-cli download --repo-type dataset \
+    LeoRodrigues05/hrm-interpretability-data --local-dir data
+```
+
+See [`docs/EXPERIMENTS.md §7`](docs/EXPERIMENTS.md) for why, and for the
+adaptation procedure that produced the ARC-2 checkpoint.
 
 You can re-train HRM (and the four baselines) yourself instead — exact commands
 and configs are listed in [`docs/EXPERIMENTS.md §1`](docs/EXPERIMENTS.md#1-training).
@@ -128,7 +145,7 @@ python scripts/sae/sae_train.py
 python scripts/sae/sae_analyze_features.py
 python scripts/sae/sae_causal_ablation.py
 
-# Regenerate every committed paper figure
+# Regenerate the core paper figures (supporting generators are listed in docs/EXPERIMENTS.md)
 python scripts/plotting/generate_paper_figures.py
 ```
 
@@ -162,18 +179,29 @@ scripts/
   reports/             Sudoku HTML and metric reports
   bash/                Convenience wrappers (Init, train_*, eval_*, single_inference, ...)
 
+tests/                  CPU-only regression and safety checks
+
 experiments/paper_replication/   Phase-7 replication of the original HRM claims
 
-docs/
-  EXPERIMENTS.md       Full experiment + script catalogue (this is the long one)
-  FUTURE_WORK.md       Open follow-ups / extensions
+docs/EXPERIMENTS.md     Experiment + script catalogue, regeneration guide, ARC notes
 
-paper/                 LaTeX source of the accompanying manuscript (gitignored except figures/)
+results/Final/          Curated paper-backing aggregates, reports, and figures
+results/{Sudoku,Maze,ARC}/   Per-experiment aggregates, provenance, and figures
 ```
 
-The directories `data/`, `outputs/`, `wandb/`, `logs/`, `checkpoints/`, and the
-LaTeX build artefacts are intentionally gitignored — they are large and
-fully reproducible from the steps above.
+`results/Final/` is the curated set that backs the manuscript; its own
+[`README`](results/Final/README.md) maps each finding to the artefacts behind it.
+
+Two things are intentionally not in this repository:
+
+- **Large binaries** — checkpoints, datasets, activation caches, and trained SAEs.
+  They live on Hugging Face (see §2 above).
+- **Raw per-example records** — `per_puzzle.jsonl`, prediction dumps, and the
+  qualitative HTML renders. Every *reported* number is committed as a small
+  `aggregate.json` / `analysis.json` beside where the raw dump was produced.
+
+[`docs/EXPERIMENTS.md §6`](docs/EXPERIMENTS.md) lists each absent artefact against
+the exact command that regenerates it.
 
 ---
 
@@ -204,9 +232,9 @@ fully reproducible from the steps above.
 }
 ```
 
-This fork additionally accompanies an interpretability manuscript whose source
-lives under `paper/` (kept out of the public repository); the committed
-`paper/figures/*.pdf` files are the exact assets used in the manuscript.
+This fork accompanies an interpretability manuscript, *Dissecting Hierarchical
+Reasoning Models: A Mechanistic Study*. The exact figure assets used in the
+manuscript are committed under `results/Final/figures/`.
 
 ## License
 

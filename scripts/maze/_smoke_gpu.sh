@@ -3,7 +3,7 @@
 # probe script (linear + mlp) and the SAE collect+sweep run end-to-end on GPU
 # at trivial N before the full sbatch job is submitted.
 set -o pipefail
-cd "${SLURM_SUBMIT_DIR:-.}"
+cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export NVCC_PREPEND_FLAGS="${NVCC_PREPEND_FLAGS:-}"   # conda nvcc activate.d trips set -u
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate hrm
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"

@@ -2,7 +2,7 @@
 # Tiny end-to-end smoke for the ARC SAE pipeline (collect -> train -> ablate).
 # Validates wiring on minimal inputs before the multi-hour full run. ~3 min on GPU.
 set -euo pipefail
-PY=python
+PY="${PY:-python}"
 cd "$(dirname "$0")/../.."
 D=results/arc_smoke/sae_study
 

@@ -2,9 +2,9 @@
 # Wait for the ARC-2 dataset build to finish, then run a tiny CPU smoke of the
 # ARC MI suite. Writes progress to logs/arc_smoke.log. Internal use / scratch.
 set -uo pipefail
-cd .
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-PY=python
+PY="${PY:-python}"
 LOG=logs/arc_smoke.log
 SMOKE_OUT=/tmp/arc_smoke
 : > "$LOG"

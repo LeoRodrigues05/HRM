@@ -15,7 +15,7 @@ plot_zh_trajectories), but scored on **path-validity**:
   fig8_trajectory_pca              z_H trajectory in PCA space + per-step path-validity
   fig9_probe_geometry              feature-direction cosine matrix + PC1 per step
 
-Each figure is written as PNG + PDF to results/maze/plots/. Pure CPU.
+Each figure is written as PNG + PDF to results/Maze/plots/. Pure CPU.
 
 Usage:  python scripts/plotting/plot_maze_figures.py
 """
@@ -31,10 +31,15 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = "results/maze/plots"
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts", "plotting"))
+from paper_style import apply_paper_style, scaled_rc, COL_W, TEXT_W
+
+OUT = "results/Maze/plots"
 os.makedirs(OUT, exist_ok=True)
 H_COLOR, L_COLOR = "#1f77b4", "#ff7f0e"
-plt.rcParams.update({"figure.dpi": 120, "font.size": 10, "axes.grid": True, "grid.alpha": 0.3})
+# Single source of truth for all paper figures; keep the grid this module's
+# diagnostic figures rely on.
+apply_paper_style(**{"axes.grid": True, "grid.alpha": 0.3})
 
 
 def load(p) -> Optional[dict]:
@@ -78,8 +83,8 @@ def per_step_series(agg, metric="valid_sg_path"):
 # ───────────────────────── figures ─────────────────────────
 
 def fig1_ablation():
-    zh = load("results/maze/hardened/ablation_controlled/zH/aggregate.json")
-    zl = load("results/maze/hardened/ablation_controlled/zL/aggregate.json")
+    zh = load("results/Maze/hardened/ablation_controlled/zH/aggregate.json")
+    zl = load("results/Maze/hardened/ablation_controlled/zL/aggregate.json")
     if not zh:
         return
     fig, ax = plt.subplots(figsize=(7, 4.2))
@@ -103,7 +108,7 @@ def fig1_ablation():
 
 
 def fig2_freeze():
-    agg = load("results/maze/hardened/freeze_controlled/aggregate.json")
+    agg = load("results/Maze/hardened/freeze_controlled/aggregate.json")
     if not agg:
         return
     fig, ax = plt.subplots(figsize=(7, 4.2))
@@ -129,7 +134,7 @@ def fig2_freeze():
 
 
 def fig3_timeshift():
-    agg = load("results/maze/hardened/time_shift_controlled/aggregate.json")
+    agg = load("results/Maze/hardened/time_shift_controlled/aggregate.json")
     if not agg:
         return
     pp = agg.get("per_pair", {})
@@ -163,7 +168,7 @@ def fig3_timeshift():
 
 
 def fig4_stepdyn():
-    agg = load("results/maze/hardened/step_dynamics/aggregate.json")
+    agg = load("results/Maze/hardened/step_dynamics/aggregate.json")
     if not agg:
         return
     ps = agg.get("per_step", [])
@@ -206,7 +211,7 @@ def _probe_matrix(probes, stream, targets):
 
 
 def fig5_probes():
-    d = load("results/maze/hardened/linear_probes/probe_results.json")
+    d = load("results/Maze/hardened/linear_probes/probe_results.json")
     if not d:
         return
     local = d.get("local_probes", [])
@@ -235,7 +240,7 @@ def fig5_probes():
 
 
 def fig6_mlp():
-    d = load("results/maze/hardened/mlp_probes/probe_results.json")
+    d = load("results/Maze/hardened/mlp_probes/probe_results.json")
     if not d:
         return
     rows = [r for r in d.get("local_probes", []) if r.get("task") == "binary"
@@ -259,7 +264,7 @@ def fig6_mlp():
 
 
 def fig7_sae():
-    p = "results/maze/sae_study/sweep_results.csv"
+    p = "results/Maze/sae_study/sweep_results.csv"
     if not os.path.exists(p):
         return
     rows = list(csv.DictReader(open(p)))
@@ -287,8 +292,17 @@ def fig7_sae():
 
 
 def fig8_trajectory():
-    npz = "results/maze/hardened/trajectory_pca/trajectory_pca.npz"
-    js = load("results/maze/hardened/trajectory_pca/trajectory_pca.json")
+    # Included at \columnwidth in 09appendix.tex while authored at TEXT_W, so
+    # LaTeX shrinks it to 0.47x. scaled_rc compensates so the on-page text is
+    # PAPER_RC-sized without changing the figure's dimensions.
+    with plt.rc_context(scaled_rc(TEXT_W, COL_W,
+                                  **{"axes.grid": True, "grid.alpha": 0.3})):
+        _fig8_trajectory_body()
+
+
+def _fig8_trajectory_body():
+    npz = "results/Maze/hardened/trajectory_pca/trajectory_pca.npz"
+    js = load("results/Maze/hardened/trajectory_pca/trajectory_pca.json")
     if not os.path.exists(npz):
         return
     z = np.load(npz)
@@ -296,32 +310,40 @@ def fig8_trajectory():
     evr = z["explained_variance_ratio"]
     psm = z["per_step_metrics"]            # [steps, 4]: exact, valid_sg_path, connects, path_f1
     N, steps, _ = traj.shape
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+    fig, axes = plt.subplots(1, 2, figsize=(TEXT_W, 3.3))
     ax = axes[0]
     pts = traj.reshape(-1, 2)
     cols = np.tile(np.arange(steps), N)
     sc = ax.scatter(pts[:, 0], pts[:, 1], c=cols, cmap="plasma", s=5, alpha=0.35)
     mean_traj = traj.mean(axis=0)
-    ax.plot(mean_traj[:, 0], mean_traj[:, 1], "-o", color="k", ms=4, lw=1.5, label="mean trajectory")
+    ax.plot(mean_traj[:, 0], mean_traj[:, 1], "-o", color="k", ms=4, lw=1.5)
     for s in range(steps - 1):
         ax.annotate("", xy=mean_traj[s + 1], xytext=mean_traj[s],
                     arrowprops=dict(arrowstyle="->", color="k", alpha=0.6))
     ax.set_xlabel(f"PC1 ({evr[0]*100:.0f}% var)"); ax.set_ylabel(f"PC2 ({evr[1]*100:.0f}% var)")
-    ax.set_title("Maze z_H trajectory in PCA space (colored by ACT step)")
-    fig.colorbar(sc, ax=ax, label="ACT step"); ax.legend(fontsize=8)
+    ax.set_title("(a) $z_H$ in PCA space")
+    fig.colorbar(sc, ax=ax, label="ACT step", pad=0.03, shrink=0.88)
     ax2 = axes[1]
-    labels = ["exact_solved", "valid_sg_path", "connects_start_goal", "path_f1"]
+    # Column order of `psm` is [exact, valid_sg_path, connects, path_f1]; these
+    # are display labels only. Set in title case so they stay legible at the
+    # larger legend size without overflowing the panel.
+    labels = ["Exact solved", "Valid S–G path", "Connects S–G", "Path F1"]
     for i, lab in enumerate(labels):
         ax2.plot(range(steps), psm[:, i], "-o", ms=3, label=lab)
-    ax2.set_xlabel("ACT step"); ax2.set_ylabel("metric"); ax2.set_ylim(0, 1.02)
-    ax2.set_title("Path-validity along the trajectory"); ax2.legend(fontsize=8)
+    ax2.set_xlabel("ACT step"); ax2.set_ylabel("Metric"); ax2.set_ylim(0, 1.02)
+    ax2.set_title("(b) Path validity")
+    handles, legend_labels = ax2.get_legend_handles_labels()
     pc1 = js.get("pc1_explained") if js else evr[0]
-    fig.suptitle(f"Maze z_H trajectory — PC1={pc1*100:.0f}%, 2-PC={ (js.get('cumulative_2pc_explained') if js else evr[:2].sum())*100:.0f}%")
+    # A shared two-column legend keeps the larger labels out of both panels.
+    fig.legend(handles, legend_labels, loc="lower center", ncol=2,
+               frameon=False, bbox_to_anchor=(0.5, 0.005),
+               handlelength=1.6, handletextpad=0.4, columnspacing=1.0)
+    fig.tight_layout(rect=(0, 0.22, 1, 0.96), pad=0.3, w_pad=0.25)
     save(fig, "fig8_trajectory_pca")
 
 
 def fig9_geometry():
-    d = load("results/maze/hardened/probe_geometry/geometric_analysis.json")
+    d = load("results/Maze/hardened/probe_geometry/geometric_analysis.json")
     if not d:
         return
     cos = d.get("constraint_cosines_ensemble", [])

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Path A — recover a solving ARC-2 model from the released checkpoint by re-fitting
 # puzzle_emb on OUR dataset build, with the reasoning core FROZEN (lr=0).
-# See docs/PLAN_ARC_path_A_embedding_adaptation.md for the full rationale.
+# See docs/EXPERIMENTS.md section 7 for the full rationale.
 #
 # Run ON A GPU NODE:
 #   bash scripts/arc/adapt_puzzle_emb.sh evalonly      # 120 eval tasks (recommended, cheap)
@@ -11,8 +11,8 @@
 # Steps budget is empirical: watch the verifier's exact_solved; raise EPOCHS if still rising.
 set -uo pipefail
 
-cd .
-PY=python
+cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+PY="${PY:-python}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-8}"
 export WANDB_MODE="${WANDB_MODE:-offline}"

@@ -37,15 +37,28 @@ checkpoints/
 # Per-puzzle logs that should not be committed
 experiments/paper_replication/results/easy_hard_analysis/results.json
 
-# Paper / submission artefacts (kept out of repo)
-paper/*
-!paper/figures/
-!paper/figures/**
-icml2026.zip
 
 # PDFs (paper/figures excepted above)
 docs/*.pdf
 *.log
 
-# Local paper drafts (working copy)
-docs/paper/
+# Private assistant state - must never be published
+.claude/
+
+# Per-example prediction dumps from evaluate.py (~4.4 GB each, regenerable)
+*_all_preds.*
+
+# Activation caches and SAE sweep snapshots (multi-GB, regenerable on GPU)
+results/**/activations_*.pt
+results/**/sae_d*_epoch*.pt
+
+# Raw per-example records; the committed aggregate.json is the reported artefact
+results/**/per_puzzle.jsonl
+results/**/per_pair.jsonl
+results/**/per_direction_results.json
+results/**/results_per_puzzle.jsonl
+results/Sudoku/hamming_multi/*.csv
+results/Maze/reports/*.html
+
+# Local release staging
+artifacts/

@@ -2,7 +2,7 @@
 """Paper-style mechanistic figures for ARC-AGI-2, mirroring the Sudoku/Maze set.
 
 This recreates the *paper's* signature interpretability figures (the ones built for
-Sudoku/Maze in docs/ICMLWorkshop2026_HRM_Interpretability_Final.pdf) using the ARC
+Sudoku/Maze in the accompanying manuscript) using the ARC
 result JSONs this project produced from the Path-A adapted checkpoint
 (checkpoints/arc2-adapted-evalonly/step_7391, frozen reasoning core, re-fit
 puzzle_emb). Unlike scripts/arc/plot_arc_figures.py (which renders each metric as a

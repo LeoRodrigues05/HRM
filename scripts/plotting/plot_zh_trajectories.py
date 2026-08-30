@@ -4,7 +4,7 @@
 Reads zh_trajectories.pt and zh_trajectory_metrics.json (already on disk)
 and produces publication-quality figures for the paper.
 
-Outputs → paper/figures/:
+Outputs → results/Final/figures/:
   - zh_pca_trajectories.pdf    (3-panel: solved, failed, overlay)
   - zh_directional_metrics.pdf (2×2: cosine, norms, alignment, delta)
 """
@@ -19,24 +19,15 @@ import numpy as np
 import torch
 from sklearn.decomposition import PCA
 
+from paper_style import apply_paper_style, scaled_rc, COL_W, TEXT_W
+
 ROOT = Path(__file__).resolve().parents[2]
-DATA_DIR = ROOT / "results" / "plots" / "zh_trajectories"
-OUT = ROOT / "paper" / "figures"
+DATA_DIR = ROOT / "results" / "Sudoku" / "plots" / "zh_trajectories"
+OUT = ROOT / "results" / "Final" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
-# ── Style ─────────────────────────────────────────────────────────────
-plt.rcParams.update({
-    "font.size": 9,
-    "axes.titlesize": 10,
-    "axes.labelsize": 9,
-    "xtick.labelsize": 8,
-    "ytick.labelsize": 8,
-    "legend.fontsize": 7,
-    "figure.dpi": 300,
-    "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.05,
-    "font.family": "serif",
-})
+# ── Style (single source of truth for all paper figures) ─────────────
+apply_paper_style()
 
 
 def load_data():
@@ -51,6 +42,14 @@ def load_data():
 # Figure A: PCA Trajectory Plots (3-panel)
 # ======================================================================
 def plot_pca_trajectories(data):
+    # Included at \columnwidth in 09appendix.tex while authored at TEXT_W, so
+    # LaTeX shrinks it to 0.47x — the reason its text was unreadable. scaled_rc
+    # compensates; the figure keeps its dimensions so the paper does not move.
+    with plt.rc_context(scaled_rc(TEXT_W, COL_W)):
+        _plot_pca_trajectories(data)
+
+
+def _plot_pca_trajectories(data):
     zh = data["zh_mean"].numpy()               # [N, 16, 512]
     final_puzzle = data["final_puzzle_acc"].numpy()  # [N]
     N, S, D = zh.shape
@@ -68,9 +67,13 @@ def plot_pca_trajectories(data):
 
     var_explained = pca.explained_variance_ratio_
 
-    # Column-width (~3.3in) layout: stack 3 panels vertically so each panel
-    # has enough room for readable axis labels and tick marks.
-    fig, axes = plt.subplots(3, 1, figsize=(3.3, 6.6), sharex=True)
+    # Full-width (figure*) layout: 3 panels side by side, shared legend below
+    # and an ACT-step colorbar on the right — matches the paper figure.
+    # All three panels show the SAME 2-D PCA projection, so they share x/y
+    # limits: the panels become directly comparable, and dropping the inner
+    # y-tick labels lets the three sit close together.
+    fig, axes = plt.subplots(1, 3, figsize=(TEXT_W, 4.05),
+                             sharex=True, sharey=True)
     cmap = plt.cm.viridis
 
     # ── Panel A: Solved ──
@@ -86,7 +89,7 @@ def plot_pca_trajectories(data):
         ax.plot(traj[-1, 0], traj[-1, 1], "x", color="#e74c3c", ms=3, zorder=5,
                 mew=0.8)
     ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
-    ax.set_title(f"(a) Solved (n={n_solved})")
+    ax.set_title("(a) Solved")
 
     # ── Panel B: Failed ──
     ax = axes[1]
@@ -100,8 +103,7 @@ def plot_pca_trajectories(data):
         ax.plot(traj[0, 0], traj[0, 1], "o", color="#2ecc71", ms=2.5, zorder=5)
         ax.plot(traj[-1, 0], traj[-1, 1], "x", color="#e74c3c", ms=3, zorder=5,
                 mew=0.8)
-    ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
-    ax.set_title(f"(b) Failed (n={n_failed})")
+    ax.set_title("(b) Failed")
 
     # ── Panel C: Overlay ──
     ax = axes[2]
@@ -120,25 +122,41 @@ def plot_pca_trajectories(data):
     from matplotlib.lines import Line2D
     legend_handles = [Line2D([0], [0], color="#2980b9", lw=1.5),
                       Line2D([0], [0], color="#e67e22", lw=1.5)]
-    ax.set_xlabel(f"PC1 ({var_explained[0]*100:.1f}%)")
-    ax.set_ylabel(f"PC2 ({var_explained[1]*100:.1f}%)")
     ax.set_title("(c) Overlay")
 
-    # Reserve room: bottom for legend, right for colorbar.
-    fig.subplots_adjust(left=0.18, right=0.84, bottom=0.10, top=0.95,
-                        hspace=0.35)
-    cax = fig.add_axes([0.87, 0.10, 0.025, 0.85])  # [left, bottom, width, height]
+    # Reserve room: bottom for the shared legend, right for the colorbar. The
+    # three panels share the same PC1/PC2 scale and only panel (a) carries a
+    # y-label, so they can sit close together (small wspace).
+    bottom, top = 0.34, 0.92
+    fig.subplots_adjust(left=0.085, right=0.885, bottom=bottom, top=top,
+                        wspace=0.10)
+    cax = fig.add_axes([0.905, bottom, 0.016, top - bottom])
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(0, S - 1))
     sm.set_array([])
     cbar = fig.colorbar(sm, cax=cax)
-    cbar.set_label("ACT step", fontsize=9)
+    cbar.set_label("ACT step")
     cbar.set_ticks([0, 5, 10, 15])
-    cbar.ax.tick_params(labelsize=8)
 
-    # Solved/Failed legend inside the overlay panel (top-right corner).
-    axes[2].legend(legend_handles, ["Solved", "Failed"],
-                   loc="upper right", fontsize=8, frameon=True,
-                   handlelength=1.5, handletextpad=0.4)
+    # The common PC1 label and the population legend sit on their own rows below
+    # the panels. Their heights are measured rather than guessed: at this
+    # figure's scale compensation the tick labels are ~18pt, so a hardcoded y
+    # lands on top of them.
+    def _fig_bbox(artist):
+        return artist.get_window_extent(
+            fig.canvas.get_renderer()).transformed(fig.transFigure.inverted())
+
+    fig.canvas.draw()
+    gap = 0.025
+    ticks_y0 = min(_fig_bbox(t).y0 for ax in axes
+                   for t in ax.get_xticklabels() if t.get_text())
+    xlab = fig.supxlabel(f"PC1 ({var_explained[0]*100:.1f}%)", x=0.47,
+                         y=ticks_y0 - gap, va="top",
+                         fontsize=plt.rcParams["axes.labelsize"])
+    fig.canvas.draw()
+    fig.legend(legend_handles, ["Solved", "Failed"],
+               loc="upper center", ncol=2, frameon=False,
+               bbox_to_anchor=(0.47, _fig_bbox(xlab).y0 - gap),
+               handlelength=1.8, handletextpad=0.5, columnspacing=1.6)
 
     fig.savefig(OUT / "zh_pca_trajectories.pdf")
     fig.savefig(OUT / "zh_pca_trajectories.png", dpi=300)
@@ -152,7 +170,7 @@ def plot_pca_trajectories(data):
 def plot_directional_metrics(metrics):
     steps = np.arange(16)
 
-    fig, axes = plt.subplots(2, 2, figsize=(6.5, 4.5))
+    fig, axes = plt.subplots(2, 2, figsize=(COL_W, 3.0))
 
     def _plot_metric(ax, key, ylabel, title, x_offset=0):
         m = metrics[key]
@@ -162,14 +180,14 @@ def plot_directional_metrics(metrics):
         suc_m = np.array(m["success_mean"])
         fail_m = np.array(m["failure_mean"])
 
-        ax.plot(x, suc_m, "o-", color="#2980b9", ms=3, lw=1.2, label="Solved")
-        ax.plot(x, fail_m, "s-", color="#e67e22", ms=3, lw=1.2, label="Failed")
+        ax.plot(x, suc_m, "o-", color="#2980b9", ms=2.5, markevery=3, lw=1.2, label="Solved")
+        ax.plot(x, fail_m, "s-", color="#e67e22", ms=2.5, markevery=3, lw=1.2, label="Failed")
         ax.fill_between(x, all_m - all_s, all_m + all_s,
                         alpha=0.1, color="gray")
         ax.set_xlabel("ACT Step")
         ax.set_ylabel(ylabel)
         ax.set_title(title)
-        ax.legend(fontsize=6)
+        ax.legend()
         ax.set_xticks([0, 4, 8, 12, 15])
 
     # (a) Consecutive cosine similarity

@@ -19,7 +19,7 @@
 # Every probe target is a PATH-VALIDITY metric / maze structural feature — no
 # token-accuracy targets. Submit from repo root:  sbatch scripts/maze/slurm_maze_parity.sbatch
 set -o pipefail
-cd "${SLURM_SUBMIT_DIR:-.}"
+cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export NVCC_PREPEND_FLAGS="${NVCC_PREPEND_FLAGS:-}"   # conda nvcc activate.d trips set -u
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate hrm
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"

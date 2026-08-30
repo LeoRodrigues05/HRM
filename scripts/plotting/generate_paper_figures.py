@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Generate all 4 paper figures from existing experiment data.
+"""Generate the four core paper figures from existing experiment data.
 
-Outputs go to paper/figures/:
+Outputs go to results/Final/figures/:
   1. accuracy_curves_5model.pdf   — copied from baseline comparison
   2. causal_evidence_panel.pdf    — 3-panel: ablation + freeze + time-shift
   3. readout_vs_computation.pdf   — 2-panel: probe accuracy + directed ablation
@@ -18,23 +18,14 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import numpy as np
 
+from paper_style import apply_paper_style, scaled_rc, COL_W, TEXT_W
+
 ROOT = Path(__file__).resolve().parents[2]
-OUT = ROOT / "paper" / "figures"
+OUT = ROOT / "results" / "Final" / "figures"
 OUT.mkdir(parents=True, exist_ok=True)
 
-# ── Shared style ──────────────────────────────────────────────────────
-plt.rcParams.update({
-    "font.size": 9,
-    "axes.titlesize": 10,
-    "axes.labelsize": 9,
-    "xtick.labelsize": 8,
-    "ytick.labelsize": 8,
-    "legend.fontsize": 7,
-    "figure.dpi": 300,
-    "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.05,
-    "font.family": "serif",
-})
+# ── Shared style (single source of truth for all paper figures) ──────
+apply_paper_style()
 
 COLORS = {
     "hrm": "#1f77b4",
@@ -51,7 +42,7 @@ COLORS = {
 # Match the figsize/style of plot_baseline_comparison.plot_hamming_convergence
 # (figsize=(6, 4.5)) so the two plots render at the same scale when placed
 # side-by-side as subfigures in the paper.
-_BASELINE_DIR = ROOT / "results" / "baseline_comparison"
+_BASELINE_DIR = ROOT / "results" / "Sudoku" / "baseline_comparison"
 
 _MODEL_STYLES = {
     "HRM":      {"color": "#2196F3", "marker": "o", "linestyle": "-"},
@@ -60,13 +51,25 @@ _MODEL_STYLES = {
     "PT_best":  {"color": "#FF9800", "marker": "D", "linestyle": ":"},
     "SRNN_best":{"color": "#9C27B0", "marker": "v", "linestyle": ":"},
 }
+# Naming scheme carried over from the earlier version of this work. Note these
+# are not just shorter: `RNN_best` is VanillaRNNModel, which applies a
+# Transformer block recurrently (hence "Recurrent Trans", not "Vanilla RNN"),
+# and `SRNN_best` is StandardRNNModel, which is an nn.GRU (hence "GRU").
 _MODEL_LABELS = {
-    "HRM":      "HRM (Hierarchical)",
-    "UT_best":  "Universal Transformer",
-    "RNN_best": "Vanilla RNN",
-    "PT_best":  "Plain Transformer",
-    "SRNN_best":"Standard RNN",
+    "HRM":      "HRM",
+    "UT_best":  "Univ. Trans",
+    "RNN_best": "Recurrent Trans",
+    "PT_best":  "Plain Trans",
+    "SRNN_best":"GRU",
 }
+
+# Legend/plot order. Matplotlib fills a multi-column legend COLUMN-major, so with
+# ncol=3 this order lays the five models out as
+#     row 1:  HRM             GRU            Plain Trans
+#     row 2:  Recurrent Trans Univ. Trans
+# which is the arrangement used across all three baseline figures.
+_MODEL_ORDER = ["HRM", "RNN_best", "SRNN_best", "UT_best", "PT_best"]
+_LEGEND_NCOL = 3
 
 
 def fig1():
@@ -84,50 +87,43 @@ def fig1():
         print(f"[Fig1] WARNING: no eval JSONs found under {_BASELINE_DIR}")
         return
 
-    # Match plot_baseline_comparison rcParams locally so the figure visually
-    # matches the original fig2_hamming_convergence styling.
-    with plt.rc_context({
-        "font.size": 11,
-        "axes.titlesize": 12,
-        "axes.labelsize": 11,
-        "xtick.labelsize": 10,
-        "ytick.labelsize": 10,
-        "legend.fontsize": 13,
-        "axes.grid": True,
-        "grid.alpha": 0.3,
-        "font.family": "sans-serif",
-    }):
-        fig, (ax_h, ax_a) = plt.subplots(1, 2, figsize=(12, 4.5))
+    # Included at .8\columnwidth in 04finding1.tex, so LaTeX shrinks this by
+    # 0.8x; scaled_rc compensates so the on-page text is PAPER_RC-sized.
+    with plt.rc_context(scaled_rc(COL_W, 0.8 * COL_W,
+                                  **{"axes.grid": True, "grid.alpha": 0.3})):
+        fig, (ax_h, ax_a) = plt.subplots(1, 2, figsize=(COL_W, 2.15))
 
-        for name, data in sorted(primary.items()):
+        for name in [m for m in _MODEL_ORDER if m in primary]:
+            data = primary[name]
             steps_data = data["per_step_metrics"]
             steps = sorted(int(s) for s in steps_data.keys())
             style = _MODEL_STYLES[name]
             label = _MODEL_LABELS[name]
 
             hamming = [steps_data[str(s)]["hamming_distance"]["mean"] for s in steps]
-            ax_h.plot(steps, hamming, label=label, markersize=4, **style)
+            ax_h.plot(steps, hamming, label=label, markersize=3, markevery=3, **style)
 
             cell_accs = [steps_data[str(s)]["cell_accuracy"]["mean"] for s in steps]
-            ax_a.plot(steps, cell_accs, label=label, markersize=4, **style)
+            ax_a.plot(steps, cell_accs, label=label, markersize=3, markevery=3, **style)
 
-        ax_h.set_xlabel("Reasoning Step")
-        ax_h.set_ylabel("Hamming Distance to Solution")
-        ax_h.set_title("(a) Hamming Distance vs. Step")
+        ax_h.set_xlabel("Reasoning step")
+        ax_h.set_ylabel("Hamming distance")
+        ax_h.set_title("(a) Hamming vs. step")
 
-        ax_a.set_xlabel("Reasoning Step")
-        ax_a.set_ylabel("Cell Accuracy")
-        ax_a.set_title("(b) Cell Accuracy vs. Step")
+        ax_a.set_xlabel("Reasoning step")
+        ax_a.set_ylabel("Cell accuracy")
+        ax_a.set_title("(b) Cell acc. vs. step")
         ax_a.set_ylim(0, 1.05)
 
-        # Single shared legend underneath both panels.
+        # Single shared legend underneath both panels; see _MODEL_ORDER for the
+        # row layout ncol=3 produces. Handles/spacing are kept tight because the
+        # widest row (Recurrent Trans + Univ. Trans) has to fit in one column.
         handles, labels = ax_h.get_legend_handles_labels()
-        fig.legend(handles, labels, loc="lower center", ncol=len(labels),
-                   frameon=False, bbox_to_anchor=(0.5, -0.04),
-                   fontsize=13, handlelength=2.5, handletextpad=0.6,
-                   columnspacing=1.8)
+        fig.legend(handles, labels, loc="lower center", ncol=_LEGEND_NCOL,
+                   frameon=False, bbox_to_anchor=(0.5, -0.02),
+                   handlelength=1.2, handletextpad=0.3, columnspacing=0.7)
 
-        fig.tight_layout(rect=(0, 0.09, 1, 1))
+        fig.tight_layout(rect=(0, 0.13, 1, 1), w_pad=0.4)
         fig.savefig(dst)
         fig.savefig(OUT / "recurrence_curves.png", dpi=300)
         plt.close(fig)
@@ -138,11 +134,20 @@ def fig1():
 # Figure 2: Causal evidence panel (ablation + freeze + time-shift)
 # ======================================================================
 def fig2():
-    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.3))
+    # Included at 0.5\textwidth in 04finding1.tex while authored at
+    # 0.75*TEXT_W, so LaTeX shrinks it to 0.667x. scaled_rc pre-multiplies the
+    # point sizes so the on-page text is PAPER_RC-sized; the figure's own
+    # dimensions are unchanged, so the paper's layout does not move.
+    with plt.rc_context(scaled_rc(0.75 * TEXT_W, 0.5 * TEXT_W)):
+        _fig2_body()
+
+
+def _fig2_body():
+    fig, axes = plt.subplots(1, 3, figsize=(0.75 * TEXT_W, 2.35))
 
     # ── Panel A: Per-step z_H ablation (N=1000) ──
     ax = axes[0]
-    abl_path = ROOT / "results" / "controlled" / "ablation" / "zH_1000" / "zH" / "aggregate.json"
+    abl_path = ROOT / "results" / "Sudoku" / "controlled" / "ablation" / "zH_1000" / "zH" / "aggregate.json"
     with open(abl_path) as f:
         abl = json.load(f)
     steps = sorted(abl["per_step_ablation"].keys(), key=int)
@@ -155,39 +160,57 @@ def fig2():
     ax.bar(x, deltas, color="#c0392b", alpha=0.8, width=0.8)
     ax.errorbar(x, deltas, yerr=[yerr_lo, yerr_hi], fmt="none", ecolor="black",
                 capsize=2, linewidth=0.8)
-    ax.set_xlabel("Ablated step")
-    ax.set_ylabel("$\\Delta$ Cell Accuracy (pp)")
-    ax.set_title("(a) Per-step $z_H$ ablation")
+    ax.set_xlabel("Step ablated")
+    ax.set_ylabel("$\\Delta$ acc. (pp)")
+    ax.set_title("(a) Ablation")
     ax.axhline(0, color="gray", lw=0.5, ls="--")
     ax.set_xticks([0, 4, 8, 12, 15])
 
     # ── Panel B: Freeze z_H ──
     ax = axes[1]
-    frz_path = ROOT / "results" / "freeze" / "freeze_h" / "aggregate_stats.json"
+    # Read the controlled N=1000 run, the same family panel (a) draws from, so
+    # all three panels share one checkpoint, one puzzle prefix and one baseline
+    # (81.77%). The superseded results/Sudoku/freeze/freeze_h run was N=200 with
+    # its own 81.98% baseline.
+    frz_path = ROOT / "results" / "Sudoku" / "controlled" / "freeze" / "aggregate.json"
     with open(frz_path) as f:
         frz = json.load(f)
-    # Parse freeze_conditions keys like "freeze_at_0", "freeze_at_1", ...
-    conds = frz["freeze_conditions"]
-    fx = sorted([int(k.split("_")[-1]) for k in conds.keys()])
-    losses = [abs(conds[f"freeze_at_{s}"]["mean_delta_accuracy"]) * 100 for s in fx]
+    conds = frz["freeze_H"]
+    # The controlled run stores every step 0..15; keep the sparse tick set the
+    # figure has always shown so only the data source changes, not the layout.
+    fx = [s for s in (0, 1, 2, 4, 8, 12) if str(s) in conds]
+    losses = [abs(conds[str(s)]["delta_accuracy"]["mean"]) * 100 for s in fx]
     ax.bar(range(len(fx)), losses, color="#e67e22", alpha=0.8, width=0.7)
     ax.set_xticks(range(len(fx)))
     ax.set_xticklabels([str(s) for s in fx])
-    ax.set_xlabel("Freeze after step $k$")
-    ax.set_ylabel("Accuracy loss (pp)")
-    ax.set_title("(b) Freeze $z_H$ after step $k$")
+    ax.set_xlabel("Freeze after $k$")
+    ax.set_ylabel("Loss (pp)")
+    ax.set_title("(b) Freeze")
 
     # ── Panel C: Time-shift ──
     ax = axes[2]
-    ts_path = ROOT / "results" / "time_shift" / "aggregate_stats.json"
+    # Controlled N=1000 run (mode=fixed, fixed_donor=10). The superseded
+    # results/Sudoku/time_shift run was N=100 over a different, non-overlapping
+    # set of donor/recipient pairs.
+    ts_path = ROOT / "results" / "Sudoku" / "controlled" / "time_shift" / "aggregate.json"
     with open(ts_path) as f:
         ts = json.load(f)
-    pairs = ts["transfer_pairs"]
+    pairs = ts["per_pair"]
+    # Hold the donor fixed at step 10 and sweep the recipient, so a single
+    # experiment supplies both directions: recipient < 10 transplants a late
+    # state into an early one (future→past), recipient > 10 the reverse.
+    # Six recipients, matching this panel's long-standing bar density; they span
+    # the full sweep, so the plotted extremes are the reported extremes.
+    _RECIPIENTS = (0, 4, 8, 12, 14, 15)
     future_labels, future_vals = [], []
     past_labels, past_vals = [], []
-    for key, val in pairs.items():
-        delta = val["mean_delta_accuracy"] * 100
-        if val.get("direction", "").startswith("forward"):
+    for recipient in _RECIPIENTS:
+        key = f"10->{recipient}"
+        val = pairs.get(key)
+        if val is None:
+            continue
+        delta = val["delta_accuracy"]["mean"] * 100
+        if val["donor_step"] > val["recipient_step"]:
             future_labels.append(key)
             future_vals.append(delta)
         else:
@@ -198,15 +221,37 @@ def fig2():
     colors_ts = ["#27ae60"] * len(future_labels) + ["#8e44ad"] * len(past_labels)
     ax.bar(range(len(labels)), vals, color=colors_ts, alpha=0.8)
     ax.set_xticks(range(len(labels)))
-    ax.set_xticklabels(labels, rotation=45, ha="right", fontsize=6)
+    # The donor is fixed at step 10, so the recipient index alone identifies each
+    # pair; printing the full "10->k" key here would overlap at this panel width.
+    # Two-digit recipients sit close together at this panel width, so ease the
+    # tick size a little; the donor step belongs in the caption, not the axis,
+    # where a longer label would overrun the panel.
+    ax.set_xticklabels([lab.split("->")[1] for lab in labels],
+                       fontsize=plt.rcParams["xtick.labelsize"] * 0.85)
     ax.axhline(0, color="gray", lw=0.5, ls="--")
-    ax.set_ylabel("$\\Delta$ Accuracy (pp)")
-    ax.set_title("(c) Time-shift transplant")
+    ax.set_xlabel("Recipient step")
+    ax.set_ylabel("$\\Delta$ acc. (pp)")
+    ax.set_title("(c) Transplant")
+    # The direction legend belongs to this panel alone, so it sits inside the
+    # axes rather than floating outside the grid. Upper-right is free (both bars
+    # under it are negative); the extra top headroom keeps it off the tallest
+    # positive bar, and it is set slightly below the panel's text size so the two
+    # labels fit within this narrow third axis.
+    vmin_ts, vmax_ts = min(vals), max(vals)
+    span_ts = vmax_ts - vmin_ts
+    ax.set_ylim(vmin_ts - 0.10 * span_ts, vmax_ts + 0.62 * span_ts)
     from matplotlib.patches import Patch
-    ax.legend([Patch(color="#27ae60"), Patch(color="#8e44ad")],
-              ["Future→Past", "Past→Future"], fontsize=6, loc="best")
+    direction_handles = [Patch(color="#27ae60"), Patch(color="#8e44ad")]
+    ax.legend(direction_handles, ["Future→Past", "Past→Future"],
+              loc="upper right", frameon=True, framealpha=0.8,
+              facecolor="white", edgecolor="none",
+              fontsize=plt.rcParams["legend.fontsize"] * 0.85,
+              handlelength=1.1, handletextpad=0.35, labelspacing=0.25,
+              borderpad=0.3, borderaxespad=0.25)
 
-    plt.tight_layout()
+    # No bottom legend band to reserve any more — the panels use the full height,
+    # which in turn needs a real gutter so (b)'s y-label clears (a).
+    fig.tight_layout(pad=0.22, w_pad=1.0)
     fig.savefig(OUT / "causal_evidence_panel.pdf")
     fig.savefig(OUT / "causal_evidence_panel.png", dpi=300)
     plt.close(fig)
@@ -221,7 +266,7 @@ def fig3():
 
     # ── Panel A: Probe accuracy at step 15 ──
     ax = axes[0]
-    probe_path = ROOT / "results" / "probes" / "nonlinear_probes" / "comparison_summary.json"
+    probe_path = ROOT / "results" / "Sudoku" / "probes" / "nonlinear_probes" / "comparison_summary.json"
     if probe_path.exists():
         with open(probe_path) as f:
             probes = json.load(f)
@@ -246,7 +291,7 @@ def fig3():
 
     # ── Panel B: Directed ablation ──
     ax = axes[1]
-    da_path = ROOT / "results" / "directed_ablation" / "e9_directed_ablation" / "aggregate_results.json"
+    da_path = ROOT / "results" / "Sudoku" / "directed_ablation" / "e9_directed_ablation" / "aggregate_results.json"
     if da_path.exists():
         with open(da_path) as f:
             da = json.load(f)
@@ -287,7 +332,7 @@ def fig4():
     fig, ax = plt.subplots(figsize=(4.0, 2.8))
 
     # Full z_H ablation (from N=1000 data)
-    abl_path = ROOT / "results" / "controlled" / "ablation" / "zH_1000" / "zH" / "aggregate.json"
+    abl_path = ROOT / "results" / "Sudoku" / "controlled" / "ablation" / "zH_1000" / "zH" / "aggregate.json"
     with open(abl_path) as f:
         abl = json.load(f)
     full_delta = abl["all_steps_delta"]["mean"] * 100
@@ -295,7 +340,7 @@ def fig4():
     full_ci_hi = abl["all_steps_delta"]["ci_upper"] * 100
 
     # SAE features (from causal_ablation)
-    sae_path = ROOT / "results" / "sae_study" / "causal_ablation" / "aggregate.json"
+    sae_path = ROOT / "results" / "Sudoku" / "sae_study" / "causal_ablation" / "aggregate.json"
     if sae_path.exists():
         with open(sae_path) as f:
             sae = json.load(f)
@@ -346,10 +391,16 @@ def fig4():
 # ======================================================================
 if __name__ == "__main__":
     print(f"Output directory: {OUT}")
-    fig1()
-    fig2()
-    fig3()
-    fig4()
+    fig1()  # recurrence_curves.pdf   (used in paper)
+    fig2()  # causal_evidence_panel.pdf (used in paper)
+    # fig3/fig4 produce readout_vs_computation / causal_hierarchy, which are not
+    # included in the current paper; keep them best-effort so a data-shape change
+    # in those unused figures never blocks the two figures the paper needs.
+    for _f in (fig3, fig4):
+        try:
+            _f()
+        except Exception as e:  # noqa: BLE001
+            print(f"[skip] {_f.__name__}: {e}")
     print("\nAll figures generated!")
     for f in sorted(OUT.glob("*")):
         print(f"  {f.name}")

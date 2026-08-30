@@ -16,7 +16,7 @@
 # Each step is independent — a failure is logged and the rest still run.
 # Override N with:  sbatch --export=ALL,NUM_PUZZLES=1000 ...
 set -o pipefail
-cd "${SLURM_SUBMIT_DIR:-.}"
+cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export NVCC_PREPEND_FLAGS="${NVCC_PREPEND_FLAGS:-}"   # conda nvcc activate.d trips set -u
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate hrm
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"

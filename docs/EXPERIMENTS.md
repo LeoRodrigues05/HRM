@@ -68,7 +68,7 @@ bash scripts/bash/eval_baselines.sh            # multi-checkpoint sweep
 
 `scripts/analysis/evaluate_baselines.py` computes per-step cell/puzzle accuracy,
 Hamming distance, and row/col/box violation counts. Outputs land under
-`results/baseline_comparison/`.
+`results/Sudoku/baseline_comparison/`.
 
 ARC submission scoring uses [`arc_eval.ipynb`](../arc_eval.ipynb) on the JSON
 predictions produced by `evaluate.py`.
@@ -84,19 +84,19 @@ Sudoku. All experiments share `scripts/core/activation_ablation.py` /
 
 | ID | Question | Driver script | Outputs |
 |----|----------|---------------|---------|
-| **E1** | Is z<sub>H</sub> necessary? Which steps matter? | `scripts/ablation/batch_ablation_1k.py` | `results/ablation/batch_ablation_zH/` |
-| **E2** | Is z<sub>H</sub> a static plan or progressive refinement? | `scripts/freeze/batch_freeze_h.py` | `results/freeze/` |
-| **E3 / E3b** | Does z<sub>H</sub> carry puzzle-specific info? | `scripts/core/activation_patching.py` (use `scripts/bash/run_activation_patching_examples.sh`) | `results/patching/` |
-| **E4** | What is decodable from z<sub>H</sub> / z<sub>L</sub>? | `scripts/probes/sweep_linear_probes.py`, `scripts/probes/train_linear_probes.py` | `results/probes/` |
-| **E5** | How does z<sub>H</sub> evolve across steps? | `scripts/time_shift/batch_time_shift.py` | `results/time_shift/` |
-| **E7b** | Convergence of predictions across steps | `scripts/reports/result_metrics_sudoku.py` | `results/metrics/`, `results/hamming_multi/` |
-| **E8** | Linear constraint probes (row/col/box violations, naked singles, …) | `scripts/probes/e8_constraint_probes.py` | `results/probes/e8_constraint_probes/` |
-| **E9** | Directed ablation along E8 directions (causal validation) | `scripts/directed_ablation/e9_directed_ablation.py` | `results/directed_ablation/` |
-| **E9b** | MLP / non-linear probes & their directed ablation | `scripts/probes/nonlinear_probes.py`, `scripts/directed_ablation/e9b_nonlinear_directed_ablation.py` | `results/directed_ablation/nonlinear/` |
-| **E10** | Sparse autoencoder study on z<sub>H</sub> (features + causal ablation) | `scripts/sae/sae_train.py`, `scripts/sae/sae_analyze_features.py`, `scripts/sae/sae_causal_ablation.py`, `scripts/sae/sae_sweep.py`, `scripts/sae/sae_plot.py` | `results/sae_study/` |
-| Maze | Maze variants of E1/E2/E5/E8/E9/E10 | `scripts/sae/sae_collect_activations_maze.py`, `results/maze/...` | `results/maze/` |
-| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/slurm_arc_suite.sbatch` (see `docs/PLAN_ARC_experiments.md`) | `results/arc/` |
-| Controlled | Single-variable, larger-N replications of E1/E2/E5/E9 with stats | `scripts/controlled/run_all_controlled_experiments.py` | `results/controlled/` |
+| **E1** | Is z<sub>H</sub> necessary? Which steps matter? | `scripts/ablation/batch_ablation_1k.py` | `results/Sudoku/ablation/batch_ablation_zH/` |
+| **E2** | Is z<sub>H</sub> a static plan or progressive refinement? | `scripts/freeze/batch_freeze_h.py` | `results/Sudoku/freeze/` |
+| **E3 / E3b** | Does z<sub>H</sub> carry puzzle-specific info? | `scripts/core/activation_patching.py` (use `scripts/bash/run_activation_patching_examples.sh`) | `results/Sudoku/patching/` |
+| **E4** | What is decodable from z<sub>H</sub> / z<sub>L</sub>? | `scripts/probes/sweep_linear_probes.py`, `scripts/probes/train_linear_probes.py` | `results/Sudoku/probes/` |
+| **E5** | How does z<sub>H</sub> evolve across steps? | `scripts/time_shift/batch_time_shift.py` | `results/Sudoku/time_shift/` |
+| **E7b** | Convergence of predictions across steps | `scripts/reports/result_metrics_sudoku.py` | `results/Sudoku/metrics/`, `results/Sudoku/hamming_multi/` |
+| **E8** | Linear constraint probes (row/col/box violations, naked singles, …) | `scripts/probes/e8_constraint_probes.py` | `results/Sudoku/probes/e8_constraint_probes/` |
+| **E9** | Directed ablation along E8 directions (causal validation) | `scripts/directed_ablation/e9_directed_ablation.py` | `results/Sudoku/directed_ablation/` |
+| **E9b** | MLP / non-linear probes & their directed ablation | `scripts/probes/nonlinear_probes.py`, `scripts/directed_ablation/e9b_nonlinear_directed_ablation.py` | `results/Sudoku/directed_ablation/e9b_nonlinear/` |
+| **E10** | Sparse autoencoder study on z<sub>H</sub> (features + causal ablation) | `scripts/sae/sae_train.py`, `scripts/sae/sae_analyze_features.py`, `scripts/sae/sae_causal_ablation.py`, `scripts/sae/sae_sweep.py`, `scripts/sae/sae_plot.py` | `results/Sudoku/sae_study/` |
+| Maze | Maze variants of E1/E2/E5/E8/E9/E10 | `scripts/sae/sae_collect_activations_maze.py`, `scripts/maze/` | `results/Maze/` |
+| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/slurm_arc_suite.sbatch` (see `archive/plans/PLAN_ARC_experiments.md`) | `results/ARC/arc/` |
+| Controlled | Single-variable, larger-N replications of E1/E2/E5/E9 with stats | `scripts/controlled/run_all_controlled_experiments.py` | `results/Sudoku/controlled/` |
 
 The ARC suite uses the HRM ARC-2 checkpoint
 (`checkpoints/sapientinc-hrm-arc-2/checkpoint`) and `data/arc-2-aug-1000`
@@ -135,12 +135,23 @@ Per-experiment scripts: `exp1_easy_hard_analysis.py`, `exp2_grokking_analysis.py
 ### Plotting & figures
 
 ```bash
-python scripts/plotting/plot_baseline_comparison.py --results_dir results/baseline_comparison
-python scripts/plotting/plot_e8_e9.py
-python scripts/plotting/plot_ablation_results.py
+# Task-level result figures
+python scripts/plotting/plot_baseline_comparison.py \
+    --results_dir results/Sudoku/baseline_comparison
+python scripts/plotting/plot_maze_figures.py
+
+# Canonical manuscript figures -> results/Final/figures
+python scripts/plotting/generate_paper_figures.py
+python scripts/plotting/generate_supporting_paper_figures.py
+python scripts/plotting/plot_crosstask_causal_ladder.py
+python scripts/plotting/plot_maze_causal_evidence.py
+python scripts/plotting/plot_readout_vs_causality.py
 python scripts/plotting/plot_zh_trajectories.py
-python scripts/plotting/generate_paper_figures.py     # rebuilds paper/figures/*.pdf
 ```
+
+Older exploratory/presentation plotters are not part of the manuscript
+regeneration path; see the cleanup review list in the repository handoff before
+retaining them in a release bundle.
 
 ---
 
@@ -177,6 +188,7 @@ utils/
   maze_targets.py             Maze-specific evaluation helpers
 results/                      All experiment outputs (gitignored except committed plots)
 experiments/paper_replication/  Phase-7 replication of the original paper claims
+tests/                        CPU-only regression and safety checks
 ```
 
 ---
@@ -187,25 +199,97 @@ After running E1/E2/E5/E8/E9/E10 (and their controlled / maze variants):
 
 ```bash
 python scripts/plotting/generate_paper_figures.py
-ls paper/figures/*.pdf
+python scripts/plotting/generate_supporting_paper_figures.py
+python scripts/plotting/plot_crosstask_causal_ladder.py
+python scripts/plotting/plot_maze_causal_evidence.py
+python scripts/plotting/plot_readout_vs_causality.py
+ls results/Final/figures/*.pdf
 ```
 
-The committed `paper/figures/*.pdf` files are the exact assets used in the
-manuscript; rebuilding them requires the corresponding `results/...` artefacts.
+The committed `results/Final/figures/*.pdf` files are the exact assets used in
+the manuscript; rebuilding them requires the corresponding `results/...`
+artefacts. `plot_maze_patching_example.py` additionally needs the Maze checkpoint
+and a GPU because it selects and reruns a qualitative intervention example.
 
 ---
 
-## 6. Large binary artefacts (gitignored — regenerate locally)
+## 6. Artefacts not in this repository (regenerate locally)
 
-All *text* results (JSON / JSONL / YAML / Markdown) and figures (PDF / PNG) are
-committed. The large binary caches are **gitignored** (`.pt` / `.npy` / `.npz`)
-because they exceed GitHub's 100 MB/file limit and are fully regenerable. None of
-these are needed for the ARC-AGI reproduction. To rebuild them:
+Every number reported in the paper is backed by a small aggregate committed here —
+typically `aggregate.json`, `analysis.json`, or `aggregate_stats.json` next to where
+the raw dump used to live, plus a `_meta.json` recording git SHA, seed, N, and GPU.
 
-| Artefact (gitignored) | Size | Regenerate with |
+Three classes of artefact are deliberately absent, all fully regenerable.
+
+### 6.1 Model weights and datasets → Hugging Face
+
+| Artefact | Source |
+|---|---|
+| Released HRM checkpoints (Sudoku / Maze / ARC-2) | `sapientinc/*` — see [README §2](../README.md) |
+| Sudoku baselines (Recurrent / Universal / Plain Transformer, GRU) | this project's HF model repo |
+| `arc2-adapted-evalonly/step_7391` | this project's HF model repo |
+| `bptt_study/{hrm_stock,hrm_bptt}` | this project's HF model repo |
+| Trained SAE weights (`sae_d*_l1*.pt`) | this project's HF model repo |
+| `data/arc-2-evalonly`, `data/sudoku-extreme-1k-aug-1000` | this project's HF dataset repo |
+
+The two datasets are published rather than left to `dataset/build_*.py` because the
+adapted ARC checkpoint's `puzzle_emb` is bound to the exact build ordering — see §7.
+
+### 6.2 Activation caches and SAE sweep snapshots → regenerate on a GPU
+
+| Artefact | Size | Regenerate with |
 |---|---|---|
-| `results/{maze/,}sae_study/activations_zH.pt` | 2.5–8.5 GB | `scripts/sae/sae_collect_activations.py` (maze: `sae_collect_activations_maze.py`) |
-| `results/{maze/,}sae_study/sae_d*_l1*.pt` | ~32 MB each | `scripts/sae/sae_train.py` / `sae_sweep.py` |
-| `results/maze/hardened/probe_geometry/probe_weights.pt` | 1.5 MB | `scripts/maze/linear_probes_maze.py --save_probe_weights` |
-| `results/maze/hardened/trajectory_pca/trajectory_pca.npz` | 60 KB | `scripts/maze/` trajectory-PCA step |
-| `data/`, `checkpoints/` | — | submodule build + HF download (see [README §2](../README.md)) |
+| `results/Sudoku/sae_study/activations_zH.pt` | 1.7 GB | `python scripts/sae/sae_collect_activations.py` |
+| `results/Maze/sae_study/activations_zH.pt` | 5.6 GB | `python scripts/sae/sae_collect_activations_maze.py` |
+| `results/ARC/arc/sae_study/activations_zH.pt` | 4.2 GB | `python scripts/arc/sae_collect_activations_arc.py` |
+| `results/*/sae_study/sae_d*_epoch*.pt` | ~3.9 GB | `python scripts/sae/sae_sweep.py` (per-epoch checkpoints) |
+| `results/Maze/hardened/probe_geometry/probe_weights.pt` | 1.5 MB | `python scripts/maze/linear_probes_maze.py --save_probe_weights` |
+| `results/Maze/hardened/trajectory_pca/trajectory_pca.npz` | 60 KB | `python scripts/maze/trajectory_pca_maze.py` |
+
+### 6.3 Per-example dumps and prediction files → regenerate from the drivers
+
+Raw per-example records were removed to keep the repository clonable. Each row's
+aggregate is committed; re-run the driver only if you need per-puzzle detail.
+
+| Removed artefact | Committed aggregate that replaces it | Regenerate with |
+|---|---|---|
+| `checkpoints/**/*_all_preds.*` (~28 GB) | `results/Sudoku/baseline_comparison/*_eval.json` | `evaluate.py checkpoint=<ckpt>` |
+| `results/Sudoku/ablation/batch_ablation_zH/results_per_puzzle.jsonl` | `aggregate_stats.json` | `scripts/ablation/batch_ablation_1k.py` |
+| `results/Sudoku/hamming_multi/hamming_per_puzzle.csv` | `hamming_*.png` in the same directory | `scripts/reports/result_metrics_sudoku.py` |
+| `results/Sudoku/controlled/**/per_puzzle.jsonl` | `aggregate.json` per experiment | `scripts/controlled/run_all_controlled_experiments.py` |
+| `results/*/sae_study/**/per_puzzle.jsonl` | `aggregate.json` per experiment | `scripts/sae/sae_causal_ablation.py` |
+| `results/*/directed_ablation/per_direction_results.json` | `analysis.json` (all reported deltas, CIs, p-values) | `scripts/directed_ablation/e9_directed_ablation.py` |
+| `results/Maze/hardened/**/per_{puzzle,pair}.jsonl` | `aggregate.json` per experiment | `scripts/maze/run_all_maze_hardened.sh` |
+| `results/Maze/reports/*.html` (qualitative dumps) | `results/Final/reports/maze_report.html` | `scripts/maze/intermediate_report_maze.py` |
+
+---
+
+## 7. ARC-AGI-2: puzzle-embedding adaptation, not fine-tuning
+
+The ARC-AGI-2 model used for the representation-level analysis is **not** a
+conventional fine-tune of the released checkpoint. `scripts/arc/adapt_puzzle_emb.sh`
+freezes the reasoning core (`lr=1e-9`) and trains **only** the puzzle embedding
+(`puzzle_emb_lr=1e-2`, 2000 epochs, `global_batch_size=96`), starting from
+`checkpoints/sapientinc-hrm-arc-2/checkpoint`.
+
+This matters for reproduction. HRM identifies each puzzle by an index into a learned
+`puzzle_emb` table, and that index is assigned at dataset-build time. The released
+checkpoint's table is therefore meaningless against any other build of the data, which
+is why the released checkpoint scores ~0 on a locally rebuilt ARC-2 set. Adaptation
+re-fits the table to *our* build while leaving the reasoning weights untouched, so the
+mechanism under study is still the released model's.
+
+Two consequences:
+
+- The ARC-2 dataset must be built with `seed=42, num_aug=1000`. A different seed or
+  augmentation count reorders the puzzle identifiers and invalidates the adapted
+  embedding. This is why the built dataset is published rather than only its builder.
+- Do **not** rebuild `data/arc-2-evalonly` between adaptation and analysis.
+
+```bash
+bash scripts/arc/adapt_puzzle_emb.sh evalonly   # 120 eval tasks (used in the paper)
+bash scripts/arc/adapt_puzzle_emb.sh full       # all 1120 tasks, ~10x slower
+```
+
+Recovered accuracy is verified with `scripts/arc/measure_arc_accuracy.py` before the
+interpretability suite runs; `RUN_SUITE=1` chains the two behind an accuracy gate.

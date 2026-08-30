@@ -11,7 +11,7 @@
 #       bash scripts/arc/_run_remaining_arc_suite.sh
 set -euo pipefail
 
-PY=python
+PY="${PY:-python}"
 CKPT=checkpoints/arc2-adapted-evalonly/step_7391
 SAE_DIR=results/arc/sae_study
 cd "$(dirname "$0")/../.."
