@@ -1,24 +1,31 @@
 # =============================================================================
 # .gitignore for the HRM mechanistic-interpretability fork
+#
+# The repository tracks source, configs, and the small result aggregates that
+# back the paper. Large binaries live on Hugging Face; raw per-example records
+# are regenerable. See docs/EXPERIMENTS.md section 6 for the rebuild commands.
 # =============================================================================
 
-# Python
+# --- Python -----------------------------------------------------------------
 __pycache__/
 *.pyc
 *.pyo
 .ipynb_checkpoints/
 
-# Virtual envs
+# --- Environments -----------------------------------------------------------
 .venv/
 venv/
 .env
 
-# IDE / editor
+# --- Editors ----------------------------------------------------------------
 .vscode/
 .idea/
 *.swp
 
-# Large model / numerical artefacts
+# --- Private assistant state (must never be published) ----------------------
+.claude/
+
+# --- Weights, tensors, datasets (published on Hugging Face) -----------------
 *.pt
 *.ckpt
 *.pth
@@ -26,39 +33,37 @@ venv/
 *.npz
 *.tar.gz
 *.run
-
-# Data / outputs / experiment artefacts (large)
 data/
-outputs/
-wandb/
-logs/
 checkpoints/
 
-# Per-puzzle logs that should not be committed
-experiments/paper_replication/results/easy_hard_analysis/results.json
-
-
-# PDFs (paper/figures excepted above)
-docs/*.pdf
-*.log
-
-# Private assistant state - must never be published
-.claude/
-
-# Per-example prediction dumps from evaluate.py (~4.4 GB each, regenerable)
-*_all_preds.*
-
-# Activation caches and SAE sweep snapshots (multi-GB, regenerable on GPU)
+# Listed explicitly for documentation; already covered by *.pt above.
+# Activation caches are 1.7-5.6 GB each; SAE per-epoch snapshots total ~3.9 GB.
 results/**/activations_*.pt
 results/**/sae_d*_epoch*.pt
 
-# Raw per-example records; the committed aggregate.json is the reported artefact
+# --- Run artefacts ----------------------------------------------------------
+outputs/
+wandb/
+logs/
+*.log
+
+# Per-example prediction dumps from evaluate.py (~4.4 GB each)
+*_all_preds.*
+
+# --- Raw per-example records ------------------------------------------------
+# The reported artefact is the aggregate.json / analysis.json in the same
+# directory; these are the underlying per-item rows.
 results/**/per_puzzle.jsonl
 results/**/per_pair.jsonl
 results/**/per_direction_results.json
 results/**/results_per_puzzle.jsonl
 results/Sudoku/hamming_multi/*.csv
+experiments/paper_replication/results/easy_hard_analysis/results.json
+
+# Qualitative HTML renders. The curated pair in results/Final/reports/ is
+# tracked; the bulk per-puzzle dumps are not.
 results/Maze/reports/*.html
 
-# Local release staging
+# --- Local release staging --------------------------------------------------
 artifacts/
+docs/*.pdf
