@@ -305,16 +305,16 @@ recorded in those files predate the rewrite. The mapping:
 
 | SHA in `_meta.json` | Commit in this history | Subject |
 |---|---|---|
-| `3bc8c8daac` | `ca95b6f04a` | ARC-AGI updates, intermediate-result documentation |
-| `658a38d2af` | `4972ee83e8` | ARC figures for newly-retrieved data |
-| `7cba8918cd` | `06d83c16a4` | (untitled) |
-| `9f0c3f327a` | `727aaeb990` | Cluster setup: conda bootstrap + env activation |
-| `983d027793` | `a56757ea20` | Merge; became degenerate under filtering and collapsed |
-| `a34e5172d0` | `74c0d889e6` | Move paper drafts out of the tracked tree |
-| `c8d79812a0` | `565fd9e3f9` | Merge branch 'main' |
-| `cec861da1c` | `4aec62f0d3` | TTA-voting eval for ARC |
-| `d0c8136ebf` | `ac7dcbe558` | Maze experiments, report generation, results |
-| `db37caa6bf` | `34d0c94e0a` | Constraint-localization study, maze/comparison figures |
+| `3bc8c8daac` | `c3729492ae` | ARC-AGI updates, intermediate-result documentation |
+| `658a38d2af` | `e980e300f3` | ARC figures for newly-retrieved data |
+| `7cba8918cd` | `93ea149355` | (untitled) |
+| `983d027793` | `40b356e883` | Merge; became degenerate under filtering and collapsed |
+| `9f0c3f327a` | `35b5876634` | Cluster setup: conda bootstrap + env activation |
+| `a34e5172d0` | `89d8573422` | Move paper drafts out of the tracked tree |
+| `c8d79812a0` | `ddbe7deca0` | Merge branch 'main' |
+| `cec861da1c` | `2498a73960` | TTA-voting eval for ARC |
+| `d0c8136ebf` | `0c2b39c2a8` | Maze experiments, report generation, results |
+| `db37caa6bf` | `0a36a969be` | Constraint-localization study, maze/comparison figures |
 
 `9f0c3f327a` is the SHA behind the BPTT-vs-stock comparison (paper Tables 2, 18,
 19), which ran on separate A100 hardware — the only two `_meta.json` files
