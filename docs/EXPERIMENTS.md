@@ -244,7 +244,15 @@ adapted ARC checkpoint's `puzzle_emb` is bound to the exact build ordering — s
 | `results/ARC/arc/sae_study/activations_zH.pt` | 4.2 GB | `python scripts/arc/sae_collect_activations_arc.py` |
 | `results/*/sae_study/sae_d*_epoch*.pt` | ~3.9 GB | `python scripts/sae/sae_sweep.py` (per-epoch checkpoints) |
 | `results/Maze/hardened/probe_geometry/probe_weights.pt` | 1.5 MB | `python scripts/maze/linear_probes_maze.py --save_probe_weights` |
+| `results/Sudoku/probes/e8_constraint_probes/probe_weights.pt` | 936 KB | `python scripts/probes/e8_constraint_probes.py` |
+| `results/Sudoku/probes/nonlinear_probes/probe_weights.pt` | 16 MB | `python scripts/probes/nonlinear_probes.py` |
+| `results/ARC/arc/hardened/linear_probes/probe_weights.pt` | 200 KB | `python scripts/arc/arc_linear_probes.py` |
 | `results/Maze/hardened/trajectory_pca/trajectory_pca.npz` | 60 KB | `python scripts/maze/trajectory_pca_maze.py` |
+
+The four `probe_weights.pt` files are **inputs** to the directed-ablation and
+probe-geometry scripts (paper §5, Figure 5, Tables 12-14), not just outputs. They
+are published in the Hugging Face model repo under `probe_weights/` so those
+experiments can be re-run without first retraining every probe.
 
 ### 6.3 Per-example dumps and prediction files → regenerate from the drivers
 
@@ -322,3 +330,23 @@ recording `NVIDIA A100-SXM4-40GB`; every other run used an RTX 5000 Ada.
 
 The complete pre-rewrite history is preserved outside this repository as a git
 bundle and can be restored with `git clone pre-cleanup-history.bundle`.
+
+---
+
+## 9. Script output paths vs the committed layout
+
+Committed results live under `results/{Sudoku,Maze,ARC}/`, but many driver
+scripts still default to the flat, lower-case paths used before that
+reorganization — `results/arc/...`, `results/baseline_comparison/`,
+`results/probes/`, `results/controlled/`, and so on. On a case-sensitive
+filesystem those are *different* directories, so a script run with its default
+`--output_dir` writes beside the committed results rather than into them.
+
+This is intentional in the sense that it makes re-runs non-destructive: your
+output never silently overwrites the committed reference. But it means you should
+pass `--output_dir` explicitly when you want to compare against, or replace, a
+committed result.
+
+The per-experiment table in section 3 lists the **committed** location for each
+experiment. Use those paths, not the script defaults, when locating the artefacts
+behind a number in the paper.
