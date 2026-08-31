@@ -1,224 +1,190 @@
-# Tell Me Why: Mechanistic Interpretability of the Hierarchical Reasoning Model
+# Dissecting Hierarchical Reasoning Models: A Mechanistic Study
 
-A research fork of the
-[Hierarchical Reasoning Model (HRM)](https://arxiv.org/abs/2506.21734)
-codebase, extended with a full mechanistic-interpretability (MI) suite that
-asks **what z<sub>H</sub> and z<sub>L</sub> encode**, **which steps of the ACT
-recurrence matter**, and **which directions in latent space are *causally*
-responsible for solving Sudoku** — not just statistically correlated with the
-solution.
+Code and results for a mechanistic-interpretability study of the
+[Hierarchical Reasoning Model (HRM)](https://arxiv.org/abs/2506.21734) across
+**Sudoku-Extreme**, **Maze-Hard**, and **ARC-AGI-2**.
 
-The original HRM is a 27 M-parameter recurrent transformer with two
-interdependent modules — a high-level state z<sub>H</sub> (slow, abstract
-planning) and a low-level state z<sub>L</sub> (fast, per-cell computation) —
-iterated for up to 16 ACT steps with a Q-learning halting head. With only 1 000
-training examples it nearly solves Sudoku-Extreme, the 30×30 hard maze
-distribution, and is competitive on ARC-AGI-2.
+HRM is a 27M-parameter recurrent encoder with two interacting Transformer
+modules: a slow high-level state z<sub>H</sub> updated once per cycle, and a
+fast low-level state z<sub>L</sub> updated several times per cycle, iterated for
+up to 16 ACT segments. It reasons in latent space, so its intermediate steps are
+never verbalized — which is exactly what makes it hard to audit.
+
+This repository asks three questions and ships the code and aggregates behind
+each answer:
+
+| | Question | Finding |
+|---|---|---|
+| **RQ1** | What functional roles do z<sub>H</sub> and z<sub>L</sub> play? | HRM iteratively refines a puzzle-specific solution state. The locus is task-dependent: z<sub>H</sub> on Sudoku, z<sub>L</sub> on Maze. |
+| **RQ2** | Do linearly decodable directions carry the computation? | No. Task variables decode at ~90%, yet ablating those probe directions is indistinguishable from random controls. |
+| **RQ3** | Is there a compact, causally dominant feature set? | No. SAE ablations bite harder than probe directions, but the top-50 features are no more important than 50 random ones — including under full BPTT training. |
 
 ![](./assets/hrm.png)
 
-## What this repository adds on top of upstream HRM
-
-- **Baselines**: Vanilla RNN, GRU, Plain Transformer, and Universal Transformer
-  trained on the same Sudoku-Extreme data (`models/baselines/`,
-  `config/cfg_pretrain_*.yaml`, `scripts/bash/train_*.sh`).
-- **HRM v2** with sparse constraint-aware attention and an explicit
-  constraint-satisfaction head (`models/hrm_v2/`, `pretrain_v2.py`,
-  `config/cfg_pretrain_v2.yaml`).
-- **Activation patching / ablation engine** (`scripts/core/`) used by every
-  intervention experiment.
-- **Interpretability experiment drivers** (`scripts/{ablation,freeze,patching,
-  time_shift,probes,directed_ablation,sae,controlled}/`) covering ablation,
-  freeze, time-shift, linear / non-linear / sparse-autoencoder probes, and
-  directed ablation along discovered directions.
-- **Plotting and report tooling** (`scripts/plotting/`, `scripts/reports/`).
-- **Paper-replication scripts** (`experiments/paper_replication/`) that
-  re-derive every claim in the original HRM paper from the released
-  checkpoint.
-
-A complete experiment ↔ script ↔ output map — including how to regenerate every
-artefact that is not committed here — lives in
-[`docs/EXPERIMENTS.md`](docs/EXPERIMENTS.md).
-
 ---
 
-## Replication in three steps
+## Reproducing the results
 
-### 1. Bootstrap the environment
+Three tiers, cheapest first. Most readers want Tier 1.
 
-Linux + NVIDIA GPU (Ampere or newer recommended) is assumed.
+### Tier 1 — redraw every paper figure (CPU, ~1 minute, no downloads)
+
+Every reported number is committed as a small `aggregate.json` / `analysis.json`,
+so the figures rebuild without checkpoints or datasets.
 
 ```bash
-git clone <this-repo-url> HRM && cd HRM
-git submodule update --init --recursive
-bash scripts/bash/Initialize_HRM_Repo.sh        # uv venv + CUDA 12.6 + PyTorch + FA + deps + Sudoku data
-source .venv/bin/activate
+git clone https://github.com/LeoRodrigues05/HRM && cd HRM
+pip install -r requirements.txt
+bash reproduce_figures.sh
 ```
 
-Useful skip flags for the bootstrap script:
+Writes 23 PDFs and their PNGs to `results/Final/figures/`. Each generator prints
+the values it plots, so you can diff them against the paper directly — e.g. the
+cross-task ladder prints Sudoku `Top-50 SAE=-3.63pp  Random-50 SAE=-3.42pp`,
+matching Table 15.
+
+### Tier 2 — re-run the analyses (GPU, hours)
+
+Needs the checkpoints and datasets. Everything comes from Hugging Face.
 
 ```bash
-SKIP_CUDA=1 SKIP_APT=1 bash scripts/bash/Initialize_HRM_Repo.sh   # already have CUDA + sudo-less env
-SKIP_FA=1   bash scripts/bash/Initialize_HRM_Repo.sh               # skip flash-attn (CPU-only / unsupported GPU)
-SKIP_DATA=1 bash scripts/bash/Initialize_HRM_Repo.sh               # do not rebuild the Sudoku dataset
-```
+git submodule update --init --recursive       # ARC raw data
 
-For Hopper GPUs install FlashAttention 3 instead:
-
-```bash
-git clone https://github.com/Dao-AILab/flash-attention.git
-cd flash-attention/hopper && python setup.py install && cd ../..
-```
-
-(Optional) experiment tracking:
-
-```bash
-wandb login
-```
-
-### 2. Get the model checkpoints and data
-
-The interpretability experiments run against the *released* HRM checkpoints:
-
-```bash
-mkdir -p checkpoints
+# Released HRM checkpoints the analysis runs against
 huggingface-cli download sapientinc/HRM-checkpoint-sudoku-extreme \
     --local-dir checkpoints/sapientinc-sudoku-extreme
 huggingface-cli download sapientinc/HRM-checkpoint-maze-30x30-hard \
     --local-dir checkpoints/sapientinc-hrm-maze-30x30-hard
 huggingface-cli download sapientinc/HRM-checkpoint-ARC-2 \
-    --local-dir checkpoints/sapientinc-hrm-arc-2     # only if you want ARC results
-```
+    --local-dir checkpoints/sapientinc-hrm-arc-2
 
-The models trained *for this paper* — the four Sudoku baselines, the ARC-2
-puzzle-embedding-adapted checkpoint, the stock/BPTT pair, and the trained SAEs —
-are published separately:
-
-```bash
+# Models trained for this paper (baselines, ARC-adapted, stock/BPTT pair, SAEs,
+# probe weights)
 huggingface-cli download LeoRodrigues05/hrm-interpretability-checkpoints \
     --local-dir checkpoints/paper
-```
 
-Sudoku and Maze datasets are reproducible from source:
-
-```bash
-python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000 \
-    --subsample-size 1000 --num-aug 1000              # used by every interpretability script
-python dataset/build_maze_dataset.py                  # for maze MI experiments
-python dataset/build_arc_dataset.py                   # ARC-1 (default dirs); requires submodules
-```
-
-**ARC-2 is different.** Its puzzle-identifier embeddings are bound to the exact
-dataset build ordering, so the built set is published rather than rebuilt:
-
-```bash
+# Datasets bound to those checkpoints (see "A note on ARC-AGI-2" below)
 huggingface-cli download --repo-type dataset \
     LeoRodrigues05/hrm-interpretability-data --local-dir data
+
+# Maze data comes from upstream
+huggingface-cli download --repo-type dataset sapientinc/maze-30x30-hard-1k \
+    --local-dir data/maze-30x30-hard-1k
 ```
 
-See [`docs/EXPERIMENTS.md §7`](docs/EXPERIMENTS.md) for why, and for the
-adaptation procedure that produced the ARC-2 checkpoint.
-
-You can re-train HRM (and the four baselines) yourself instead — exact commands
-and configs are listed in [`docs/EXPERIMENTS.md §1`](docs/EXPERIMENTS.md#1-training).
-
-### 3. Run the experiment suite
-
-End-to-end orchestrators (run any subset):
+Then run whichever suite you need:
 
 ```bash
-# Paper-claims replication on the released HRM checkpoint
-python experiments/paper_replication/run_all_experiments.py
-
-# Single-variable, larger-N controlled re-runs of E1 / E2 / E5 / E9
+# Sudoku: single-variable controlled re-runs of the interventions (Finding 1)
 python scripts/controlled/run_all_controlled_experiments.py
 
-# 5-model baseline comparison (HRM vs Vanilla RNN, GRU, Plain & Universal Transformer)
-bash scripts/bash/eval_all_baselines.sh
+# Maze: the hardened variants used in the paper
+bash scripts/maze/run_all_maze_hardened.sh
 
-# Constraint probes (E8) and directed ablation (E9)
+# ARC-AGI-2: probes + SAE study
+bash scripts/arc/run_arc_end_to_end.sh full
+
+# Probes and directed ablation (Finding 2)
 python scripts/probes/e8_constraint_probes.py
 python scripts/directed_ablation/e9_directed_ablation.py
 
-# Sparse-autoencoder study (E10)
+# Sparse autoencoders (Finding 3)
+python scripts/sae/sae_collect_activations.py     # writes a multi-GB cache
 python scripts/sae/sae_train.py
-python scripts/sae/sae_analyze_features.py
 python scripts/sae/sae_causal_ablation.py
 
-# Regenerate the core paper figures (supporting generators are listed in docs/EXPERIMENTS.md)
-python scripts/plotting/generate_paper_figures.py
+# 5-model baseline comparison (Figure 1, Table 4)
+bash scripts/bash/eval_all_baselines.sh
 ```
 
-A per-experiment table (`E1…E10`, maze variants, controlled runs) with the
-exact driver script and output directory is in
-[`docs/EXPERIMENTS.md §3`](docs/EXPERIMENTS.md#3-mechanistic-interpretability-experiments).
+Results land in `results/{Sudoku,Maze,ARC}/`, alongside the committed
+aggregates. [`docs/EXPERIMENTS.md §3`](docs/EXPERIMENTS.md) maps every
+experiment ID in the paper to its driver script and output directory.
+
+### Tier 3 — retrain from scratch (multi-GPU, days)
+
+```bash
+bash scripts/bash/Initialize_HRM_Repo.sh    # uv venv + CUDA + PyTorch + FA + data
+python dataset/build_sudoku_dataset.py --output-dir data/sudoku-extreme-1k-aug-1000 \
+    --subsample-size 1000 --num-aug 1000
+```
+
+Training commands for HRM, the four baselines, and the stock/BPTT pair are in
+[`docs/EXPERIMENTS.md §1`](docs/EXPERIMENTS.md).
 
 ---
 
-## Project layout (short version)
+## A note on ARC-AGI-2
+
+The ARC model is **not** a fine-tune. HRM identifies each puzzle by an index into
+a learned `puzzle_emb` table assigned at dataset-build time, so the released
+checkpoint scores ~0 against any locally rebuilt ARC-2 set.
+`scripts/arc/adapt_puzzle_emb.sh` re-fits *only* that table (`puzzle_emb_lr=1e-2`)
+with the reasoning core frozen (`lr=1e-9`), leaving the mechanism under study
+untouched.
+
+This is why `data/arc-2-evalonly` is published rather than rebuilt: it must be the
+exact build the embedding was fitted against. Do not rebuild it between adaptation
+and analysis. Full rationale in [`docs/EXPERIMENTS.md §7`](docs/EXPERIMENTS.md).
+
+---
+
+## Layout
 
 ```
-config/                Hydra configs (HRM, HRM v2, baselines)
-models/                HRM (`hrm/`), HRM v2 (`hrm_v2/`), baselines (`baselines/`)
-dataset/               Sudoku / Maze / ARC dataset builders + raw-data submodules
-pretrain.py            Generic Hydra training entrypoint
-pretrain_v2.py         HRM v2 training entrypoint
-evaluate.py            Distributed evaluation + per-puzzle prediction dump
-arc_eval.ipynb         ARC submission scoring notebook
-puzzle_dataset.py      Shared dataloader
-
+models/
+  hrm/hrm_act_v1.py     HRM with ACT; `one_step_grad` toggles the BPTT variant
+  baselines/            Recurrent (vanilla_rnn.py) / Universal Transformer,
+                        Plain Transformer, GRU (standard_rnn.py)
+  hrm_v2/               Sparse-attention + constraint-head variant (exploratory)
+  sae.py                Sparse autoencoder (L1 and top-k)
 scripts/
-  core/                Activation-patching / ablation engine
-  ablation/  freeze/  patching/  time_shift/    Per-experiment intervention drivers
-  probes/              Linear, sweep, MLP, and constraint-specific probes
-  directed_ablation/   E9 / E9b directed ablation along probe directions
-  sae/                 E10 sparse-autoencoder study (train, analyse, causal)
-  controlled/          Tighter, single-variable controlled re-runs of E1/E2/E5/E9
-  analysis/            Evaluation, difficulty-stratified, trajectory tools
-  plotting/            Paper / presentation figure generators
-  reports/             Sudoku HTML and metric reports
-  bash/                Convenience wrappers (Init, train_*, eval_*, single_inference, ...)
-
-tests/                  CPU-only regression and safety checks
-
-experiments/paper_replication/   Phase-7 replication of the original HRM claims
-
-docs/EXPERIMENTS.md     Experiment + script catalogue, regeneration guide, ARC notes
-
-results/Final/          Curated paper-backing aggregates, reports, and figures
-results/{Sudoku,Maze,ARC}/   Per-experiment aggregates, provenance, and figures
+  core/                 Activation patching / ablation engine used by every
+                        intervention experiment
+  ablation/ freeze/ patching/ time_shift/    Per-experiment drivers (Finding 1)
+  controlled/           Larger-N, single-variable re-runs -- what the paper cites
+  probes/               Linear, sweep, MLP, constraint probes (Finding 2)
+  directed_ablation/    Ablation along probe directions vs random controls
+  sae/                  SAE train / analyse / causal ablation (Finding 3)
+  maze/ arc/            Task-specific variants of the above
+  plotting/             Manuscript figure generators
+  analysis/ reports/    Evaluation, trajectories, HTML reports
+config/                 Hydra configs; arch/hrm_v1{,_bptt}.yaml differ by one line
+dataset/                Sudoku / Maze / ARC builders + raw-data submodules
+results/Final/          Curated paper-backing aggregates, reports, figures
+results/{Sudoku,Maze,ARC}/   Per-experiment aggregates and provenance
+experiments/paper_replication/   Replication of the *original* HRM paper's claims
 ```
 
-`results/Final/` is the curated set that backs the manuscript; its own
-[`README`](results/Final/README.md) maps each finding to the artefacts behind it.
+`results/Final/` is the curated set behind the manuscript; its
+[`README`](results/Final/README.md) maps each finding to the artefacts
+supporting it. Every result directory carries a `_meta.json` recording the git
+SHA, seed, sample size, and GPU of the run that produced it.
 
-Two things are intentionally not in this repository:
-
-- **Large binaries** — checkpoints, datasets, activation caches, and trained SAEs.
-  They live on Hugging Face (see §2 above).
-- **Raw per-example records** — `per_puzzle.jsonl`, prediction dumps, and the
-  qualitative HTML renders. Every *reported* number is committed as a small
-  `aggregate.json` / `analysis.json` beside where the raw dump was produced.
-
-[`docs/EXPERIMENTS.md §6`](docs/EXPERIMENTS.md) lists each absent artefact against
-the exact command that regenerates it.
+Two things are intentionally absent, both regenerable and both documented with
+their exact rebuild command in [`docs/EXPERIMENTS.md §6`](docs/EXPERIMENTS.md):
+large binaries (on Hugging Face) and raw per-example records (`per_puzzle.jsonl`
+and friends — the committed aggregate is the reported artefact).
 
 ---
 
-## Notes & caveats
+## Notes
 
-- Small-sample (1k) Sudoku training shows a typical ±2 % accuracy variance.
-  For Sudoku-Extreme the late-stage Q-learning loss can become unstable;
-  early-stop once train accuracy reaches 100 %.
-- All `scripts/bash/*.sh` wrappers source `.venv/bin/activate` if it exists and
-  fall back to a conda environment named `${HRM_CONDA_ENV:-hrm}` otherwise.
-  No paths are hard-coded to a specific user — every script `cd`s to
-  `git rev-parse --show-toplevel` (or `pwd`) before running.
-- Multi-GPU training uses `torchrun --nproc-per-node 8`; single-GPU training
-  works by replacing the launcher with plain `python` and lowering
-  `global_batch_size`.
+- Driver scripts default to writing under `results/{Sudoku,Maze,ARC}/`, the same
+  tree as the committed aggregates. Pass `--output_dir` to keep a run separate.
+- Small-sample (1k) Sudoku training shows ~±2% accuracy variance; the late-stage
+  Q-learning loss can destabilize, so early-stop once train accuracy hits 100%.
+- `scripts/bash/*.sh` activate `.venv` if present, else a conda env named
+  `${HRM_CONDA_ENV:-hrm}`. Nothing is hard-coded to a machine: scripts resolve
+  the repo root via `git rev-parse --show-toplevel`.
+- Multi-GPU training uses `torchrun --nproc-per-node 8`; single-GPU works by
+  substituting plain `python` and lowering `global_batch_size`.
+- SLURM headers in `scripts/**/*.sbatch` and `train_*.sh` can be ignored when
+  running locally — each script also works when invoked directly.
 
 ## Citation
+
+The upstream model:
 
 ```bibtex
 @misc{wang2025hierarchicalreasoningmodel,
@@ -231,10 +197,6 @@ the exact command that regenerates it.
       url={https://arxiv.org/abs/2506.21734}
 }
 ```
-
-This fork accompanies an interpretability manuscript, *Dissecting Hierarchical
-Reasoning Models: A Mechanistic Study*. The exact figure assets used in the
-manuscript are committed under `results/Final/figures/`.
 
 ## License
 

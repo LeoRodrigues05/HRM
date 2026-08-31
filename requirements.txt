@@ -1,11 +1,27 @@
+# Analysis and figures (Tier 1-2 in the README).
+# Enough to redraw every paper figure from the committed aggregates, and to run
+# the probe / SAE / intervention experiments against downloaded checkpoints.
 torch
-adam-atan2
-einops
+numpy
+scipy
+scikit-learn
+matplotlib
+seaborn
+pyyaml
 tqdm
-coolname
+huggingface_hub
+
+# Training and dataset building (Tier 3).
+hydra-core
+omegaconf
 pydantic
 argdantic
+coolname
+adam-atan2
 wandb
-omegaconf
-hydra-core
-huggingface_hub
+
+# Optional.
+# flash-attn  : faster attention on Ampere+; models/layers.py falls back to
+#               PyTorch SDPA when it is absent.
+# numba       : only scripts/arc/voting_eval_arc.py (ARC TTA-voting eval).
+# rich        : only scripts/reports/pretty_sudoku_print.py (terminal rendering).
