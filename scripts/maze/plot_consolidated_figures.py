@@ -36,7 +36,7 @@ def save(fig, outdir, name):
 # ---------------------------------------------------------------- data loaders
 def maze_ablation_perstep(level):
     """maze per-step ablation Δvalid_sg_path with CIs, steps 0..15."""
-    d = load(f"results/maze/hardened/ablation_controlled/{level}/aggregate.json")
+    d = load(f"results/Maze/hardened/ablation_controlled/{level}/aggregate.json")
     ps = d["per_step_ablation"]
     steps = sorted((int(k) for k in ps), key=int)
     m, lo, hi = [], [], []
@@ -48,7 +48,7 @@ def maze_ablation_perstep(level):
 
 def maze_patch_allgroup(level):
     """full-grid cross-puzzle patch Δvalid_sg_path (all group), with CIs."""
-    d = load("results/maze/hardened/patching_full_steps/aggregate.json")
+    d = load("results/Maze/hardened/patching_full_steps/aggregate.json")
     node = d["maze_metric_deltas_by_group_level_step"]["valid_sg_path"]["all"][level]
     steps = sorted((int(k) for k in node), key=int)
     m, lo, hi = [], [], []
@@ -59,7 +59,7 @@ def maze_patch_allgroup(level):
 
 
 def sudoku_ablation_perstep(level):
-    d = load(f"results/controlled/ablation/{level}/aggregate.json")
+    d = load(f"results/Sudoku/controlled/ablation/{level}/aggregate.json")
     ps = d["per_step_ablation"]
     steps = sorted((int(k) for k in ps), key=int)
     m = np.array([ps[str(s)]["delta_accuracy"]["mean"] * 100 for s in steps])
@@ -91,11 +91,11 @@ def fig_asymmetry(outdir):
 def fig_f3_ladder(outdir):
     print("[fig_f3_causal_ladder]")
     # maze
-    mz = load("results/maze/sae_study/causal_ablation/aggregate.json")["conditions"]
-    mz_full = load("results/maze/hardened/ablation_controlled/zH/aggregate.json")["all_steps_maze_deltas"]["valid_sg_path"]["mean"] * 100
+    mz = load("results/Maze/sae_study/causal_ablation/aggregate.json")["conditions"]
+    mz_full = load("results/Maze/hardened/ablation_controlled/zH/aggregate.json")["all_steps_maze_deltas"]["valid_sg_path"]["mean"] * 100
     # sudoku
-    sd = load("results/sae_study/causal_ablation/aggregate.json")["conditions"]
-    sd_full = load("results/controlled/ablation/zH/aggregate.json")["all_steps_delta"]["mean"] * 100
+    sd = load("results/Sudoku/sae_study/causal_ablation/aggregate.json")["conditions"]
+    sd_full = load("results/Sudoku/controlled/ablation/zH/aggregate.json")["all_steps_delta"]["mean"] * 100
 
     labels = ["full z_H\nablation", "SAE top-50", "SAE random-50", "probe\ndirections", "random\ndirections"]
     maze_vals = [mz_full,
@@ -150,7 +150,7 @@ def fig_dual_metric(outdir):
     print("[fig_dual_metric_ablation]")
     rows = []
     for lvl in ("zH", "zL"):
-        d = load(f"results/maze/hardened/ablation_controlled/{lvl}/aggregate.json")
+        d = load(f"results/Maze/hardened/ablation_controlled/{lvl}/aggregate.json")
         tok = d["all_steps_delta"]["mean"] * 100
         tok_lo = d["all_steps_delta"]["ci_lower"] * 100; tok_hi = d["all_steps_delta"]["ci_upper"] * 100
         pv = d["all_steps_maze_deltas"]["valid_sg_path"]
@@ -174,7 +174,7 @@ def fig_dual_metric(outdir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--outdir", default="results/maze/plots")
+    ap.add_argument("--outdir", default="results/Maze/plots")
     args = ap.parse_args()
     outdir = os.path.join(REPO, args.outdir)
     os.makedirs(outdir, exist_ok=True)

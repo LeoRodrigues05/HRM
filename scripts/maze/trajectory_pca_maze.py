@@ -15,7 +15,7 @@ the 900 answer cells to a [max_steps, D] trajectory, then fit a PCA across all
     path_f1) so the latent trajectory is annotated with solution progress — not
     token accuracy.
 
-Input: reuses the SAE activation dump (``results/maze/sae_study/activations_zH.pt``)
+Input: reuses the SAE activation dump (``results/Maze/sae_study/activations_zH.pt``)
 when present (CPU-only, fast). Otherwise collects inline from the checkpoint (GPU).
 
 Outputs (under --output_dir)
@@ -25,7 +25,7 @@ Outputs (under --output_dir)
 
 Usage
   python scripts/maze/trajectory_pca_maze.py --stream z_H \
-      --activations results/maze/sae_study/activations_zH.pt --num_puzzles 300
+      --activations results/Maze/sae_study/activations_zH.pt --num_puzzles 300
   python scripts/maze/trajectory_pca_maze.py --stream z_H --num_puzzles 300 --device cuda
 """
 from __future__ import annotations
@@ -180,14 +180,14 @@ def analyze(pooled: np.ndarray, metrics: np.ndarray, seeds: List[int]) -> Tuple[
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--stream", default="z_H", choices=["z_H", "z_L"])
-    ap.add_argument("--activations", default="results/maze/sae_study/activations_zH.pt",
+    ap.add_argument("--activations", default="results/Maze/sae_study/activations_zH.pt",
                     help="SAE dump to reuse (CPU). If missing, collect inline (GPU).")
     ap.add_argument("--checkpoint", default="checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint")
     ap.add_argument("--num_puzzles", type=int, default=300)
     ap.add_argument("--max_steps", type=int, default=16)
     ap.add_argument("--seeds", type=str, default="0,1,2,3,4")
     ap.add_argument("--device", type=str, default="auto")
-    ap.add_argument("--output_dir", default="results/maze/hardened/trajectory_pca")
+    ap.add_argument("--output_dir", default="results/Maze/hardened/trajectory_pca")
     args = ap.parse_args()
     os.makedirs(args.output_dir, exist_ok=True)
     seeds = [int(s) for s in args.seeds.split(",") if s.strip()]

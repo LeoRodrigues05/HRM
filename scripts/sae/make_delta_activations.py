@@ -11,17 +11,17 @@ and expect layout ``[N, steps, 81, D]``, so the deltas are stored under the same
 
 Input
 -----
-  results/sae_study/bptt_study/<ckpt>/activations_zH.pt   # [N,16,81,512]
+  results/Sudoku/sae_study/bptt_study/<ckpt>/activations_zH.pt   # [N,16,81,512]
 
 Output
 ------
-  results/sae_study/bptt_study/<ckpt>/activations_dzH.pt  # z_H := [N,15,81,512]
+  results/Sudoku/sae_study/bptt_study/<ckpt>/activations_dzH.pt  # z_H := [N,15,81,512]
 
 Usage
 -----
     python scripts/sae/make_delta_activations.py \
-        --input  results/sae_study/bptt_study/hrm_stock/activations_zH.pt \
-        --output results/sae_study/bptt_study/hrm_stock/activations_dzH.pt
+        --input  results/Sudoku/sae_study/bptt_study/hrm_stock/activations_zH.pt \
+        --output results/Sudoku/sae_study/bptt_study/hrm_stock/activations_dzH.pt
 """
 
 import os

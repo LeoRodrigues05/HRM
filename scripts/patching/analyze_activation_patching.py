@@ -7,7 +7,7 @@ which steps/layers are most important.
 
 Usage:
     python scripts/analyze_activation_patching.py \
-        --results_dir results/activation_patching_batch \
+        --results_dir results/Sudoku/patching/activation_patching_batch \
         --output_dir results/activation_patching_analysis
 """
 

@@ -20,7 +20,7 @@ CPU-only; reads/writes JSON. No model, no GPU.
 
 Usage:
   python scripts/maze/clean_probe_summary.py \
-      --in_dir results/maze/hardened/linear_probes \
+      --in_dir results/Maze/hardened/linear_probes \
       --headroom 0.03
 """
 from __future__ import annotations
@@ -31,7 +31,7 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--in_dir", default="results/maze/hardened/linear_probes")
+    ap.add_argument("--in_dir", default="results/Maze/hardened/linear_probes")
     ap.add_argument("--summary_name", default="probe_summary.json")
     ap.add_argument("--headroom", type=float, default=0.03,
                     help="min (score-baseline) for a binary probe to count as informative")

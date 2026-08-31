@@ -35,7 +35,7 @@ def main():
     p.add_argument("--num_puzzles", type=int, default=100)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--device", default="cuda")
-    p.add_argument("--output_dir", default="results/arc/diagnostics")
+    p.add_argument("--output_dir", default="results/ARC/arc/diagnostics")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

@@ -24,7 +24,7 @@
 #                      per GPU, all 4 GPUs busy. This is what turns the ~4h serial
 #                      job into ~1h.
 #   Phase 3 (merge):   recombine each model's baseline+centered shards into the
-#                      original layout (results/sae_study/bptt_study/<name>/).
+#                      original layout (results/Sudoku/sae_study/bptt_study/<name>/).
 #
 # Per-SAE output files carry a "_mc" suffix when centered, so baseline/centered
 # never collide; only sweep_results.csv/_meta.json would, hence the shard dirs.
@@ -38,7 +38,7 @@ export DISABLE_COMPILE=1
 N_PUZZLES="${N_PUZZLES:-1000}"
 DICT_SIZES="${DICT_SIZES:-1024,2048,4096}"
 L1_COEFFS="${L1_COEFFS:-0.003,0.01,0.03}"
-ROOT="results/sae_study/bptt_study"
+ROOT="results/Sudoku/sae_study/bptt_study"
 
 # Models present? Build the active list (skip any missing checkpoint dir).
 MODELS=()

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """H2 figures: damage-vs-rank curves and alignment bar plot.
 
-Reads results/controlled/causal_subspace/subspace_curve.json (and maze variant)
-and writes figures to results/reports/causal_subspace_figures/.
+Reads results/Sudoku/controlled/causal_subspace/subspace_curve.json (and maze variant)
+and writes figures to results/Sudoku/causal_subspace_figures/.
 
 Usage:
     python scripts/analysis/plot_causal_subspace.py

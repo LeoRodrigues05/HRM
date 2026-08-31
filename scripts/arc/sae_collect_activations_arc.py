@@ -17,7 +17,7 @@ Output (under --output_dir):
 
 Usage (GPU, via srun on ws-l3-019):
   python scripts/arc/sae_collect_activations_arc.py --n_puzzles 300 \
-      --output_dir results/arc/sae_study
+      --output_dir results/ARC/arc/sae_study
 """
 from __future__ import annotations
 import os, sys, time, argparse, logging
@@ -47,7 +47,7 @@ def main():
     ap.add_argument("--max_steps", type=int, default=16)
     ap.add_argument("--also_collect_zL", action="store_true")
     ap.add_argument("--device", default="auto")
-    ap.add_argument("--output_dir", default="results/arc/sae_study")
+    ap.add_argument("--output_dir", default="results/ARC/arc/sae_study")
     ap.add_argument("--store_dtype", default="float16", choices=["float16", "float32"])
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()

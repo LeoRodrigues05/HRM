@@ -29,7 +29,7 @@ Usage:
         --donor_step 10 \\
         --recipient_step 4 \\
         --max_steps 12 \\
-        --output_dir results/cross_step_transfer
+        --output_dir results/Sudoku/cross_step_transfer
 """
 
 import os
@@ -202,7 +202,7 @@ def main():
     parser.add_argument("--num_runs", type=int, default=3,
                         help="Repeated runs for stability")
     parser.add_argument("--output_dir", type=str,
-                        default="results/cross_step_transfer")
+                        default="results/Sudoku/cross_step_transfer")
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--report_html", type=str,
                         default="cross_step_transfer_report.html")

@@ -2,11 +2,11 @@
 """H4 figures: per-step H/L decomposition and two-timescale comparison.
 
 Reads:
-  results/controlled/policy_decomposition/aggregate.json  (sudoku)
-  results/maze/policy_decomposition/aggregate.json        (maze, optional)
-  results/baseline_comparison/two_timescale/two_timescale.json
+  results/Sudoku/controlled/policy_decomposition/aggregate.json  (sudoku)
+  results/Maze/policy_decomposition/aggregate.json        (maze, optional)
+  results/Sudoku/baseline_comparison/two_timescale/two_timescale.json
 
-Writes figures to results/reports/policy_decomposition_figures/.
+Writes figures to results/Sudoku/policy_decomposition_figures/.
 
 Usage:
     python scripts/analysis/plot_policy_decomposition.py

@@ -77,7 +77,7 @@ $PY pretrain.py \
 # 3) Verify recovered accuracy on the latest adapted checkpoint.
 ADAPTED=$(ls -t "$OUT"/step_* 2>/dev/null | head -1)
 if [ -z "$ADAPTED" ]; then echo "[adapt] no checkpoint produced in $OUT"; exit 4; fi
-DIAG="${DIAG:-results/arc/diagnostics}"
+DIAG="${DIAG:-results/ARC/arc/diagnostics}"
 echo "[adapt] verifying $ADAPTED"
 $PY scripts/arc/measure_arc_accuracy.py --checkpoint "$ADAPTED" --num_puzzles 100 \
     --device cuda --output_dir "$DIAG"

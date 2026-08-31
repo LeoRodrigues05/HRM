@@ -7,10 +7,10 @@ for downstream SAE training.
 
 Output
 ------
-  results/sae_study/activations_zH.pt   — dict with:
+  results/Sudoku/sae_study/activations_zH.pt   — dict with:
       'activations': [N_puzzles, 16, 81, 512]
       'metadata': per-puzzle info (inputs, labels, puzzle_ids, per-step accuracy)
-  results/sae_study/activations_zL.pt   — same, if --also_collect_zL
+  results/Sudoku/sae_study/activations_zL.pt   — same, if --also_collect_zL
 
 Usage
 -----
@@ -257,7 +257,7 @@ def main():
                         help="Also collect z_L activations")
     parser.add_argument("--device", type=str, default="auto",
                         help="Device: auto, cpu, cuda")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study",
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study",
                         help="Output directory")
     parser.add_argument("--checkpoint_dir", type=str, default=None,
                         help="Checkpoint directory (default: bundled sapientinc model)")

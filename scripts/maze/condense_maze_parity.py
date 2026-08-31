@@ -10,11 +10,11 @@ Reads the artifacts written by ``slurm_maze_parity.sbatch`` and
 Usage
 -----
   python scripts/maze/condense_maze_parity.py \
-      --linear_dir results/maze/hardened/linear_probes \
-      --mlp_dir    results/maze/hardened/mlp_probes \
-      --sae_dir    results/maze/sae_study \
+      --linear_dir results/Maze/hardened/linear_probes \
+      --mlp_dir    results/Maze/hardened/mlp_probes \
+      --sae_dir    results/Maze/sae_study \
       --out_md     docs/MAZE_PARITY_REPORT.md \
-      --out_json   results/maze/hardened/maze_parity_summary.json
+      --out_json   results/Maze/hardened/maze_parity_summary.json
 """
 from __future__ import annotations
 
@@ -157,11 +157,11 @@ def decodability_table(lin: dict, mlp: Optional[dict], targets: List[str], kind:
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--linear_dir", default="results/maze/hardened/linear_probes")
-    ap.add_argument("--mlp_dir", default="results/maze/hardened/mlp_probes")
-    ap.add_argument("--sae_dir", default="results/maze/sae_study")
+    ap.add_argument("--linear_dir", default="results/Maze/hardened/linear_probes")
+    ap.add_argument("--mlp_dir", default="results/Maze/hardened/mlp_probes")
+    ap.add_argument("--sae_dir", default="results/Maze/sae_study")
     ap.add_argument("--out_md", default="docs/MAZE_PARITY_REPORT.md")
-    ap.add_argument("--out_json", default="results/maze/hardened/maze_parity_summary.json")
+    ap.add_argument("--out_json", default="results/Maze/hardened/maze_parity_summary.json")
     args = ap.parse_args()
 
     os.chdir(REPO_ROOT)

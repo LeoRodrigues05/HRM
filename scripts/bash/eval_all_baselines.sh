@@ -1,12 +1,12 @@
 #!/bin/bash
 # Evaluate best checkpoint for all 5 baseline architectures.
-# Produces one JSON per model in results/baseline_comparison/.
+# Produces one JSON per model in results/Sudoku/baseline_comparison/.
 #
 # Models: HRM, Vanilla RNN, Universal Transformer, Plain Transformer, Standard RNN
 # Best checkpoints identified from prior multi-checkpoint sweeps.
 set -e
 
-OUTDIR="results/baseline_comparison"
+OUTDIR="results/Sudoku/baseline_comparison"
 DEVICE="cuda"
 N_PUZZLES=500
 MAX_STEPS=16

@@ -20,11 +20,11 @@ maze probe weights from probe_geometry_maze.py.
 
 Usage
   python scripts/maze/sae_causal_ablation_maze.py \
-      --sae_path results/maze/sae_study/sae_d2048_l10.01.pt \
-      --activations_path results/maze/sae_study/activations_zH.pt \
-      --probe_weights results/maze/hardened/probe_geometry/probe_weights.pt \
+      --sae_path results/Maze/sae_study/sae_d2048_l10.01.pt \
+      --activations_path results/Maze/sae_study/activations_zH.pt \
+      --probe_weights results/Maze/hardened/probe_geometry/probe_weights.pt \
       --n_puzzles 300 --top_k 50 --device cuda \
-      --output_dir results/maze/sae_study/causal_ablation
+      --output_dir results/Maze/sae_study/causal_ablation
 """
 from __future__ import annotations
 import os, sys, json, time, argparse
@@ -82,15 +82,15 @@ def main():
     p = argparse.ArgumentParser(description="Maze SAE causal ablation (E10, path-validity)")
     p.add_argument("--checkpoint", default=MAZE_CHECKPOINT)
     p.add_argument("--sae_path", required=True)
-    p.add_argument("--activations_path", default="results/maze/sae_study/activations_zH.pt")
-    p.add_argument("--probe_weights", default="results/maze/hardened/probe_geometry/probe_weights.pt")
+    p.add_argument("--activations_path", default="results/Maze/sae_study/activations_zH.pt")
+    p.add_argument("--probe_weights", default="results/Maze/hardened/probe_geometry/probe_weights.pt")
     p.add_argument("--n_puzzles", type=int, default=300)
     p.add_argument("--top_k", type=int, default=50)
     p.add_argument("--n_random_features", type=int, default=50)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/maze/sae_study/causal_ablation")
+    p.add_argument("--output_dir", default="results/Maze/sae_study/causal_ablation")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

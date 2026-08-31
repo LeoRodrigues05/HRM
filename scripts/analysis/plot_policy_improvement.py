@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Figures for Experiments A & D: HRM as a policy-improvement operator.
 
-Reads results/maze/policy_improvement/aggregate.json
-     results/controlled/policy_improvement/aggregate.json
+Reads results/Maze/policy_improvement/aggregate.json
+     results/Sudoku/controlled/policy_improvement/aggregate.json
 
-Produces 5 figures (PDF + PNG) in results/reports/policy_improvement_figures/:
+Produces 5 figures (PDF + PNG) in results/Sudoku/policy_improvement_figures/:
   figA1_value_logp    — per-step value & logp_true (Sudoku vs Maze)
   figA2_eq18          — per-step frac_eq18 (Eq. 18 satisfaction, both tasks)
   figA3_kl            — per-step kl_prev (compute signal, both tasks)
@@ -32,8 +32,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-MAZE_AGG    = os.path.join(REPO_ROOT, "results/maze/policy_improvement/aggregate.json")
-SUDOKU_AGG  = os.path.join(REPO_ROOT, "results/controlled/policy_improvement/aggregate.json")
+MAZE_AGG    = os.path.join(REPO_ROOT, "results/Maze/policy_improvement/aggregate.json")
+SUDOKU_AGG  = os.path.join(REPO_ROOT, "results/Sudoku/controlled/policy_improvement/aggregate.json")
 
 MAZE_COLOR   = "#e67e22"
 SUDOKU_COLOR = "#2980b9"
@@ -288,7 +288,7 @@ def main() -> None:
     ap.add_argument("--maze_agg", default=MAZE_AGG)
     ap.add_argument("--sudoku_agg", default=SUDOKU_AGG)
     ap.add_argument("--outdir", default=os.path.join(
-        REPO_ROOT, "results/reports/policy_improvement_figures"))
+        REPO_ROOT, "results/Sudoku/policy_improvement_figures"))
     ap.add_argument("--tau", type=float, default=0.01,
                     help="tau for D2/D3 figures (must match a tau used during compute)")
     args = ap.parse_args()

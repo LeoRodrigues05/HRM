@@ -14,10 +14,10 @@
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/hardened/directed_ablation
+mkdir -p logs/maze results/Maze/hardened/directed_ablation
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
-PROBE_W="${PROBE_W:-results/maze/hardened/probe_geometry/probe_weights.pt}"
+PROBE_W="${PROBE_W:-results/Maze/hardened/probe_geometry/probe_weights.pt}"
 NUM_PUZZLES="${NUM_PUZZLES:-500}"
 
 for LVL in H L; do
@@ -27,7 +27,7 @@ for LVL in H L; do
     --num_puzzles "$NUM_PUZZLES" \
     --z_level "$LVL" \
     --probe_weights "$PROBE_W" \
-    --output_dir "results/maze/hardened/directed_ablation/z${LVL}" \
+    --output_dir "results/Maze/hardened/directed_ablation/z${LVL}" \
     --device cuda
 done
 echo "[maze_directed] done"

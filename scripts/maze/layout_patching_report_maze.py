@@ -8,7 +8,7 @@ tokens are not considered layout because they are the model's solution.
 Default run:
     python scripts/maze/layout_patching_report_maze.py \
         --src_idx 2 --tgt_idx 3 --patch_level H --patch_steps 1 \
-        --output results/maze/reports/layout_patching_p2_to_p3_H_step1.html
+        --output results/Maze/reports/layout_patching_p2_to_p3_H_step1.html
 """
 from __future__ import annotations
 
@@ -155,7 +155,7 @@ def main():
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--num_pool", type=int, default=8)
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/layout_patching_report.html")
+                   default="results/Maze/reports/layout_patching_report.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

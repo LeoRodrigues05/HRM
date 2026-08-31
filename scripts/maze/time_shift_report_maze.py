@@ -12,7 +12,7 @@ Renders an HTML report showing:
 Usage (default = inject converged step 0 -> later step 8):
     python scripts/maze/time_shift_report_maze.py \
         --puzzle_idx 0 --donor_step 0 --recipient_step 8 \
-        --output results/maze/reports/time_shift_p0_d0_r8.html
+        --output results/Maze/reports/time_shift_p0_d0_r8.html
 """
 from __future__ import annotations
 
@@ -64,7 +64,7 @@ def main():
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--num_pool", type=int, default=8)
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/time_shift_report.html")
+                   default="results/Maze/reports/time_shift_report.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

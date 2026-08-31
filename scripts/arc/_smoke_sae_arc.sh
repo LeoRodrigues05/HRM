@@ -16,7 +16,7 @@ $PY scripts/sae/sae_train.py --activations_path "$D/activations_zH.pt" \
 echo "== SAE smoke [3/3] causal ablation =="
 $PY scripts/arc/sae_causal_ablation_arc.py \
     --sae_path "$D/sae_d256_l10.01.pt" --activations_path "$D/activations_zH.pt" \
-    --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
+    --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
     --n_puzzles 3 --top_k 3 --n_random_features 3 --output_dir "$D/causal_ablation"
 
 echo "== SAE smoke COMPLETE =="

@@ -13,7 +13,7 @@ metrics per difficulty stratum.
 
 Output
 ------
-  results/metrics/difficulty_stratified/
+  results/Sudoku/metrics/difficulty_stratified/
     stratified_summary.json  – per-stratum metrics for all experiments
     stratified_plots.pdf     – difficulty-stratified visualizations
 
@@ -346,7 +346,7 @@ def main():
     parser.add_argument("--n_puzzles", type=int, default=500)
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/metrics/difficulty_stratified")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/metrics/difficulty_stratified")
     parser.add_argument("--quick", action="store_true", help="Quick test (N=50)")
     args = parser.parse_args()
 

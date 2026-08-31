@@ -9,7 +9,7 @@ The recorded data enables analysis of:
 - Local properties: per-cell metrics like correctness, position indices
 
 Typical usage:
-    recorder = ProbeRecorder(output_dir="results/probes")
+    recorder = ProbeRecorder(output_dir="results/Sudoku/probes")
     # During model inference:
     recorder.record_hidden(step_index=0, phase="grad", z_H=z_H, z_L=z_L, batch=batch)
     # After all inference:
@@ -68,7 +68,7 @@ class ProbeRecorder:
         hidden_log: List of recorded hidden state entries
         
     Example:
-        >>> recorder = ProbeRecorder("results/probes")
+        >>> recorder = ProbeRecorder("results/Sudoku/probes")
         >>> recorder.record_hidden(step_index=0, phase="grad", z_H=z_H, z_L=z_L, batch=batch)
         >>> recorder.finalize_and_save()
     """
@@ -665,7 +665,7 @@ def run_probe_collection(
     model,  # HierarchicalReasoningModel_ACTV1 or similar
     dataloader, 
     device: Optional[torch.device] = None, 
-    output_dir: str = "results/probes"
+    output_dir: str = "results/Sudoku/probes"
 ) -> ProbeRecorder:
     """Run probe collection over a dataloader.
     
@@ -685,7 +685,7 @@ def run_probe_collection(
         The ProbeRecorder instance with all collected data
         
     Example:
-        >>> recorder = run_probe_collection(model, test_loader, output_dir="results/probes")
+        >>> recorder = run_probe_collection(model, test_loader, output_dir="results/Sudoku/probes")
     """
     device = device or (torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu"))
     recorder = ProbeRecorder(output_dir=output_dir)

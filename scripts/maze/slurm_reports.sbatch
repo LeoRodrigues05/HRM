@@ -12,7 +12,7 @@ set -euo pipefail
 
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/reports
+mkdir -p logs/maze results/Maze/reports
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
 DEVICE="${DEVICE:-cuda}"
@@ -29,7 +29,7 @@ conda run --no-capture-output -n hrm python -u scripts/maze/intermediate_substep
   --num_pool 1 \
   --max_steps "$MAX_STEPS" \
   --device "$DEVICE" \
-  --output results/maze/reports/intermediate_substeps_success_p0.html
+  --output results/Maze/reports/intermediate_substeps_success_p0.html
 
 conda run --no-capture-output -n hrm python -u scripts/maze/intermediate_substeps_maze.py \
   --checkpoint "$CHECKPOINT" \
@@ -37,7 +37,7 @@ conda run --no-capture-output -n hrm python -u scripts/maze/intermediate_substep
   --num_pool 5 \
   --max_steps "$MAX_STEPS" \
   --device "$DEVICE" \
-  --output results/maze/reports/intermediate_substeps_failed_p4.html
+  --output results/Maze/reports/intermediate_substeps_failed_p4.html
 
 conda run --no-capture-output -n hrm python -u scripts/maze/layout_patching_report_maze.py \
   --checkpoint "$CHECKPOINT" \
@@ -48,7 +48,7 @@ conda run --no-capture-output -n hrm python -u scripts/maze/layout_patching_repo
   --patch_group all \
   --max_steps "$MAX_STEPS" \
   --device "$DEVICE" \
-  --output results/maze/reports/layout_patching_p2_to_p3_H_step1.html
+  --output results/Maze/reports/layout_patching_p2_to_p3_H_step1.html
 
 conda run --no-capture-output -n hrm python -u scripts/maze/patching_report_maze.py \
   --checkpoint "$CHECKPOINT" \
@@ -59,6 +59,6 @@ conda run --no-capture-output -n hrm python -u scripts/maze/patching_report_maze
   --patch_group all \
   --max_steps "$MAX_STEPS" \
   --device "$DEVICE" \
-  --output results/maze/reports/patching_p2_to_p3_H_step1.html
+  --output results/Maze/reports/patching_p2_to_p3_H_step1.html
 
 echo "[maze_reports] done"

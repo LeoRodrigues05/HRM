@@ -12,12 +12,12 @@ it records the Δ in each path metric, then reports per direction: bootstrap 95%
 paired t + Wilcoxon (probe vs per-puzzle mean random), and Cohen's d — exactly the
 controls used on the Sudoku side.
 
-Requires: results/maze/hardened/probe_geometry/probe_weights.pt  (run probe_geometry_maze.py)
+Requires: results/Maze/hardened/probe_geometry/probe_weights.pt  (run probe_geometry_maze.py)
 
 Usage
   python scripts/maze/directed_ablation_maze.py --num_puzzles 500 --z_level H \
-      --probe_weights results/maze/hardened/probe_geometry/probe_weights.pt \
-      --device cuda --output_dir results/maze/hardened/directed_ablation
+      --probe_weights results/Maze/hardened/probe_geometry/probe_weights.pt \
+      --device cuda --output_dir results/Maze/hardened/directed_ablation
 """
 from __future__ import annotations
 import os, sys, json, time, argparse
@@ -77,11 +77,11 @@ def main():
     p.add_argument("--num_puzzles", type=int, default=500)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--z_level", default="H", choices=["H", "L"])
-    p.add_argument("--probe_weights", default="results/maze/hardened/probe_geometry/probe_weights.pt")
+    p.add_argument("--probe_weights", default="results/Maze/hardened/probe_geometry/probe_weights.pt")
     p.add_argument("--n_random_controls", type=int, default=10)
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/maze/hardened/directed_ablation")
+    p.add_argument("--output_dir", default="results/Maze/hardened/directed_ablation")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

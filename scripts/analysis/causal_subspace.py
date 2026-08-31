@@ -437,9 +437,9 @@ def main():
     parser.add_argument("--ranks", default="1,2,4,8,16,32,64,128,256,512")
     parser.add_argument("--n_random_bases", type=int, default=5)
     parser.add_argument("--probe_weights",
-                        default="results/probes/e8_constraint_probes/probe_weights.pt")
+                        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt")
     parser.add_argument("--sae_path",
-                        default="results/sae_study/sae_d2048_l10.01.pt")
+                        default="results/Sudoku/sae_study/sae_d2048_l10.01.pt")
     parser.add_argument("--z_level", default="H", choices=["H", "L"])
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", default="cuda")

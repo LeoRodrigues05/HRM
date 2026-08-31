@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Generate three master HTML result reports from the on-disk experiment outputs.
 
-  results/reports/sudoku_report.html       all Sudoku scores + CIs
-  results/reports/maze_report.html         all Maze scores + CIs (path-validity)
-  results/reports/comparison_report.html   side-by-side Sudoku vs Maze
+  results/Final/reports/sudoku_report.html       all Sudoku scores + CIs
+  results/Final/reports/maze_report.html         all Maze scores + CIs (path-validity)
+  results/Final/reports/comparison_report.html   side-by-side Sudoku vs Maze
 
 Reads whatever exists and skips what doesn't, so it can be re-run as more
 experiments land (e.g. the N=1000 maze freeze/time-shift). Pure CPU/JSON — no
@@ -17,7 +17,7 @@ from typing import Optional
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 os.chdir(REPO_ROOT)
-OUT = "results/reports"
+OUT = "results/Final/reports"
 os.makedirs(OUT, exist_ok=True)
 
 CSS = """<style>
@@ -194,7 +194,7 @@ def render_sae_sweep(path):
 # ════════════════════════ Sudoku-specific ════════════════════════
 
 def sudoku_linear_probes():
-    d = load("results/probes/e8_constraint_probes/probe_summary.json")
+    d = load("results/Sudoku/probes/e8_constraint_probes/probe_summary.json")
     if not d:
         return missing("E8 linear probes")
     rows = []
@@ -203,13 +203,13 @@ def sudoku_linear_probes():
                      ci({"mean": v.get("val_mean"), "ci_lower": v.get("val_ci_lower"),
                          "ci_upper": v.get("val_ci_upper")}), v.get("n_seeds")])
     rows.sort(key=lambda r: (str(r[0]), r[1] if isinstance(r[1], int) else 0, str(r[2])))
-    return meta_line("results/probes/e8_constraint_probes/_meta.json").replace(os.path.dirname(
-        "results/probes/e8_constraint_probes/_meta.json"), "") + '<div class="wrap">' + table(
+    return meta_line("results/Sudoku/probes/e8_constraint_probes/_meta.json").replace(os.path.dirname(
+        "results/Sudoku/probes/e8_constraint_probes/_meta.json"), "") + '<div class="wrap">' + table(
         ["z", "step", "target", "metric", "val mean [95% CI]", "seeds"], rows) + "</div>"
 
 
 def sudoku_mlp_probes():
-    rows = load_csv("results/probes/nonlinear_probes/sweep_results.csv")
+    rows = load_csv("results/Sudoku/probes/nonlinear_probes/sweep_results.csv")
     if not rows:
         return missing("nonlinear (MLP) probes")
     trows, deltas = [], []
@@ -224,12 +224,12 @@ def sudoku_mlp_probes():
     md = sum(deltas) / len(deltas) if deltas else 0
     head = (f"<p><b>Mean Δ(MLP−linear)</b> over {len(deltas)} probes = "
             f"<b>{md:+.4f}</b> → {'linearly encoded' if abs(md)<0.02 else 'non-linear structure'}.</p>")
-    return meta_line("results/probes/nonlinear_probes/_meta.json") + head + '<div class="wrap">' + table(
+    return meta_line("results/Sudoku/probes/nonlinear_probes/_meta.json") + head + '<div class="wrap">' + table(
         ["z", "step", "target", "metric", "linear [CI]", "MLP [CI]", "Δ"], trows) + "</div>"
 
 
 def sudoku_directed():
-    d = load("results/controlled/directed_ablation/analysis.json")
+    d = load("results/Sudoku/controlled/directed_ablation/analysis.json")
     if not d:
         return missing("directed ablation")
     rows = []
@@ -241,12 +241,12 @@ def sudoku_directed():
                      ci(v.get("random_control_delta_accuracy"), pct=True),
                      f(v.get("paired_p_value"), 4), f(v.get("wilcoxon_p_value"), 4),
                      f(v.get("cohens_d"), 3), "✔" if sig else ""])
-    return meta_line("results/controlled/directed_ablation/_meta.json") + table(
+    return meta_line("results/Sudoku/controlled/directed_ablation/_meta.json") + table(
         ["direction", "probe Δ [CI]", "random Δ [CI]", "paired p", "wilcoxon p", "Cohen's d", "sig@.05"], rows)
 
 
 def sudoku_sae_causal():
-    d = load("results/sae_study/causal_ablation/aggregate.json")
+    d = load("results/Sudoku/sae_study/causal_ablation/aggregate.json")
     if not d:
         return missing("SAE causal ablation")
     conds = d.get("conditions", {})
@@ -264,7 +264,7 @@ def sudoku_sae_causal():
 # ════════════════════════ Maze-specific ════════════════════════
 
 def maze_step_dynamics():
-    d = load("results/maze/hardened/step_dynamics/aggregate.json")
+    d = load("results/Maze/hardened/step_dynamics/aggregate.json")
     if not d:
         return missing("maze step dynamics")
     ks = ["step", "exact_solved", "valid_sg_path", "connects_start_goal", "path_f1", "token_acc"]
@@ -301,11 +301,11 @@ def maze_probes(path, is_mlp=False):
 
 
 def maze_trajectory():
-    d = load("results/maze/hardened/trajectory_pca/trajectory_pca.json")
+    d = load("results/Maze/hardened/trajectory_pca/trajectory_pca.json")
     if not d:
         return missing("maze trajectory PCA")
     g = d.get("trajectory_geometry", {})
-    out = [meta_line("results/maze/hardened/trajectory_pca/trajectory_pca.json"),
+    out = [meta_line("results/Maze/hardened/trajectory_pca/trajectory_pca.json"),
            table(["quantity", "value [95% CI]"], [
                ["PC1 explained var", ci({"mean": d.get("pc1_explained"),
                 "ci_lower": d.get("pc1_explained_bootstrap_ci", [None, None, None])[1],
@@ -327,7 +327,7 @@ def maze_trajectory():
 
 
 def maze_geometry():
-    d = load("results/maze/hardened/probe_geometry/geometric_analysis.json")
+    d = load("results/Maze/hardened/probe_geometry/geometric_analysis.json")
     if not d:
         return missing("maze probe geometry")
     pca = d.get("pca_pc1_ensemble", [])
@@ -348,7 +348,7 @@ def maze_geometry():
 
 
 def maze_patching():
-    d = load("results/maze/hardened/patching_spatial/aggregate.json")
+    d = load("results/Maze/hardened/patching_spatial/aggregate.json")
     if not d:
         return missing("maze patching")
     md = d.get("maze_metric_deltas_by_group_level_step", {})
@@ -368,14 +368,14 @@ def section(title, content):
 
 def build_sudoku():
     b = [f"<h1>Sudoku — All Results</h1><div class='meta'>generated {time.strftime('%Y-%m-%d %H:%M')}</div>"]
-    b.append(section("Ablation — z_H (E1)", render_ablation("results/controlled/ablation/zH/aggregate.json")))
-    b.append(section("Ablation — z_L", render_ablation("results/controlled/ablation/zL/aggregate.json")))
-    b.append(section("Freeze (E2)", render_freeze("results/controlled/freeze/aggregate.json")))
-    b.append(section("Time-shift (E5)", render_timeshift("results/controlled/time_shift/aggregate.json")))
+    b.append(section("Ablation — z_H (E1)", render_ablation("results/Sudoku/controlled/ablation/zH/aggregate.json")))
+    b.append(section("Ablation — z_L", render_ablation("results/Sudoku/controlled/ablation/zL/aggregate.json")))
+    b.append(section("Freeze (E2)", render_freeze("results/Sudoku/controlled/freeze/aggregate.json")))
+    b.append(section("Time-shift (E5)", render_timeshift("results/Sudoku/controlled/time_shift/aggregate.json")))
     b.append(section("Linear probes (E8)", sudoku_linear_probes()))
     b.append(section("Non-linear / MLP probes (E9b, 5-seed)", sudoku_mlp_probes()))
     b.append(section("Directed ablation (E9)", sudoku_directed()))
-    b.append(section("SAE sweep (E10)", render_sae_sweep("results/sae_study/sweep_results.csv")))
+    b.append(section("SAE sweep (E10)", render_sae_sweep("results/Sudoku/sae_study/sweep_results.csv")))
     b.append(section("SAE causal ablation (E10)", sudoku_sae_causal()))
     open(f"{OUT}/sudoku_report.html", "w").write(doc("Sudoku — All Results", "".join(b)))
 
@@ -383,13 +383,13 @@ def build_sudoku():
 def build_maze():
     b = [f"<h1>Maze 30×30 — All Results (path-validity)</h1><div class='meta'>generated {time.strftime('%Y-%m-%d %H:%M')}</div>"]
     b.append(section("Step dynamics", maze_step_dynamics()))
-    b.append(section("Ablation — z_H", render_ablation("results/maze/hardened/ablation_controlled/zH/aggregate.json", maze=True)))
-    b.append(section("Ablation — z_L", render_ablation("results/maze/hardened/ablation_controlled/zL/aggregate.json", maze=True)))
-    b.append(section("Freeze", render_freeze("results/maze/hardened/freeze_controlled/aggregate.json", maze=True)))
-    b.append(section("Time-shift", render_timeshift("results/maze/hardened/time_shift_controlled/aggregate.json", maze=True)))
-    b.append(section("Linear probes", maze_probes("results/maze/hardened/linear_probes/probe_results.json")))
-    b.append(section("Non-linear / MLP probes", maze_probes("results/maze/hardened/mlp_probes/probe_results.json", is_mlp=True)))
-    b.append(section("SAE sweep (z_H)", render_sae_sweep("results/maze/sae_study/sweep_results.csv")))
+    b.append(section("Ablation — z_H", render_ablation("results/Maze/hardened/ablation_controlled/zH/aggregate.json", maze=True)))
+    b.append(section("Ablation — z_L", render_ablation("results/Maze/hardened/ablation_controlled/zL/aggregate.json", maze=True)))
+    b.append(section("Freeze", render_freeze("results/Maze/hardened/freeze_controlled/aggregate.json", maze=True)))
+    b.append(section("Time-shift", render_timeshift("results/Maze/hardened/time_shift_controlled/aggregate.json", maze=True)))
+    b.append(section("Linear probes", maze_probes("results/Maze/hardened/linear_probes/probe_results.json")))
+    b.append(section("Non-linear / MLP probes", maze_probes("results/Maze/hardened/mlp_probes/probe_results.json", is_mlp=True)))
+    b.append(section("SAE sweep (z_H)", render_sae_sweep("results/Maze/sae_study/sweep_results.csv")))
     b.append(section("z_H trajectory PCA", maze_trajectory()))
     b.append(section("Probe-weight geometry", maze_geometry()))
     b.append(section("Activation patching (spatial)", maze_patching()))
@@ -412,14 +412,14 @@ def build_comparison():
     # 1. Headline causal effect of ablating each stream (all steps)
     rows = [
         ["z_H all-steps ablation — token/exact Δ",
-         ci(_allsteps("results/controlled/ablation/zH/aggregate.json", "token"), pct=True),
-         ci(_allsteps("results/maze/hardened/ablation_controlled/zH/aggregate.json", "token"), pct=True)],
+         ci(_allsteps("results/Sudoku/controlled/ablation/zH/aggregate.json", "token"), pct=True),
+         ci(_allsteps("results/Maze/hardened/ablation_controlled/zH/aggregate.json", "token"), pct=True)],
         ["z_H all-steps ablation — task metric Δ",
-         ci(_allsteps("results/controlled/ablation/zH/aggregate.json", "token"), pct=True),
-         ci(_allsteps("results/maze/hardened/ablation_controlled/zH/aggregate.json", "valid_sg_path"), pct=True)],
+         ci(_allsteps("results/Sudoku/controlled/ablation/zH/aggregate.json", "token"), pct=True),
+         ci(_allsteps("results/Maze/hardened/ablation_controlled/zH/aggregate.json", "valid_sg_path"), pct=True)],
         ["z_L all-steps ablation — task metric Δ",
-         ci(_allsteps("results/controlled/ablation/zL/aggregate.json", "token"), pct=True),
-         ci(_allsteps("results/maze/hardened/ablation_controlled/zL/aggregate.json", "valid_sg_path"), pct=True)],
+         ci(_allsteps("results/Sudoku/controlled/ablation/zL/aggregate.json", "token"), pct=True),
+         ci(_allsteps("results/Maze/hardened/ablation_controlled/zL/aggregate.json", "valid_sg_path"), pct=True)],
     ]
     b.append("<h2>1. Is the stream causally necessary? (all-steps ablation)</h2>")
     b.append("<p class='meta'>Maze rows use <b>valid_sg_path</b>; the z_H token row exposes the metric trap "
@@ -436,8 +436,8 @@ def build_comparison():
         return (e or {}).get("delta_accuracy")
     b.append("<h2>2. Freeze z_H from step 0 (token Δ)</h2>")
     b.append(table(["quantity", "Sudoku", "Maze"],
-                   [["freeze-from-0 token Δ", ci(freeze0("results/controlled/freeze/aggregate.json"), pct=True),
-                     ci(freeze0("results/maze/hardened/freeze_controlled/aggregate.json"), pct=True)]]))
+                   [["freeze-from-0 token Δ", ci(freeze0("results/Sudoku/controlled/freeze/aggregate.json"), pct=True),
+                     ci(freeze0("results/Maze/hardened/freeze_controlled/aggregate.json"), pct=True)]]))
 
     # 3. Representation linearity (mean MLP-linear delta)
     def mean_delta(path):  # binary accuracy probes only (bounded, comparable)
@@ -455,8 +455,8 @@ def build_comparison():
         ds = [r.get("delta_mlp_minus_linear") for r in d.get("local_probes", []) + d.get("global_probes", [])
               if r.get("task") == "binary" and isinstance(r.get("delta_mlp_minus_linear"), (int, float))]
         return sum(ds) / len(ds) if ds else None
-    sd = mean_delta("results/probes/nonlinear_probes/sweep_results.csv")
-    mz = maze_mean_delta("results/maze/hardened/mlp_probes/probe_results.json")
+    sd = mean_delta("results/Sudoku/probes/nonlinear_probes/sweep_results.csv")
+    mz = maze_mean_delta("results/Maze/hardened/mlp_probes/probe_results.json")
     b.append("<h2>3. Are the representations linear? (mean Δ MLP − linear over all probes)</h2>")
     b.append("<p class='meta'>≈0 ⇒ a linear readout already captures the feature (no hidden non-linear structure).</p>")
     b.append(table(["quantity", "Sudoku", "Maze"],
@@ -471,8 +471,8 @@ def build_comparison():
             if r["dict_size"] == dsz and abs(num(r["l1_coeff"]) - float(l1)) < 1e-6:
                 return r
         return None
-    ss = sae_pick("results/sae_study/sweep_results.csv")
-    mzs = sae_pick("results/maze/sae_study/sweep_results.csv")
+    ss = sae_pick("results/Sudoku/sae_study/sweep_results.csv")
+    mzs = sae_pick("results/Maze/sae_study/sweep_results.csv")
     b.append("<h2>4. SAE on z_H at matched config (d=2048, λ=0.01)</h2>")
     b.append(table(["quantity", "Sudoku", "Maze"], [
         ["alive_frac", f(ss and ss.get("alive_frac")), f(mzs and mzs.get("alive_frac"))],
@@ -484,8 +484,11 @@ def build_comparison():
     def traj(path):
         d = load(path)
         return d
-    mt = traj("results/maze/hardened/trajectory_pca/trajectory_pca.json")
-    st = traj("results/sudoku/trajectory_pca/trajectory_pca.json") or traj("results/trajectory_pca/trajectory_pca.json")
+    mt = traj("results/Maze/hardened/trajectory_pca/trajectory_pca.json")
+    # Sudoku has no trajectory_pca.json; its trajectory metrics use a different
+    # schema (results/Sudoku/plots/zh_trajectories/zh_trajectory_metrics.json),
+    # so this column stays empty unless that file is produced in PCA form.
+    st = traj("results/Sudoku/trajectory_pca/trajectory_pca.json")
     b.append("<h2>5. z_H trajectory dimensionality (PCA)</h2>")
     b.append(table(["quantity", "Sudoku", "Maze"], [
         ["PC1 explained var", ci(st and st.get("pc1_explained")), ci(mt and mt.get("pc1_explained"))],

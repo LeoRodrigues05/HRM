@@ -628,7 +628,7 @@ def main():
     parser.add_argument("--max_steps", type=int, default=16,
                         help="Max reasoning steps (default 16 = v1 native)")
     parser.add_argument("--output_dir", type=str,
-                        default="results/batch_ablation")
+                        default="results/Sudoku/ablation/batch_ablation")
     parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--save_every", type=int, default=200,
                         help="Checkpoint every N puzzles")

@@ -3,7 +3,7 @@
 
 ARC analog of the Sudoku ``geometric_analysis.json`` (E8) and
 ``scripts/maze/probe_geometry_maze.py``, computed directly from the saved hardened
-ARC probe weights (``results/arc/hardened/linear_probes/probe_weights.pt``; entries
+ARC probe weights (``results/ARC/arc/hardened/linear_probes/probe_weights.pt``; entries
 are seed-ensemble means, so no re-fitting or GPU is needed).
 
 Per (stream, step): pairwise cosine similarity between binary-target probe
@@ -13,8 +13,8 @@ probes' validation accuracies for reference.
 
 Usage (CPU, seconds):
   python scripts/arc/probe_geometry_arc.py \
-      --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
-      --output_dir results/arc/hardened/probe_geometry
+      --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
+      --output_dir results/ARC/arc/hardened/probe_geometry
 """
 from __future__ import annotations
 import os, sys, json, argparse
@@ -30,8 +30,8 @@ import torch
 
 def main():
     p = argparse.ArgumentParser(description="ARC probe-weight geometry analysis")
-    p.add_argument("--probe_weights", default="results/arc/hardened/linear_probes/probe_weights.pt")
-    p.add_argument("--output_dir", default="results/arc/hardened/probe_geometry")
+    p.add_argument("--probe_weights", default="results/ARC/arc/hardened/linear_probes/probe_weights.pt")
+    p.add_argument("--output_dir", default="results/ARC/arc/hardened/probe_geometry")
     args = p.parse_args()
     os.makedirs(args.output_dir, exist_ok=True)
 

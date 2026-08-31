@@ -39,7 +39,7 @@ Usage
     python scripts/e9_directed_ablation.py --n_puzzles 200
 
     # Custom probe weights path
-    python scripts/e9_directed_ablation.py --probe_weights results/probes/e8_constraint_probes/probe_weights.pt
+    python scripts/e9_directed_ablation.py --probe_weights results/Sudoku/probes/e8_constraint_probes/probe_weights.pt
 """
 
 import os
@@ -361,7 +361,7 @@ def select_best_directions(
 def main():
     parser = argparse.ArgumentParser(description="E9: Causal Validation via Directed Ablation")
     parser.add_argument("--probe_weights", type=str,
-                        default="results/probes/e8_constraint_probes/probe_weights.pt",
+                        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt",
                         help="Path to probe weights from E8")
     parser.add_argument("--n_puzzles", type=int, default=200)
     parser.add_argument("--max_steps", type=int, default=16)
@@ -369,7 +369,7 @@ def main():
     parser.add_argument("--step", type=int, default=None,
                         help="Which step's probe to use. None = best across steps.")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/directed_ablation/e9_directed_ablation")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/directed_ablation/e9_directed_ablation")
     # Random direction control
     parser.add_argument("--n_random_controls", type=int, default=3,
                         help="Number of random-direction ablations as baselines")

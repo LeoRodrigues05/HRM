@@ -11,8 +11,8 @@ Reads aggregate JSON files from each experiment and produces:
 
 Usage:
     python scripts/plot_controlled_experiments.py \\
-        --results_root results/controlled \\
-        --output_dir results/controlled/figures
+        --results_root results/Sudoku/controlled \\
+        --output_dir results/Sudoku/controlled/figures
 """
 
 import os
@@ -251,7 +251,7 @@ def plot_directed_ablation(analysis: Dict, output_dir: str):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot controlled experiment results")
-    parser.add_argument("--results_root", type=str, default="results/controlled",
+    parser.add_argument("--results_root", type=str, default="results/Sudoku/controlled",
                         help="Root directory containing experiment subdirs")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="Output directory for figures (default: results_root/figures)")

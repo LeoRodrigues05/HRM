@@ -28,14 +28,14 @@ Usage (single-step ablation of z_H at step 4):
         --ablate_level H \\
         --ablate_steps 4 \\
         --max_steps 16 \\
-        --output_dir results/activation_ablation
+        --output_dir results/Sudoku/ablation/activation_ablation
 
 Usage (all-step ablation of z_L):
     python scripts/activation_ablation.py \\
         --checkpoint Checkpoint_HRM_Sudoku/.../checkpoint.pt \\
         --puzzle_idx 572 \\
         --ablate_level L \\
-        --output_dir results/activation_ablation
+        --output_dir results/Sudoku/ablation/activation_ablation
 """
 
 import os
@@ -404,7 +404,7 @@ def main():
                         help="Maximum number of ACT reasoning steps")
     parser.add_argument("--num_runs", type=int, default=3,
                         help="Repeated forward passes for stability")
-    parser.add_argument("--output_dir", type=str, default="results/activation_ablation",
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/ablation/activation_ablation",
                         help="Directory to save results")
     parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run on")

@@ -22,7 +22,7 @@ set -euo pipefail
 
 # Configuration
 CHECKPOINT="checkpoints/sapientinc-sudoku-extreme/checkpoint.pt"
-OUTPUT_BASE="results/activation_patching_experiments2"
+OUTPUT_BASE="results/Sudoku/patching/activation_patching_experiments2"
 NUM_RUNS=5
 
 # Use consistent source/target puzzle pairs for comparability

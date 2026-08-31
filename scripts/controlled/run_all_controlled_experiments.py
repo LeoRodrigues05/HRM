@@ -12,7 +12,7 @@ Use --quick for a fast smoke test (N=20 for each experiment).
 
 Usage:
     python scripts/run_all_controlled_experiments.py --quick
-    python scripts/run_all_controlled_experiments.py --output_root results/controlled
+    python scripts/run_all_controlled_experiments.py --output_root results/Sudoku/controlled
 """
 
 import os
@@ -52,7 +52,7 @@ def run_script(script_name: str, extra_args: list, label: str) -> bool:
 def main():
     parser = argparse.ArgumentParser(description="Run all controlled experiments")
     parser.add_argument("--quick", action="store_true", help="Quick test (N=20)")
-    parser.add_argument("--output_root", type=str, default="results/controlled",
+    parser.add_argument("--output_root", type=str, default="results/Sudoku/controlled",
                         help="Root directory for all experiment outputs")
     parser.add_argument("--checkpoint", type=str, default=None)
     parser.add_argument("--device", type=str, default="auto")

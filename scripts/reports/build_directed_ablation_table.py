@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Regenerate the directed-ablation table (tab:directed_ablation) from JSON.
 
-Reads ``results/controlled/directed_ablation/analysis.json`` (produced by
+Reads ``results/Sudoku/controlled/directed_ablation/analysis.json`` (produced by
 ``scripts/controlled/controlled_directed_ablation.py``) and emits both a LaTeX
 table body and a Markdown summary so the paper table is always traceable to the
 underlying statistics (mean Δacc, 95% bootstrap CI, paired-t p, Wilcoxon p,
@@ -11,7 +11,7 @@ Usage
 -----
     python scripts/reports/build_directed_ablation_table.py
     python scripts/reports/build_directed_ablation_table.py \
-        --analysis results/controlled/directed_ablation/analysis.json
+        --analysis results/Sudoku/controlled/directed_ablation/analysis.json
 """
 
 import os

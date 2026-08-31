@@ -52,7 +52,7 @@ run r3_causal_sudoku python scripts/sae/sae_causal_ablation.py \
     --output_dir "$OUT/r3_causal_sudoku"
 
 # R3 — ARC causal + reconstruction_only condition (N=2)
-# NB: explicit --activations_path — the script default (results/arc/...) is stale
+# NB: explicit --activations_path — the script default (results/ARC/arc/...) is stale
 # after the Sudoku/Maze/ARC results reorg (now results/ARC/arc/...).
 run r3_recon_arc python scripts/arc/sae_causal_ablation_arc.py \
     --sae_path results/ARC/arc/sae_study/sae_d2048_l10.01.pt --checkpoint "$ARC" \

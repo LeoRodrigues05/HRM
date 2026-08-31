@@ -24,7 +24,7 @@ Usage:
         --freeze_at_steps 0,1,2,4,8 \\
         --max_steps 16 \\
         --max_puzzles 100 \\
-        --output_dir results/freeze_h \\
+        --output_dir results/Sudoku/freeze/freeze_h \\
         --device cpu
 """
 
@@ -268,7 +268,7 @@ def main():
                         help="Maximum ACT steps per forward pass")
     parser.add_argument("--max_puzzles", type=int, default=100,
                         help="Maximum number of puzzles to process (0=all)")
-    parser.add_argument("--output_dir", type=str, default="results/freeze_h")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/freeze/freeze_h")
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--resume", action="store_true",
                         help="Resume from existing results_per_puzzle.jsonl")

@@ -16,9 +16,9 @@ Usage:
     PROBE_BATCH_SIZE=4 MAX_PROBE_BATCHES=20 python scripts/run_probes_driver.py
 
 Output:
-    - results/probes/probe_global.pt: Pooled hidden states per step
-    - results/probes/probe_local.pt: Per-token hidden states per step
-    - results/probes/probe_index.json: Collection metadata
+    - results/Sudoku/probes/probe_global.pt: Pooled hidden states per step
+    - results/Sudoku/probes/probe_local.pt: Per-token hidden states per step
+    - results/Sudoku/probes/probe_index.json: Collection metadata
 """
 import os
 import sys

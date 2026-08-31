@@ -9,7 +9,7 @@ Single forward pass per puzzle; for each ACT step record:
   - cosine sim of z_H_out[step] vs z_H_out[step-1]   (trajectory smoothness)
   - cosine sim of z_H_out[step] vs z_H_out[-1]       (drift from final)
 
-Outputs JSON aggregate to results/maze/step_dynamics/aggregate.json
+Outputs JSON aggregate to results/Maze/step_dynamics/aggregate.json
 and per-puzzle JSONL.
 
 Usage:
@@ -91,7 +91,7 @@ def main():
     p.add_argument("--checkpoint", type=str, default=MAZE_CHECKPOINT)
     p.add_argument("--num_puzzles", type=int, default=200)
     p.add_argument("--max_steps", type=int, default=16)
-    p.add_argument("--output_dir", type=str, default="results/maze/step_dynamics")
+    p.add_argument("--output_dir", type=str, default="results/Maze/step_dynamics")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

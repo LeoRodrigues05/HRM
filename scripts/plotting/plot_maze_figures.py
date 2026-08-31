@@ -2,7 +2,7 @@
 """Generate Maze figures mirroring the Sudoku figure set.
 
 Reproduces, for the Maze task, the kinds of plots that already exist for Sudoku
-(results/controlled/figures/fig{1,2,3}, results/sae_study/plots/*,
+(results/Sudoku/controlled/figures/fig{1,2,3}, results/Sudoku/sae_study/plots/*,
 plot_zh_trajectories), but scored on **path-validity**:
 
   fig1_ablation_step_sensitivity   per-step z_H/z_L ablation Δ valid_sg_path (+CI)

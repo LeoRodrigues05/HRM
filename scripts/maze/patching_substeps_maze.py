@@ -12,7 +12,7 @@ Usage (default = maximally disruptive: H+L at step 1, full grid):
     python scripts/maze/patching_substeps_maze.py \
         --src_idx 0 --tgt_idx 1 \
         --patch_level both --patch_steps 1 \
-        --output results/maze/reports/patching_substeps.html
+        --output results/Maze/reports/patching_substeps.html
 """
 from __future__ import annotations
 
@@ -115,7 +115,7 @@ def main():
     p.add_argument("--cell_px", type=int, default=7,
                    help="Cell size in pixels for sub-step thumbnails.")
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/patching_substeps.html")
+                   default="results/Maze/reports/patching_substeps.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

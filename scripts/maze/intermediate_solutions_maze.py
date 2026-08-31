@@ -6,7 +6,7 @@ input, the ground-truth label, and the model's prediction at every ACT step.
 
 Usage:
     python scripts/maze/intermediate_solutions_maze.py \
-        --puzzle_idx 7 --output results/maze/reports/intermediate_p7.html
+        --puzzle_idx 7 --output results/Maze/reports/intermediate_p7.html
     python scripts/maze/intermediate_solutions_maze.py --random
 """
 from __future__ import annotations
@@ -127,7 +127,7 @@ def main():
     p.add_argument("--num_pool", type=int, default=64,
                    help="How many puzzles to pull from the loader; sampled puzzle must be < this.")
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/intermediate_solutions.html")
+                   default="results/Maze/reports/intermediate_solutions.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

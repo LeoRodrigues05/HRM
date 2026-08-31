@@ -40,22 +40,22 @@ run() {  # run <label> <cmd...>
 run "SUDOKU freeze N=$NUM_PUZZLES" \
   python -u scripts/controlled/controlled_freeze.py \
     --num_puzzles "$NUM_PUZZLES" --device cuda \
-    --output_dir results/controlled/freeze
+    --output_dir results/Sudoku/controlled/freeze
 
 run "SUDOKU time-shift N=$NUM_PUZZLES" \
   python -u scripts/controlled/controlled_time_shift.py --mode fixed \
     --num_puzzles "$NUM_PUZZLES" --device cuda \
-    --output_dir results/controlled/time_shift
+    --output_dir results/Sudoku/controlled/time_shift
 
 # --- Maze (heavy, seq 900) ---
 run "MAZE freeze N=$NUM_PUZZLES" \
   python -u scripts/controlled/controlled_freeze.py --checkpoint "$MAZE" \
     --num_puzzles "$NUM_PUZZLES" --max_steps 16 --device cuda \
-    --output_dir results/maze/hardened/freeze_controlled
+    --output_dir results/Maze/hardened/freeze_controlled
 
 run "MAZE time-shift N=$NUM_PUZZLES" \
   python -u scripts/controlled/controlled_time_shift.py --checkpoint "$MAZE" --mode fixed \
     --num_puzzles "$NUM_PUZZLES" --max_steps 16 --device cuda \
-    --output_dir results/maze/hardened/time_shift_controlled
+    --output_dir results/Maze/hardened/time_shift_controlled
 
 echo "############ ALL FREEZE + TIME-SHIFT DONE  ($(date)) ############"

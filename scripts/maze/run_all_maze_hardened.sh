@@ -4,8 +4,8 @@
 # maze PATH metrics (valid_sg_path, path_f1, ...) in every aggregate,
 # not just wall-dominated token accuracy.
 #
-# Writes to results/maze/hardened/<exp>/ so the stale May-27 results
-# under results/maze/<exp>/ are preserved for comparison.
+# Writes to results/Maze/hardened/<exp>/ so the stale May-27 results
+# under results/Maze/<exp>/ are preserved for comparison.
 #
 # Run from repo root:  bash scripts/maze/run_all_maze_hardened.sh
 set -e
@@ -14,7 +14,7 @@ cd "$(dirname "$0")/../.."
 CKPT="checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 
-OUT="results/maze/hardened"
+OUT="results/Maze/hardened"
 LOG="logs/maze/hardened"
 mkdir -p "$LOG" "$OUT"
 

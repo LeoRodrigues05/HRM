@@ -12,7 +12,7 @@ set -euo pipefail
 
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/patching_spatial_layout
+mkdir -p logs/maze results/Maze/patching_spatial_layout
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
 DEVICE="${DEVICE:-cuda}"
@@ -28,7 +28,7 @@ conda run --no-capture-output -n hrm python -u scripts/maze/controlled_activatio
   --num_pairs "$NUM_PAIRS" \
   --patch_steps "$PATCH_STEPS" \
   --max_steps "$MAX_STEPS" \
-  --output_dir results/maze/patching_spatial_layout \
+  --output_dir results/Maze/patching_spatial_layout \
   --device "$DEVICE"
 
 echo "[maze_patch_layout] done"

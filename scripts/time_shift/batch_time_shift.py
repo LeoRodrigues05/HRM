@@ -22,7 +22,7 @@ Usage:
         --transfer_level H \\
         --max_steps 16 \\
         --max_puzzles 50 \\
-        --output_dir results/time_shift \\
+        --output_dir results/Sudoku/time_shift \\
         --device cpu
 """
 
@@ -199,7 +199,7 @@ def main():
                         help="Maximum ACT steps per forward pass")
     parser.add_argument("--max_puzzles", type=int, default=50,
                         help="Maximum number of puzzles (0=all)")
-    parser.add_argument("--output_dir", type=str, default="results/time_shift")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/time_shift")
     parser.add_argument("--device", type=str, default="cuda")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()

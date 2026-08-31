@@ -18,7 +18,7 @@ export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 mkdir -p logs/arc
 
 CKPT="${CKPT:-checkpoints/arc2-adapted-evalonly/step_7391}"
-SAE_DIR="${SAE_DIR:-results/arc/sae_study}"
+SAE_DIR="${SAE_DIR:-results/ARC/arc/sae_study}"
 N_PUZZLES="${N_PUZZLES:-150}"
 
 echo "[arc_sae_ablate] ckpt=$CKPT n_puzzles=$N_PUZZLES"
@@ -26,13 +26,13 @@ conda run --no-capture-output -n hrm python -u scripts/arc/sae_causal_ablation_a
     --checkpoint "$CKPT" \
     --sae_path "$SAE_DIR/sae_d2048_l10.01.pt" \
     --activations_path "$SAE_DIR/activations_zH.pt" \
-    --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
+    --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
     --n_puzzles "$N_PUZZLES" --top_k 50 --n_random_features 50 \
     --output_dir "$SAE_DIR/causal_ablation"
 
 echo "[arc_sae_ablate] regenerating figures"
 conda run --no-capture-output -n hrm python -u scripts/plotting/plot_crosstask_figures.py \
-    --output_dir results/reports/paper_aaai_figures
+    --output_dir results/Final/figures
 conda run --no-capture-output -n hrm python -u scripts/arc/plot_arc_paper_figures.py \
-    --output_dir results/reports/arc_paper_figures || true
+    --output_dir results/ARC/arc_paper_figures || true
 echo "[arc_sae_ablate] done"

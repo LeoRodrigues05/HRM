@@ -366,7 +366,7 @@ def main():
                        default="Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/Checkpoint_HRM_Sudoku/checkpoint.pt")
     parser.add_argument("--data_path", type=str, default="data/sudoku-extreme-1k-aug-1000")
     parser.add_argument("--output_dir", type=str,
-                       default="experiments/paper_replication/results/activation_patching")
+                       default="experiments/paper_replication/results/Sudoku/patching/activation_patching")
     parser.add_argument("--num_pairs", type=int, default=20)
     parser.add_argument("--device", type=str, default="cuda")
     

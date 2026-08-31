@@ -177,7 +177,7 @@ def main():
                    help="Dataset dir holding identifiers.json (must match the build the "
                         "checkpoint's puzzle_emb was trained on)")
     p.add_argument("--Ks", default="1,2,10,100,1000")
-    p.add_argument("--output_dir", default="results/arc/diagnostics")
+    p.add_argument("--output_dir", default="results/ARC/arc/diagnostics")
     args = p.parse_args()
 
     Ks = [int(x) for x in args.Ks.split(",")]

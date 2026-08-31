@@ -18,7 +18,7 @@ show ≈0% effect, it further cements "readout ≠ computation."
 
 Output
 ------
-  results/directed_ablation/e9b_nonlinear/
+  results/Sudoku/directed_ablation/e9b_nonlinear/
     ablation_results.json        – per-direction, per-puzzle metrics
     aggregate_results.json       – mean effects across puzzles
     specificity_matrix.json      – [direction × violation_type] Δ matrix
@@ -292,13 +292,13 @@ def main():
     parser.add_argument("--quick", action="store_true",
                         help="Quick test with small N")
     parser.add_argument("--mlp_weights", type=str,
-                        default="results/probes/nonlinear_probes/probe_weights.pt",
+                        default="results/Sudoku/probes/nonlinear_probes/probe_weights.pt",
                         help="Path to MLP probe weights from Gap 3")
     parser.add_argument("--linear_weights", type=str,
-                        default="results/probes/e8_constraint_probes/probe_weights.pt",
+                        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt",
                         help="Path to linear probe weights from E8")
     parser.add_argument("--output_dir", type=str,
-                        default="results/directed_ablation/e9b_nonlinear")
+                        default="results/Sudoku/directed_ablation/e9b_nonlinear")
     args = parser.parse_args()
 
     if args.quick:

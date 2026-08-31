@@ -557,7 +557,7 @@ def main():
     parser.add_argument("--save_puzzle_indices", type=str, default=None,
                         help="Write the collected dataloader puzzle indices to this JSON manifest")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/probes/e8_constraint_probes")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/probes/e8_constraint_probes")
     parser.add_argument("--z_level", type=str, default="H",
                         choices=["H", "L", "both"],
                         help="Which hidden state to probe: H, L, or both")

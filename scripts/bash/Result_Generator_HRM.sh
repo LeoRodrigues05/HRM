@@ -46,9 +46,9 @@ python sudoku_report_colored_ai.py
 python result_metrics_sudoku.py \
   --npz checkpoints/sapientinc-sudoku-extreme/step_0_all_preds.npz \
   --ignore_givens \
-  --outdir results/metrics
+  --outdir results/Sudoku/metrics
 
 
 # python result_metrics_sudoku_multiple.py  \
 #  --npz checkpoints/sapientinc-sudoku-extreme/step_0_all_preds.npz  \
-#  --ignore_givens   --outdir results/hamming_multi --grid_rows 4 --grid_cols 6 --overlay_max 150
+#  --ignore_givens   --outdir results/Sudoku/hamming_multi --grid_rows 4 --grid_cols 6 --overlay_max 150

@@ -16,12 +16,12 @@
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/hardened/patching_full_steps
+mkdir -p logs/maze results/Maze/hardened/patching_full_steps
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
 NUM_PAIRS="${NUM_PAIRS:-100}"
 PATCH_STEPS="${PATCH_STEPS:-0,4,8,12,14,15}"
-OUTPUT_DIR="${OUTPUT_DIR:-results/maze/hardened/patching_full_steps}"
+OUTPUT_DIR="${OUTPUT_DIR:-results/Maze/hardened/patching_full_steps}"
 
 echo "[maze_patch_full] checkpoint=$CHECKPOINT num_pairs=$NUM_PAIRS patch_steps=$PATCH_STEPS"
 conda run --no-capture-output -n hrm python -u scripts/maze/controlled_activation_patching_maze.py \

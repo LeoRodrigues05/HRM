@@ -15,13 +15,13 @@ Usage:
   python metrics_sudoku_dynamics_with_plots.py \
       --npz Checkpoint_HRM_Sudoku/.../step_0_all_preds.npz \
       --ignore_givens \
-      --outdir results/metrics
+      --outdir results/Sudoku/metrics
 
 This will emit:
-  results/metrics/hamming.csv
-  results/metrics/hamming_mean_std.png
-  results/metrics/kl.csv             (if logits exist)
-  results/metrics/kl_mean.png        (if logits exist)
+  results/Sudoku/metrics/hamming.csv
+  results/Sudoku/metrics/hamming_mean_std.png
+  results/Sudoku/metrics/kl.csv             (if logits exist)
+  results/Sudoku/metrics/kl_mean.png        (if logits exist)
 """
 
 from pathlib import Path
@@ -149,7 +149,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--npz", required=True, help="Path to your step_0_all_preds.npz")
     ap.add_argument("--ignore_givens", action="store_true", help="Exclude givens from Hamming distance")
-    ap.add_argument("--outdir", default="results/metrics", help="Directory to write plots & CSVs")
+    ap.add_argument("--outdir", default="results/Sudoku/metrics", help="Directory to write plots & CSVs")
     args = ap.parse_args()
 
     outdir = Path(args.outdir)

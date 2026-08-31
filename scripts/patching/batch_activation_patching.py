@@ -8,7 +8,7 @@ Usage:
     python scripts/batch_activation_patching.py \
         --checkpoint <path_to_checkpoint> \
         --num_puzzles 10 \
-        --output_dir results/activation_patching_batch
+        --output_dir results/Sudoku/patching/activation_patching_batch
 """
 
 import os
@@ -100,7 +100,7 @@ def main():
                         help="Comma-separated step configurations (use 'all' or specific steps)")
     parser.add_argument("--max_steps", type=int, default=8,
                         help="Maximum reasoning steps")
-    parser.add_argument("--output_dir", type=str, default="results/activation_patching_batch",
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/patching/activation_patching_batch",
                         help="Output directory")
     parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run on")

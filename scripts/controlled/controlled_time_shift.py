@@ -262,7 +262,7 @@ def main():
     )
     add_common_args(parser)
     parser.add_argument("--num_puzzles", type=int, default=500)
-    parser.add_argument("--output_dir", type=str, default="results/controlled_time_shift")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/controlled/time_shift")
     parser.add_argument(
         "--mode", type=str, default="fixed", choices=["fixed", "matrix"],
         help="'fixed': fix one step, vary the other (fast). "

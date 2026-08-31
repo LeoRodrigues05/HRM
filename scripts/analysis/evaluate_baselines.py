@@ -14,7 +14,7 @@ Usage:
         --checkpoint checkpoints/vanilla_rnn/checkpoint.pt \\
         --model_type vanilla_rnn \\
         --device cuda \\
-        --output_dir results/baseline_comparison
+        --output_dir results/Sudoku/baseline_comparison
 """
 
 import os
@@ -357,7 +357,7 @@ def main():
     parser.add_argument("--n_patching_pairs", type=int, default=100)
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/baseline_comparison")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/baseline_comparison")
     parser.add_argument("--puzzle_indices", type=str, default=None,
                         help="JSON manifest/list of dataloader puzzle indices to evaluate")
     parser.add_argument("--save_puzzle_indices", type=str, default=None,

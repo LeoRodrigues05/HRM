@@ -219,7 +219,7 @@ def main():
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--device", default="cuda")
-    p.add_argument("--output_dir", default="results/constraint_localization")
+    p.add_argument("--output_dir", default="results/Sudoku/constraint_localization")
     p.add_argument("--dry_run", action="store_true")
     p.add_argument("--sweep", action="store_true",
                    help="grid over patch_level × patch_steps (ignores --patch_level/--patch_steps)")

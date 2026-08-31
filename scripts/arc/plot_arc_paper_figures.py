@@ -27,8 +27,8 @@ folder by default so the earlier ARC diagram sets are never overwritten.
 
 Usage:
   python scripts/arc/plot_arc_paper_figures.py \
-      --results_dir results/arc \
-      --output_dir results/reports/arc_paper_figures
+      --results_dir results/ARC/arc \
+      --output_dir results/ARC/arc_paper_figures
 """
 from __future__ import annotations
 import os, sys, json, argparse
@@ -242,8 +242,8 @@ def fig_decodability_by_step(probe_summary: dict, output_dir: str, stream: str =
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--results_dir", default="results/arc")
-    ap.add_argument("--output_dir", default="results/reports/arc_paper_figures")
+    ap.add_argument("--results_dir", default="results/ARC/arc")
+    ap.add_argument("--output_dir", default="results/ARC/arc_paper_figures")
     ap.add_argument("--stream", default="z_H")
     ap.add_argument("--step", type=int, default=15)
     args = ap.parse_args()

@@ -12,7 +12,7 @@ set -euo pipefail
 
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/hardened/linear_probes
+mkdir -p logs/maze results/Maze/hardened/linear_probes
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
 DEVICE="${DEVICE:-cuda}"
@@ -21,7 +21,7 @@ MAX_STEPS="${MAX_STEPS:-4}"
 EPOCHS="${EPOCHS:-30}"
 POSITIONS_PER_SAMPLE="${POSITIONS_PER_SAMPLE:-128}"
 SEEDS="${SEEDS:-0,1,2,3,4}"
-OUTPUT_DIR="${OUTPUT_DIR:-results/maze/hardened/linear_probes}"
+OUTPUT_DIR="${OUTPUT_DIR:-results/Maze/hardened/linear_probes}"
 
 echo "[maze_probes_hardened] checkpoint=$CHECKPOINT"
 echo "[maze_probes_hardened] device=$DEVICE num_puzzles=$NUM_PUZZLES max_steps=$MAX_STEPS epochs=$EPOCHS"

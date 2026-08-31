@@ -22,25 +22,25 @@ cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export NVCC_PREPEND_FLAGS="${NVCC_PREPEND_FLAGS:-}"
 source ~/miniconda3/etc/profile.d/conda.sh && conda activate hrm
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs results/constraint_localization
+mkdir -p logs results/Sudoku/constraint_localization
 CCL=scripts/patching/counterfactual_constraint_sudoku.py
 python -c "import torch;print('[env] cuda', torch.cuda.is_available(), torch.cuda.get_device_name(0))"
 
 run() { local label="$1"; shift; echo "############ $label ($(date)) ############"; "$@"; echo "rc=$? for $label"; }
 
 run "[1] DRY RUN" python -u $CCL --dry_run --n_puzzles 6 --num_samples 8 \
-    --device cuda --output_dir results/constraint_localization/dry
+    --device cuda --output_dir results/Sudoku/constraint_localization/dry
 
 run "[2] 1-SAMPLE SMOKE" python -u $CCL --num_samples 1 --num_donors 2 --n_puzzles 6 \
     --patch_level H --patch_steps late --device cuda \
-    --output_dir results/constraint_localization/smoke
+    --output_dir results/Sudoku/constraint_localization/smoke
 
 run "[3] N=60 (z_H, all steps)" python -u $CCL --num_samples 60 --num_donors 5 --n_puzzles 60 \
     --patch_level H --patch_steps all --device cuda \
-    --output_dir results/constraint_localization/n60
+    --output_dir results/Sudoku/constraint_localization/n60
 
 run "[4] SWEEP (level x steps)" python -u $CCL --sweep --num_samples 60 --num_donors 5 --n_puzzles 60 \
-    --device cuda --output_dir results/constraint_localization/sweep
+    --device cuda --output_dir results/Sudoku/constraint_localization/sweep
 
 echo "############ CONSTRAINT-LOCALIZATION SUITE DONE ($(date)) ############"
-echo "Key files: results/constraint_localization/{n60/result.json, sweep/sweep_results.csv}"
+echo "Key files: results/Sudoku/constraint_localization/{n60/result.json, sweep/sweep_results.csv}"

@@ -22,7 +22,7 @@ Usage (GPU, via srun on ws-l3-019):
   python scripts/arc/freeze_arc.py \
       --checkpoint checkpoints/arc2-adapted-evalonly/step_7391 \
       --num_puzzles 500 --freeze_levels H,L \
-      --output_dir results/arc/freeze
+      --output_dir results/ARC/arc/freeze
 Smoke:
   python scripts/arc/freeze_arc.py --num_puzzles 8 --freeze_steps 0,8,15 \
       --output_dir results/arc_smoke/freeze
@@ -47,7 +47,7 @@ from scripts.arc.arc_common import ARC_METRIC_KEYS, arc_prediction_metrics
 from scripts.maze.linear_probes_maze import _flat, _slice_preds
 
 # Default checkpoint = the Path-A adapted, frozen-core evalonly model that every
-# other reportable ARC experiment used (see results/arc/*/_meta.json).
+# other reportable ARC experiment used (see results/ARC/arc/*/_meta.json).
 ARC_ADAPTED_CKPT = os.path.join(
     REPO_ROOT, "checkpoints", "arc2-adapted-evalonly", "step_7391")
 PRIMARY = "colour_cell_acc"
@@ -68,7 +68,7 @@ def main():
                    help="comma list of k to freeze-after (subset of 0..max_steps-1)")
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/arc/freeze")
+    p.add_argument("--output_dir", default="results/ARC/arc/freeze")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

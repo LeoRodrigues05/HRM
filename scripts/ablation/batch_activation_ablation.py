@@ -9,7 +9,7 @@ Usage:
     python scripts/batch_activation_ablation.py \\
         --checkpoint Checkpoint_HRM_v2_Sudoku/best.pt \\
         --num_puzzles 10 \\
-        --output_dir results/activation_ablation_batch
+        --output_dir results/Sudoku/ablation/activation_ablation_batch
 """
 
 import os
@@ -33,7 +33,7 @@ def main():
     parser.add_argument("--max_steps", type=int, default=8)
     parser.add_argument("--num_runs", type=int, default=3)
     parser.add_argument("--output_dir", type=str,
-                        default="results/activation_ablation_batch")
+                        default="results/Sudoku/ablation/activation_ablation_batch")
     parser.add_argument("--device", type=str, default="cuda")
     args = parser.parse_args()
 

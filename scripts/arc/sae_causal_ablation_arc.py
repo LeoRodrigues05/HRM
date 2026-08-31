@@ -19,14 +19,14 @@ Finding 3 prediction: top-k SAE ≈ random-k SAE, and both ≪ full-z_H ablation
 
 Requires: a trained ARC SAE + z_H activation dump (sae_collect_activations_arc.py +
 scripts/sae/sae_train.py) and the ARC probe weights
-(results/arc/hardened/linear_probes/probe_weights.pt).
+(results/ARC/arc/hardened/linear_probes/probe_weights.pt).
 
 Usage (GPU, via srun on ws-l3-019):
   python scripts/arc/sae_causal_ablation_arc.py \
-      --sae_path results/arc/sae_study/sae_d2048_l10.01.pt \
-      --activations_path results/arc/sae_study/activations_zH.pt \
-      --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
-      --n_puzzles 300 --top_k 50 --output_dir results/arc/sae_study/causal_ablation
+      --sae_path results/ARC/arc/sae_study/sae_d2048_l10.01.pt \
+      --activations_path results/ARC/arc/sae_study/activations_zH.pt \
+      --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
+      --n_puzzles 300 --top_k 50 --output_dir results/ARC/arc/sae_study/causal_ablation
 """
 from __future__ import annotations
 import os, sys, json, time, argparse
@@ -84,15 +84,15 @@ def main():
     p = argparse.ArgumentParser(description="ARC SAE causal ablation (colour-cell acc)")
     p.add_argument("--checkpoint", default=ARC_ADAPTED_CKPT)
     p.add_argument("--sae_path", required=True)
-    p.add_argument("--activations_path", default="results/arc/sae_study/activations_zH.pt")
-    p.add_argument("--probe_weights", default="results/arc/hardened/linear_probes/probe_weights.pt")
+    p.add_argument("--activations_path", default="results/ARC/arc/sae_study/activations_zH.pt")
+    p.add_argument("--probe_weights", default="results/ARC/arc/hardened/linear_probes/probe_weights.pt")
     p.add_argument("--n_puzzles", type=int, default=300)
     p.add_argument("--top_k", type=int, default=50)
     p.add_argument("--n_random_features", type=int, default=50)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/arc/sae_study/causal_ablation")
+    p.add_argument("--output_dir", default="results/ARC/arc/sae_study/causal_ablation")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

@@ -17,7 +17,7 @@ Usage (default = maximally disruptive: H at steps 0,1,2, full grid):
     python scripts/maze/patching_report_maze.py \
         --src_idx 0 --tgt_idx 1 \
         --patch_level H --patch_steps 0,1,2 \
-        --output results/maze/reports/patching_p0_to_p1.html
+        --output results/Maze/reports/patching_p0_to_p1.html
 """
 from __future__ import annotations
 
@@ -81,7 +81,7 @@ def main():
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--num_pool", type=int, default=8)
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/patching_report.html")
+                   default="results/Maze/reports/patching_report.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

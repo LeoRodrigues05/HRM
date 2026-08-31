@@ -494,7 +494,7 @@ def main():
                         help="Number of puzzles to analyze")
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/plots/zh_trajectories")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/plots/zh_trajectories")
     parser.add_argument("--quick", action="store_true",
                         help="Quick test: 20 puzzles")
     parser.add_argument("--seed", type=int, default=42)

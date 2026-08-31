@@ -14,13 +14,13 @@ puzzle it records the Δ in each ARC metric, then reports per direction:
 bootstrap 95% CI, paired t + Wilcoxon (probe vs per-puzzle mean random), and
 Cohen's d — the same controls used on the Sudoku/Maze side.
 
-Requires: results/arc/hardened/linear_probes/probe_weights.pt
+Requires: results/ARC/arc/hardened/linear_probes/probe_weights.pt
           (run arc_linear_probes.py --save_probe_weights first)
 
 Usage
   python scripts/arc/directed_ablation_arc.py --num_puzzles 500 --z_level H \
-      --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
-      --device cuda --output_dir results/arc/hardened/directed_ablation
+      --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
+      --device cuda --output_dir results/ARC/arc/hardened/directed_ablation
 """
 from __future__ import annotations
 import os, sys, json, time, argparse
@@ -80,11 +80,11 @@ def main():
     p.add_argument("--num_puzzles", type=int, default=500)
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--z_level", default="H", choices=["H", "L"])
-    p.add_argument("--probe_weights", default="results/arc/hardened/linear_probes/probe_weights.pt")
+    p.add_argument("--probe_weights", default="results/ARC/arc/hardened/linear_probes/probe_weights.pt")
     p.add_argument("--n_random_controls", type=int, default=10)
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/arc/hardened/directed_ablation")
+    p.add_argument("--output_dir", default="results/ARC/arc/hardened/directed_ablation")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

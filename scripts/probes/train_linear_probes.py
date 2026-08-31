@@ -9,7 +9,7 @@ internal representations at different levels:
 - Local probes: Analyze per-cell properties (correctness, position, etc.)
 
 Usage:
-    python scripts/train_linear_probes.py --probes_dir results/probes
+    python scripts/train_linear_probes.py --probes_dir results/Sudoku/probes
     python scripts/train_linear_probes.py --list_label_keys  # Show available targets
 """
 import os

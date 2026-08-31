@@ -10,7 +10,7 @@ emerges in the working memory, not as a correctness measurement.
 
 Usage:
     python scripts/maze/intermediate_substeps_maze.py --random --seed 7 \
-        --output results/maze/reports/intermediate_substeps.html
+        --output results/Maze/reports/intermediate_substeps.html
 """
 from __future__ import annotations
 
@@ -205,7 +205,7 @@ def main():
                         "prediction is exactly solved / not solved. Overrides "
                         "--puzzle_idx / --random selection.")
     p.add_argument("--output", type=str,
-                   default="results/maze/reports/intermediate_substeps.html")
+                   default="results/Maze/reports/intermediate_substeps.html")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

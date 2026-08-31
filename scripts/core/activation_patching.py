@@ -20,7 +20,7 @@ Usage:
         --target_puzzle_idx 1 \
         --patch_level both \
         --patch_steps 0,1,2 \
-        --output_dir results/activation_patching
+        --output_dir results/Sudoku/patching/activation_patching
 """
 
 import os
@@ -932,7 +932,7 @@ def main():
                         help="Comma-separated list of positions to patch (e.g., '0,9,18'). None = all positions")
     parser.add_argument("--max_steps", type=int, default=8,
                         help="Maximum number of reasoning steps")
-    parser.add_argument("--output_dir", type=str, default="results/activation_patching",
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/patching/activation_patching",
                         help="Directory to save results")
     parser.add_argument("--device", type=str, default="cuda",
                         help="Device to run on")

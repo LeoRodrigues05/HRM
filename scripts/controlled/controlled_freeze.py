@@ -257,7 +257,7 @@ def main():
     parser = argparse.ArgumentParser(description="Controlled Freeze Experiment (Revised E2b)")
     add_common_args(parser)
     parser.add_argument("--num_puzzles", type=int, default=1000)
-    parser.add_argument("--output_dir", type=str, default="results/controlled_freeze")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/controlled/freeze")
     args = resolve_args(parser.parse_args())
 
     if args.quick:

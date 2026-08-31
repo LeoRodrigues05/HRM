@@ -12,7 +12,7 @@ set -euo pipefail
 
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/linear_probes
+mkdir -p logs/maze results/Maze/linear_probes
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
 DEVICE="${DEVICE:-cuda}"
@@ -30,7 +30,7 @@ conda run --no-capture-output -n hrm python -u scripts/maze/linear_probes_maze.p
   --max_steps "$MAX_STEPS" \
   --epochs "$EPOCHS" \
   --positions_per_sample "$POSITIONS_PER_SAMPLE" \
-  --output_dir results/maze/linear_probes \
+  --output_dir results/Maze/linear_probes \
   --device "$DEVICE" \
   --train_device auto
 

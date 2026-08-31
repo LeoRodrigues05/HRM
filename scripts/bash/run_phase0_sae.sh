@@ -33,22 +33,22 @@ run "SAE sweep d x l1" "$LOG/sae_sweep.log" \
   python scripts/sae/sae_sweep.py \
     --dict_sizes 1024,2048,4096,8192 \
     --l1_coeffs 0.003,0.01,0.03 \
-    --activations_path results/sae_study/activations_zH.pt \
-    --device $DEV --output_dir results/sae_study
+    --activations_path results/Sudoku/sae_study/activations_zH.pt \
+    --device $DEV --output_dir results/Sudoku/sae_study
 
 # 2) SAE causal ablation on the canonical config (d=2048, l1=0.01)
 run "SAE causal ablation (d2048 l0.01, N=300)" "$LOG/sae_causal.log" \
   python scripts/sae/sae_causal_ablation.py \
-    --sae_path results/sae_study/sae_d2048_l10.01.pt \
-    --probe_weights_path results/probes/e8_constraint_probes/probe_weights.pt \
+    --sae_path results/Sudoku/sae_study/sae_d2048_l10.01.pt \
+    --probe_weights_path results/Sudoku/probes/e8_constraint_probes/probe_weights.pt \
     --n_puzzles 300 --top_k 50 --device $DEV \
-    --output_dir results/sae_study/causal_ablation
+    --output_dir results/Sudoku/sae_study/causal_ablation
 
 # 3) Baseline recurrence eval — re-run HRM with bootstrap CIs
 run "Baseline eval HRM (N=500)" "$LOG/baseline_HRM.log" \
   python scripts/analysis/evaluate_baselines.py \
     --checkpoint checkpoints/sapientinc-sudoku-extreme/checkpoint.pt \
     --model_name HRM --n_puzzles 500 --device $DEV \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo "ALL PHASE 0 SAE STEPS DONE"

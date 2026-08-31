@@ -7,9 +7,9 @@ reinitialization, and detailed logging.
 
 Output
 ------
-  results/sae_study/sae_d{dict_size}_l1{l1_coeff}.pt       — trained SAE
-  results/sae_study/sae_d{dict_size}_l1{l1_coeff}_log.json  — training log
-  results/sae_study/sae_d{dict_size}_l1{l1_coeff}_features.json — feature stats
+  results/Sudoku/sae_study/sae_d{dict_size}_l1{l1_coeff}.pt       — trained SAE
+  results/Sudoku/sae_study/sae_d{dict_size}_l1{l1_coeff}_log.json  — training log
+  results/Sudoku/sae_study/sae_d{dict_size}_l1{l1_coeff}_features.json — feature stats
 
 Usage
 -----
@@ -87,7 +87,7 @@ def train_sae(
     dead_threshold: int = 1000,
     log_interval: int = 100,
     save_interval: int = 5,
-    output_dir: str = "results/sae_study",
+    output_dir: str = "results/Sudoku/sae_study",
     activation: str = "relu",
     k: int = 64,
     center_mean: bool = False,
@@ -311,7 +311,7 @@ def train_sae(
 def main():
     parser = argparse.ArgumentParser(description="SAE E10: Train Sparse Autoencoder")
     parser.add_argument("--activations_path", type=str,
-                        default="results/sae_study/activations_zH.pt",
+                        default="results/Sudoku/sae_study/activations_zH.pt",
                         help="Path to collected activations")
     parser.add_argument("--activation_level", type=str, default="z_H",
                         choices=["z_H", "z_L"],
@@ -339,7 +339,7 @@ def main():
     parser.add_argument("--dead_threshold", type=int, default=1000,
                         help="Feature is dead if not activated in N consecutive batches")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 

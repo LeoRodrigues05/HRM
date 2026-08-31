@@ -11,7 +11,7 @@ causal impact with proper statistical controls:
   - Multi-direction subspace ablation (2-d, 3-d)
   - Sudoku-specific violation counting
 
-Requires E8 probe weights at results/probes/e8_constraint_probes/probe_weights.pt
+Requires E8 probe weights at results/Sudoku/probes/e8_constraint_probes/probe_weights.pt
 
 Usage:
     python scripts/controlled_directed_ablation.py --num_puzzles 500
@@ -122,10 +122,10 @@ def main():
     )
     add_common_args(parser)
     parser.add_argument("--num_puzzles", type=int, default=500)
-    parser.add_argument("--output_dir", type=str, default="results/controlled_directed_ablation")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/controlled/directed_ablation")
     parser.add_argument(
         "--probe_weights", type=str,
-        default="results/probes/e8_constraint_probes/probe_weights.pt",
+        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt",
         help="Path to probe weights from E8",
     )
     parser.add_argument("--z_level", type=str, default="H", choices=["H", "L"])

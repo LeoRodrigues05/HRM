@@ -2,7 +2,7 @@
 """Compact progress + results reader for the hardened maze suite."""
 import json, os, sys, glob
 
-BASE = "results/maze/hardened"
+BASE = "results/Maze/hardened"
 
 def ci(d):
     if not isinstance(d, dict):

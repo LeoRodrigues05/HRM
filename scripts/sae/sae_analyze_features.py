@@ -13,7 +13,7 @@ Analyses:
 
 Output
 ------
-  results/sae_study/feature_analysis/
+  results/Sudoku/sae_study/feature_analysis/
     activation_patterns.json
     specialization_matrix.pt
     geometry_analysis.json
@@ -22,7 +22,7 @@ Output
 
 Usage
 -----
-    python scripts/sae/sae_analyze_features.py --sae_path results/sae_study/sae_d2048_l10.01.pt
+    python scripts/sae/sae_analyze_features.py --sae_path results/Sudoku/sae_study/sae_d2048_l10.01.pt
 """
 
 import os
@@ -623,16 +623,16 @@ def main():
     parser.add_argument("--sae_path", type=str, required=True,
                         help="Path to trained SAE checkpoint")
     parser.add_argument("--activations_path", type=str,
-                        default="results/sae_study/activations_zH.pt")
+                        default="results/Sudoku/sae_study/activations_zH.pt")
     parser.add_argument("--probe_weights_path", type=str,
-                        default="results/probes/e8_constraint_probes/probe_weights.pt",
+                        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt",
                         help="Path to E8 probe weights (for geometry comparison)")
     parser.add_argument("--steps_to_analyze", type=str, default=None,
                         help="Comma-separated steps for specialization analysis (default: all)")
     parser.add_argument("--top_k", type=int, default=50,
                         help="Number of top features to analyze in detail")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study/feature_analysis")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study/feature_analysis")
     args = parser.parse_args()
 
     if args.device == "auto":

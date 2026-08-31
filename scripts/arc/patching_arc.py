@@ -19,7 +19,7 @@ cross-task figure uniformity; all ARC metrics under ``arc_metric_deltas``.
 Usage (GPU, via srun on ws-l3-019):
   python scripts/arc/patching_arc.py \
       --checkpoint checkpoints/arc2-adapted-evalonly/step_7391 \
-      --num_pairs 100 --patch_levels H,L --output_dir results/arc/patching_full_steps
+      --num_pairs 100 --patch_levels H,L --output_dir results/ARC/arc/patching_full_steps
 Smoke:
   python scripts/arc/patching_arc.py --num_pairs 4 --patch_steps 0,8,15 \
       --output_dir results/arc_smoke/patching_full_steps
@@ -63,7 +63,7 @@ def main():
     p.add_argument("--patch_steps", default="0,2,4,6,8,10,12,15")
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/arc/patching_full_steps")
+    p.add_argument("--output_dir", default="results/ARC/arc/patching_full_steps")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

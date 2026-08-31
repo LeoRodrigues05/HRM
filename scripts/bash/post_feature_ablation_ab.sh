@@ -51,7 +51,7 @@ export DISABLE_COMPILE=1
 SAE_TAG="${SAE_TAG:-d2048_l10.003}"
 N_PUZZLES="${N_PUZZLES:-200}"
 TOP_K="${TOP_K:-50}"
-ROOT="results/sae_study/bptt_study"
+ROOT="results/Sudoku/sae_study/bptt_study"
 
 # Models with a trained SAE present.
 MODELS=()

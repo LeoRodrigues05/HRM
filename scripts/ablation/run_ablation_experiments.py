@@ -369,7 +369,7 @@ def main():
                         help="Maximum reasoning steps (default: 16 = model native)")
     parser.add_argument("--num_runs", type=int, default=1,
                         help="Repeated forward passes per experiment (default: 1)")
-    parser.add_argument("--output_dir", type=str, default="results/ablation_experiments",
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/ablation/ablation_experiments",
                         help="Root output directory")
     parser.add_argument("--device", type=str, default="cpu",
                         help="Device (default: cpu)")

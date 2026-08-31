@@ -11,11 +11,11 @@ Generates plots for:
 
 Output
 ------
-  results/sae_study/plots/  (PNG + PDF)
+  results/Sudoku/sae_study/plots/  (PNG + PDF)
 
 Usage
 -----
-    python scripts/sae/sae_plot.py --sae_path results/sae_study/sae_d2048_l10.01.pt
+    python scripts/sae/sae_plot.py --sae_path results/Sudoku/sae_study/sae_d2048_l10.01.pt
 """
 
 import os
@@ -429,15 +429,15 @@ def main():
     parser.add_argument("--sae_path", type=str, default=None,
                         help="Path to trained SAE checkpoint (for reconstruction plot)")
     parser.add_argument("--activations_path", type=str,
-                        default="results/sae_study/activations_zH.pt")
+                        default="results/Sudoku/sae_study/activations_zH.pt")
     parser.add_argument("--analysis_dir", type=str,
-                        default="results/sae_study/feature_analysis")
+                        default="results/Sudoku/sae_study/feature_analysis")
     parser.add_argument("--causal_dir", type=str,
-                        default="results/sae_study/causal_ablation")
+                        default="results/Sudoku/sae_study/causal_ablation")
     parser.add_argument("--sweep_csv", type=str,
-                        default="results/sae_study/sweep_results.csv")
+                        default="results/Sudoku/sae_study/sweep_results.csv")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study/plots")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study/plots")
     args = parser.parse_args()
 
     if args.device == "auto":

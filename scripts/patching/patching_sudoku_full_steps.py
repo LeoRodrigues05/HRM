@@ -16,10 +16,10 @@ violations, and Hamming distance to the unpatched baseline prediction.
 Usage (GPU):
   python scripts/patching/patching_sudoku_full_steps.py \
       --num_pairs 250 --patch_levels H,L --patch_steps 1,2,4,6,8,10,12,15 \
-      --output_dir results/patching/patching_full_steps
+      --output_dir results/Sudoku/patching/patching_full_steps
 Smoke:
   python scripts/patching/patching_sudoku_full_steps.py --num_pairs 2 \
-      --patch_steps 1,15 --output_dir results/patching/_smoke_full_steps
+      --patch_steps 1,15 --output_dir results/Sudoku/patching/_smoke_full_steps
 """
 from __future__ import annotations
 import os, sys, json, time, argparse
@@ -68,7 +68,7 @@ def main():
                    help="step 0 is a no-op in ACTV1 (post-reset carry is H_init/L_init)")
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output_dir", default="results/patching/patching_full_steps")
+    p.add_argument("--output_dir", default="results/Sudoku/patching/patching_full_steps")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

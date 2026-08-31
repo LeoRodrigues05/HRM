@@ -8,7 +8,7 @@
 #SBATCH --output=logs/eval_baselines_%j.out
 #SBATCH --error=logs/eval_baselines_%j.err
 
-mkdir -p logs results/baseline_comparison
+mkdir -p logs results/Sudoku/baseline_comparison
 
 # Activate environment (prefer .venv, fallback to conda env named "hrm")
 if [ -f ".venv/bin/activate" ]; then
@@ -33,7 +33,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --n_patching_pairs $N_PATCHING \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 # ─── 2. Universal Transformer – multiple checkpoints ───
 # Best checkpoint (peak accuracy ~step 20k based on training curves)
@@ -44,7 +44,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [3/9] Evaluating UT @ step_20832 (BEST)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -53,7 +53,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --n_patching_pairs $N_PATCHING \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [4/9] Evaluating UT @ step_31248 (diverging)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -62,7 +62,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [5/9] Evaluating UT @ step_41664 (diverged)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -71,7 +71,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 # ─── 3. Vanilla RNN – multiple checkpoints ───
 echo ">>> [6/9] Evaluating RNN @ step_10416 (early)..."
@@ -81,7 +81,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [7/9] Evaluating RNN @ step_20832 (BEST)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -90,7 +90,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --n_patching_pairs $N_PATCHING \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [8/9] Evaluating RNN @ step_26040 (late peak)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -99,7 +99,7 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 echo ">>> [9/9] Evaluating RNN @ step_31248 (diverged)..."
 python scripts/analysis/evaluate_baselines.py \
@@ -108,11 +108,11 @@ python scripts/analysis/evaluate_baselines.py \
     --n_puzzles $N_PUZZLES \
     --skip_patching \
     --device cuda \
-    --output_dir results/baseline_comparison
+    --output_dir results/Sudoku/baseline_comparison
 
 # ─── 4. Generate comparison plots ───
 echo ">>> Generating comparison plots..."
 python scripts/plotting/plot_baseline_comparison.py \
-    --results_dir results/baseline_comparison
+    --results_dir results/Sudoku/baseline_comparison
 
 echo "=== Done at $(date) ==="

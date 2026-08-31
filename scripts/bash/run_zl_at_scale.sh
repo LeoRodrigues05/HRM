@@ -17,7 +17,7 @@ echo "  Gap 4: z_L Ablation at Scale (N=1000)"
 echo "  $(date)"
 echo "================================================"
 
-OUTPUT_DIR="results/controlled/ablation/zL_extended"
+OUTPUT_DIR="results/Sudoku/controlled/ablation/zL_extended"
 mkdir -p "$OUTPUT_DIR"
 
 echo ""
@@ -36,12 +36,12 @@ python scripts/controlled/controlled_ablation.py \
     --z_level H \
     --max_steps 16 \
     --device cuda \
-    --output_dir "results/controlled/ablation/zH_1000"
+    --output_dir "results/Sudoku/controlled/ablation/zH_1000"
 
 echo ""
 echo "================================================"
 echo "  Done at $(date)"
 echo "  Results in:"
 echo "    z_L: $OUTPUT_DIR"
-echo "    z_H: results/controlled/ablation/zH_1000"
+echo "    z_H: results/Sudoku/controlled/ablation/zH_1000"
 echo "================================================"

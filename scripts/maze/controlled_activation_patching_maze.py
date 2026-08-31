@@ -13,8 +13,8 @@ For each group x patch_level (H/L) x patch_step in {early, mid, late}, measure
 delta token accuracy plus maze-structural metrics vs the target baseline.
 
 Outputs:
-  results/maze/patching_spatial/per_pair.jsonl
-  results/maze/patching_spatial/aggregate.json
+  results/Maze/patching_spatial/per_pair.jsonl
+  results/Maze/patching_spatial/aggregate.json
 
 Usage:
     python scripts/maze/controlled_activation_patching_maze.py \
@@ -57,7 +57,7 @@ def main():
         help="comma-separated spatial groups to evaluate (default: all groups)",
     )
     p.add_argument("--near_dist", type=int, default=5)
-    p.add_argument("--output_dir", type=str, default="results/maze/patching_spatial")
+    p.add_argument("--output_dir", type=str, default="results/Maze/patching_spatial")
     p.add_argument("--device", type=str, default="cuda")
     args = p.parse_args()
 

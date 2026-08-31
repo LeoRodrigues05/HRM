@@ -349,7 +349,7 @@ def main():
     p.add_argument("--streams", type=str, default="z_H,z_L")
     p.add_argument("--global_targets", type=str, default="all")
     p.add_argument("--local_targets", type=str, default="all")
-    p.add_argument("--output_dir", type=str, default="results/arc/hardened/linear_probes")
+    p.add_argument("--output_dir", type=str, default="results/ARC/arc/hardened/linear_probes")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--seeds", type=str, default="0,1,2,3,4",
                    help="Comma-separated probe-ensemble seeds (each = independent split).")

@@ -360,11 +360,11 @@ def main() -> None:
     # Resolve defaults
     if args.output_dir is None:
         if args.task == "maze":
-            args.output_dir = os.path.join(REPO_ROOT, "results/maze/policy_improvement")
+            args.output_dir = os.path.join(REPO_ROOT, "results/Maze/policy_improvement")
         elif args.task == "arc":
-            args.output_dir = os.path.join(REPO_ROOT, "results/arc/policy_improvement")
+            args.output_dir = os.path.join(REPO_ROOT, "results/ARC/arc/policy_improvement")
         else:
-            args.output_dir = os.path.join(REPO_ROOT, "results/controlled/policy_improvement")
+            args.output_dir = os.path.join(REPO_ROOT, "results/Sudoku/controlled/policy_improvement")
     else:
         args.output_dir = os.path.join(REPO_ROOT, args.output_dir)
 

@@ -11,8 +11,8 @@ and generates 4 figures:
 
 Usage:
     python scripts/plotting/plot_baseline_comparison.py \\
-        --results_dir results/baseline_comparison \\
-        --output_dir results/baseline_comparison/figures
+        --results_dir results/Sudoku/baseline_comparison \\
+        --output_dir results/Sudoku/baseline_comparison/figures
 """
 
 import os
@@ -350,7 +350,7 @@ def plot_training_trajectory(models, output_dir):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot baseline comparison figures")
-    parser.add_argument("--results_dir", type=str, default="results/baseline_comparison")
+    parser.add_argument("--results_dir", type=str, default="results/Sudoku/baseline_comparison")
     parser.add_argument("--output_dir", type=str, default=None,
                         help="Output dir for figures (default: results_dir/figures)")
     args = parser.parse_args()

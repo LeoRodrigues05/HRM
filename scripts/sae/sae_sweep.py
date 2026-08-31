@@ -6,7 +6,7 @@ where reconstruction is good AND features are sparse.
 
 Output
 ------
-  results/sae_study/sweep_results.csv
+  results/Sudoku/sae_study/sweep_results.csv
 
 Usage
 -----
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 def main():
     parser = argparse.ArgumentParser(description="SAE E10: Hyperparameter sweep")
     parser.add_argument("--activations_path", type=str,
-                        default="results/sae_study/activations_zH.pt")
+                        default="results/Sudoku/sae_study/activations_zH.pt")
     parser.add_argument("--activation_level", type=str, default="z_H",
                         choices=["z_H", "z_L"])
     parser.add_argument("--dict_sizes", type=str, default="1024,2048,4096",
@@ -54,7 +54,7 @@ def main():
                         help="Run each config twice (baseline vs mean-centered) for an A/B comparison")
     parser.add_argument("--steps_filter", type=str, default=None)
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study")
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 

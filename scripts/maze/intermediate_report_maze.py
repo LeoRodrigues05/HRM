@@ -12,7 +12,7 @@ Output: a single self-contained HTML file.
 
 Usage
   python scripts/maze/intermediate_report_maze.py --device cuda \
-      --output results/maze/reports/intermediate_steps_5correct_5incorrect.html
+      --output results/Maze/reports/intermediate_steps_5correct_5incorrect.html
   # CPU (slower): drop --device or pass --device cpu
 """
 from __future__ import annotations
@@ -81,7 +81,7 @@ def main():
     p.add_argument("--max_steps", type=int, default=16)
     p.add_argument("--device", default="cuda")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--output", default="results/maze/reports/intermediate_steps_5correct_5incorrect.html")
+    p.add_argument("--output", default="results/Maze/reports/intermediate_steps_5correct_5incorrect.html")
     args = p.parse_args()
 
     device = torch.device(args.device if (args.device != "cuda" or torch.cuda.is_available()) else "cpu")

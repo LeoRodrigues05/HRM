@@ -10,7 +10,7 @@ The sweep tests:
 - Train/validation splits for proper evaluation
 
 Usage:
-    python scripts/sweep_linear_probes.py --probes_dir results/probes
+    python scripts/sweep_linear_probes.py --probes_dir results/Sudoku/probes
     python scripts/sweep_linear_probes.py --global_targets is_solved,pct_filled
 
 Output:

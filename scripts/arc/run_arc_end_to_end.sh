@@ -44,7 +44,7 @@ if [ "$MODE" = "smoke" ]; then
 else
     N="${N:-500}"; N_POLICY="${N_POLICY:-500}"; STEPS="${STEPS:-0,1,2,4,8,15}"
     SEEDS="${SEEDS:-0,1,2,3,4}"; DEVICE="${DEVICE:-$DEFAULT_DEVICE}"; EPOCHS=30; POS=128
-    ROOT=results/arc
+    ROOT=results/ARC/arc
 fi
 
 LP="$ROOT/hardened/linear_probes"
@@ -53,7 +53,7 @@ DA="$ROOT/hardened/directed_ablation"
 LOG="logs/arc_run_${MODE}.log"
 mkdir -p logs "$LP" "$MLP" "$DA" "$ROOT/causal_subspace" \
          "$ROOT/policy_improvement" "$ROOT/policy_decomposition" \
-         results/reports/arc_figures
+         results/ARC/arc_figures
 : > "$LOG"
 
 run() {  # run <label> <cmd...>; non-fatal, logged
@@ -128,6 +128,6 @@ run "H4 policy decomposition" "$PY" -u scripts/analysis/policy_decomposition.py 
 
 # ── 6. figures ────────────────────────────────────────────────────────────
 run "figures" "$PY" -u scripts/arc/plot_arc_figures.py \
-    --results_dir "$ROOT" --output_dir results/reports/arc_figures
+    --results_dir "$ROOT" --output_dir results/ARC/arc_figures
 
 echo "[$(date +%T)] ARC SUITE COMPLETE (mode=$MODE)  outputs under $ROOT/" | tee -a "$LOG"

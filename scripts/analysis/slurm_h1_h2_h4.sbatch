@@ -35,18 +35,18 @@ echo "[hrm_h124] HRM_BPTT_CKPT='${HRM_BPTT_CKPT}'"
 
 # Create output directories
 mkdir -p logs \
-         results/controlled/causal_subspace \
-         results/maze/causal_subspace \
+         results/Sudoku/controlled/causal_subspace \
+         results/Maze/causal_subspace \
          results/localizability/hrm_1step \
          results/localizability/hrm_bptt \
          results/localizability/ut_1step \
          results/localizability/ut_bptt \
-         results/controlled/policy_decomposition \
-         results/maze/policy_decomposition \
-         results/baseline_comparison/two_timescale \
-         results/reports/causal_subspace_figures \
-         results/reports/localizability_figures \
-         results/reports/policy_decomposition_figures
+         results/Sudoku/controlled/policy_decomposition \
+         results/Maze/policy_decomposition \
+         results/Sudoku/baseline_comparison/two_timescale \
+         results/Sudoku/causal_subspace_figures \
+         results/Sudoku/localizability_figures \
+         results/Sudoku/policy_decomposition_figures
 
 # ═══════════════════════════════════════════════════════════
 # STEP 1 — H2: Minimal causal subspace (Sudoku primary)
@@ -56,7 +56,7 @@ conda run --no-capture-output -n hrm python -u scripts/analysis/causal_subspace.
     --task sudoku \
     --num_puzzles "$N" \
     --n_pca "$N" \
-    --output_dir results/controlled/causal_subspace \
+    --output_dir results/Sudoku/controlled/causal_subspace \
     --device cuda
 
 echo "[hrm_h124] === H2: causal subspace (maze, secondary) ==="
@@ -64,7 +64,7 @@ conda run --no-capture-output -n hrm python -u scripts/analysis/causal_subspace.
     --task maze \
     --num_puzzles "$N" \
     --n_pca "$N" \
-    --output_dir results/maze/causal_subspace \
+    --output_dir results/Maze/causal_subspace \
     --device cuda || echo "[hrm_h124] maze causal subspace failed (non-fatal)"
 
 # ═══════════════════════════════════════════════════════════
@@ -117,14 +117,14 @@ echo "[hrm_h124] === H4: policy decomposition (sudoku) ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/policy_decomposition.py \
     --task sudoku \
     --num_puzzles "$N_H4" \
-    --output_dir results/controlled/policy_decomposition \
+    --output_dir results/Sudoku/controlled/policy_decomposition \
     --device cuda
 
 echo "[hrm_h124] === H4: policy decomposition (maze) ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/policy_decomposition.py \
     --task maze \
     --num_puzzles "$N_H4" \
-    --output_dir results/maze/policy_decomposition \
+    --output_dir results/Maze/policy_decomposition \
     --device cuda || echo "[hrm_h124] maze policy decomposition failed (non-fatal)"
 
 # ═══════════════════════════════════════════════════════════
@@ -134,7 +134,7 @@ echo "[hrm_h124] === H4: two-timescale baseline ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/two_timescale_baseline.py \
     --tag ut_1step \
     --num_puzzles "$N" \
-    --output_dir results/baseline_comparison/two_timescale \
+    --output_dir results/Sudoku/baseline_comparison/two_timescale \
     --device cuda || echo "[hrm_h124] two_timescale_baseline failed (non-fatal)"
 
 # ═══════════════════════════════════════════════════════════
@@ -144,27 +144,27 @@ echo "[hrm_h124] === Figures ==="
 
 conda run --no-capture-output -n hrm python -u scripts/analysis/plot_causal_subspace.py \
     --task sudoku \
-    --outdir results/reports/causal_subspace_figures
+    --outdir results/Sudoku/causal_subspace_figures
 
 conda run --no-capture-output -n hrm python -u scripts/analysis/plot_causal_subspace.py \
     --task maze \
-    --outdir results/reports/causal_subspace_figures || true
+    --outdir results/Sudoku/causal_subspace_figures || true
 
 conda run --no-capture-output -n hrm python -u scripts/analysis/plot_localizability.py \
-    --outdir results/reports/localizability_figures
+    --outdir results/Sudoku/localizability_figures
 
 conda run --no-capture-output -n hrm python -u scripts/analysis/plot_policy_decomposition.py \
-    --outdir results/reports/policy_decomposition_figures
+    --outdir results/Sudoku/policy_decomposition_figures
 
 echo "[hrm_h124] done  $(date)"
 echo "[hrm_h124] ========================================"
 echo "[hrm_h124] Key outputs:"
-echo "[hrm_h124]   results/controlled/causal_subspace/subspace_curve.json"
+echo "[hrm_h124]   results/Sudoku/controlled/causal_subspace/subspace_curve.json"
 echo "[hrm_h124]   results/localizability/hrm_1step/scorecard.json"
 echo "[hrm_h124]   results/localizability/ut_1step/scorecard.json"
-echo "[hrm_h124]   results/controlled/policy_decomposition/aggregate.json"
-echo "[hrm_h124]   results/baseline_comparison/two_timescale/two_timescale.json"
-echo "[hrm_h124]   results/reports/*/  (all figures)"
+echo "[hrm_h124]   results/Sudoku/controlled/policy_decomposition/aggregate.json"
+echo "[hrm_h124]   results/Sudoku/baseline_comparison/two_timescale/two_timescale.json"
+echo "[hrm_h124]   results/Final/reports/*/  (all figures)"
 echo "[hrm_h124] ========================================"
 echo "[hrm_h124] To add HRM-BPTT (Track A airtight control):"
 echo "[hrm_h124]   HRM_BPTT_CKPT=<path> sbatch -p gpu --gres=gpu:1 scripts/analysis/slurm_h1_h2_h4.sbatch"

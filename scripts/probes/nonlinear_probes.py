@@ -16,7 +16,7 @@ Architecture: 2-layer MLP (D → hidden_dim → out), ReLU.
 
 Output
 ------
-  results/probes/nonlinear_probes/
+  results/Sudoku/probes/nonlinear_probes/
     sweep_results.csv        – per (z,step,target): linear vs MLP mean ± CI, delta
     comparison_summary.json  – per-target aggregate deltas
     _meta.json               – provenance
@@ -151,7 +151,7 @@ def main():
                         help="Probe-ensemble seeds (each = independent puzzle-disjoint split)")
     parser.add_argument("--z_level", type=str, default="both", choices=["H", "L", "both"])
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/probes/nonlinear_probes")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/probes/nonlinear_probes")
     parser.add_argument("--quick", action="store_true", help="Quick test with 20 puzzles")
     args = parser.parse_args()
 

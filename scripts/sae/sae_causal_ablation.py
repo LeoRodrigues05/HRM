@@ -22,13 +22,13 @@ Controls:
 
 Output
 ------
-  results/sae_study/causal_ablation/
+  results/Sudoku/sae_study/causal_ablation/
     per_puzzle.jsonl
     aggregate.json
 
 Usage
 -----
-    python scripts/sae/sae_causal_ablation.py --sae_path results/sae_study/sae_d2048_l10.01.pt
+    python scripts/sae/sae_causal_ablation.py --sae_path results/Sudoku/sae_study/sae_d2048_l10.01.pt
     python scripts/sae/sae_causal_ablation.py --sae_path ... --n_puzzles 200 --top_k 50
 """
 
@@ -732,15 +732,15 @@ def main():
                         help="Weights filename inside checkpoint_dir "
                              "(default: checkpoint.pt or latest step_<N>)")
     parser.add_argument("--activations_path", type=str,
-                        default="results/sae_study/activations_zH.pt")
+                        default="results/Sudoku/sae_study/activations_zH.pt")
     parser.add_argument("--probe_weights_path", type=str,
-                        default="results/probes/e8_constraint_probes/probe_weights.pt")
+                        default="results/Sudoku/probes/e8_constraint_probes/probe_weights.pt")
     parser.add_argument("--n_puzzles", type=int, default=200)
     parser.add_argument("--top_k", type=int, default=50)
     parser.add_argument("--n_random_features", type=int, default=10)
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/sae_study/causal_ablation")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/sae_study/causal_ablation")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--puzzle_indices", type=str, default=None,
                         help="JSON manifest/list of dataloader puzzle indices to evaluate")

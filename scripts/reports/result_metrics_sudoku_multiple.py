@@ -135,7 +135,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--npz", required=True, help="Path to NPZ with intermediates")
     ap.add_argument("--ignore_givens", action="store_true", help="Exclude givens from Hamming")
-    ap.add_argument("--outdir", default="results/hamming_multi", help="Output directory")
+    ap.add_argument("--outdir", default="results/Sudoku/hamming_multi", help="Output directory")
     ap.add_argument("--grid_rows", type=int, default=4)
     ap.add_argument("--grid_cols", type=int, default=6)
     ap.add_argument("--overlay_max", type=int, default=100, help="Max curves to overlay")

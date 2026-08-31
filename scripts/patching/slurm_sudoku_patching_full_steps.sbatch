@@ -18,12 +18,12 @@ mkdir -p logs/patching
 
 NUM_PAIRS="${NUM_PAIRS:-250}"
 PATCH_STEPS="${PATCH_STEPS:-1,2,4,6,8,10,12,15}"
-OUTPUT_DIR="${OUTPUT_DIR:-results/patching/patching_full_steps}"
+OUTPUT_DIR="${OUTPUT_DIR:-results/Sudoku/patching/patching_full_steps}"
 
 echo "[sudoku_patch_full] smoke (2 pairs)"
 conda run --no-capture-output -n hrm python -u scripts/patching/patching_sudoku_full_steps.py \
     --num_pairs 2 --patch_steps 1,15 \
-    --output_dir results/patching/_smoke_full_steps
+    --output_dir results/Sudoku/patching/_smoke_full_steps
 
 echo "[sudoku_patch_full] full run: pairs=$NUM_PAIRS steps=$PATCH_STEPS"
 conda run --no-capture-output -n hrm python -u scripts/patching/patching_sudoku_full_steps.py \
@@ -32,5 +32,5 @@ conda run --no-capture-output -n hrm python -u scripts/patching/patching_sudoku_
 
 echo "[sudoku_patch_full] regenerating cross-task figures"
 conda run --no-capture-output -n hrm python -u scripts/plotting/plot_crosstask_figures.py \
-    --output_dir results/reports/paper_aaai_figures
+    --output_dir results/Final/figures
 echo "[sudoku_patch_full] done"

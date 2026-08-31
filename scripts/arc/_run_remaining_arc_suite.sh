@@ -13,7 +13,7 @@ set -euo pipefail
 
 PY="${PY:-python}"
 CKPT=checkpoints/arc2-adapted-evalonly/step_7391
-SAE_DIR=results/arc/sae_study
+SAE_DIR=results/ARC/arc/sae_study
 cd "$(dirname "$0")/../.."
 
 echo "================ [1/5] ARC cross-puzzle patching (full) ================"
@@ -21,7 +21,7 @@ echo "================ [1/5] ARC cross-puzzle patching (full) ================"
 # the donor sweep starts at step 1.
 $PY scripts/arc/patching_arc.py --checkpoint "$CKPT" \
     --num_pairs 100 --patch_levels H,L --patch_steps 1,2,4,6,8,10,12,15 \
-    --output_dir results/arc/patching_full_steps
+    --output_dir results/ARC/arc/patching_full_steps
 
 echo "================ [2/5] ARC SAE: collect z_H activations ================"
 $PY scripts/arc/sae_collect_activations_arc.py --checkpoint "$CKPT" \
@@ -36,12 +36,12 @@ echo "================ [4/5] ARC SAE: causal ablation ========================"
 $PY scripts/arc/sae_causal_ablation_arc.py --checkpoint "$CKPT" \
     --sae_path "$SAE_DIR/sae_d2048_l10.01.pt" \
     --activations_path "$SAE_DIR/activations_zH.pt" \
-    --probe_weights results/arc/hardened/linear_probes/probe_weights.pt \
+    --probe_weights results/ARC/arc/hardened/linear_probes/probe_weights.pt \
     --n_puzzles 150 --top_k 50 --n_random_features 50 \
     --output_dir "$SAE_DIR/causal_ablation"
 
 echo "================ [5/5] Regenerate figures ==============================="
-$PY scripts/plotting/plot_crosstask_figures.py --output_dir results/reports/paper_aaai_figures
-$PY scripts/arc/plot_arc_paper_figures.py --output_dir results/reports/arc_paper_figures || true
+$PY scripts/plotting/plot_crosstask_figures.py --output_dir results/Final/figures
+$PY scripts/arc/plot_arc_paper_figures.py --output_dir results/ARC/arc_paper_figures || true
 
 echo "================ ARC remaining suite COMPLETE =========================="

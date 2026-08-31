@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Side-by-side Sudoku vs Maze comparison figures + the constraint-localization result.
 
-Produces (in results/reports/comparison_figures/):
+Produces (in results/Sudoku/comparison_figures/):
   cmp1_ablation_step      per-step z_H/z_L ablation: Sudoku (token) vs Maze (valid_sg_path)
   cmp2_freeze             freeze-from-k: Sudoku vs Maze
   cmp3_sae_frontier       SAE reconstruction vs L0: Sudoku vs Maze (sparsity contrast)
@@ -19,7 +19,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = "results/reports/comparison_figures"
+OUT = "results/Sudoku/comparison_figures"
 os.makedirs(OUT, exist_ok=True)
 H, L = "#1f77b4", "#ff7f0e"
 plt.rcParams.update({"figure.dpi": 120, "font.size": 10, "axes.grid": True, "grid.alpha": 0.3})
@@ -89,8 +89,8 @@ def ablation_series(path, metric):
 
 
 def cmp1_ablation():
-    sud = ablation_series("results/controlled/ablation/STREAM/aggregate.json", "token")
-    maze = ablation_series("results/maze/hardened/ablation_controlled/STREAM/aggregate.json", "valid_sg_path")
+    sud = ablation_series("results/Sudoku/controlled/ablation/STREAM/aggregate.json", "token")
+    maze = ablation_series("results/Maze/hardened/ablation_controlled/STREAM/aggregate.json", "valid_sg_path")
     if not sud and not maze:
         return
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.4), sharey=False)
@@ -134,8 +134,8 @@ def freeze_series(path, metric):
 
 
 def cmp2_freeze():
-    sud = freeze_series("results/controlled/freeze/aggregate.json", "token")
-    maze = freeze_series("results/maze/hardened/freeze_controlled/aggregate.json", "valid_sg_path")
+    sud = freeze_series("results/Sudoku/controlled/freeze/aggregate.json", "token")
+    maze = freeze_series("results/Maze/hardened/freeze_controlled/aggregate.json", "valid_sg_path")
     if not sud and not maze:
         return
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.4))
@@ -156,8 +156,8 @@ def cmp2_freeze():
 def cmp3_sae():
     fig, axes = plt.subplots(1, 2, figsize=(12, 4.6))
     for ax, path, title in [
-        (axes[0], "results/sae_study/sweep_results.csv", "Sudoku z_H SAE"),
-        (axes[1], "results/maze/sae_study/sweep_results.csv", "Maze z_H SAE")]:
+        (axes[0], "results/Sudoku/sae_study/sweep_results.csv", "Sudoku z_H SAE"),
+        (axes[1], "results/Maze/sae_study/sweep_results.csv", "Maze z_H SAE")]:
         rows = load_csv(path)
         if not rows:
             continue
@@ -177,13 +177,13 @@ def cmp3_sae():
 
 def cmp4_mlp():
     def sud_delta():
-        rows = load_csv("results/probes/nonlinear_probes/sweep_results.csv")
+        rows = load_csv("results/Sudoku/probes/nonlinear_probes/sweep_results.csv")
         if not rows:
             return None
         ds = [num(r["delta_val"]) for r in rows if r.get("task") == "binary" and num(r.get("delta_val")) is not None]
         return ds
     def maze_delta():
-        d = load("results/maze/hardened/mlp_probes/probe_results.json")
+        d = load("results/Maze/hardened/mlp_probes/probe_results.json")
         if not d:
             return None
         return [r.get("delta_mlp_minus_linear") for r in d.get("local_probes", []) + d.get("global_probes", [])
@@ -206,7 +206,7 @@ def cmp4_mlp():
 
 
 def cmp5_ccl():
-    rows = load_csv("results/constraint_localization/sweep/sweep_results.csv")
+    rows = load_csv("results/Sudoku/constraint_localization/sweep/sweep_results.csv")
     if not rows:
         print("  [skip] cmp5: no constraint-localization sweep")
         return

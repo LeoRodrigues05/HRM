@@ -246,7 +246,7 @@ def main():
     parser.add_argument("--max_steps", type=int, default=16)
     parser.add_argument("--also_collect_zL", action="store_true")
     parser.add_argument("--device", type=str, default="auto")
-    parser.add_argument("--output_dir", type=str, default="results/maze/sae_study")
+    parser.add_argument("--output_dir", type=str, default="results/Maze/sae_study")
     parser.add_argument("--checkpoint_dir", type=str, default=DEFAULT_CKPT_DIR)
     parser.add_argument("--store_dtype", type=str, default="float16",
                         choices=["float16", "float32"])

@@ -7,7 +7,7 @@ value to stdout for traceability. Each task/series is skipped gracefully if its
 aggregate is missing, so this is safe to run before the ARC SAE/patching/freeze runs
 finish (it just renders fewer series, then re-render once they land).
 
-Figures -> results/reports/paper_aaai_figures/ (new folder; nothing overwritten):
+Figures -> results/Final/figures/ (new folder; nothing overwritten):
   fig_crosstask_freeze      Finding 1: freeze-z_H-after-k damage vs k, 3 tasks
                             (Sudoku decays progressively; Maze/ARC ~flat = static plan)
   fig_crosstask_patching    Finding 1: cross-puzzle z_H patch damage vs donor step
@@ -17,7 +17,7 @@ Figures -> results/reports/paper_aaai_figures/ (new folder; nothing overwritten)
 
 Usage:
   python scripts/plotting/plot_crosstask_figures.py \
-      --output_dir results/reports/paper_aaai_figures
+      --output_dir results/Final/figures
 """
 from __future__ import annotations
 import os, sys, json, argparse
@@ -72,11 +72,11 @@ def _freeze_series(agg, metric_path) -> Optional[Tuple[List[int], List[float]]]:
 def fig_freeze(output_dir):
     print("[fig_crosstask_freeze]")
     series = {
-        "Sudoku": (_load("results/controlled/freeze/aggregate.json"),
+        "Sudoku": (_load("results/Sudoku/controlled/freeze/aggregate.json"),
                    lambda r: r.get("delta_accuracy")),
-        "Maze": (_load("results/maze/hardened/freeze_controlled/aggregate.json"),
+        "Maze": (_load("results/Maze/hardened/freeze_controlled/aggregate.json"),
                  lambda r: (r.get("maze_metric_deltas") or {}).get("valid_sg_path")),
-        "ARC": (_load("results/arc/freeze/aggregate.json"),
+        "ARC": (_load("results/ARC/arc/freeze/aggregate.json"),
                 lambda r: r.get("delta_accuracy")),
     }
     fig, ax = plt.subplots(figsize=(6.4, 4.2))
@@ -106,7 +106,7 @@ def fig_patching(output_dir):
     ax.axhline(0, color="0.7", lw=0.8)
     any_plotted = False
 
-    sd = _load("results/patching/patching_full_steps/aggregate.json")
+    sd = _load("results/Sudoku/patching/patching_full_steps/aggregate.json")
     if sd and "patch_H" in sd:
         node = sd["patch_H"]
         steps = sorted((int(k) for k in node), key=int)
@@ -115,7 +115,7 @@ def fig_patching(output_dir):
         any_plotted = True
         print(f"   Sudoku patch Δ: s{steps[0]}={ys[0]:+.2f}%  s{steps[-1]}={ys[-1]:+.2f}%")
 
-    mz = _load("results/maze/hardened/patching_full_steps/aggregate.json")
+    mz = _load("results/Maze/hardened/patching_full_steps/aggregate.json")
     if mz:
         node = (mz.get("maze_metric_deltas_by_group_level_step") or {}).get(
             "valid_sg_path", {}).get("all", {}).get("H", {})
@@ -126,7 +126,7 @@ def fig_patching(output_dir):
             any_plotted = True
             print(f"   Maze patch Δ: s{steps[0]}={ys[0]:+.2f}%  s{steps[-1]}={ys[-1]:+.2f}%")
 
-    arc = _load("results/arc/patching_full_steps/aggregate.json")
+    arc = _load("results/ARC/arc/patching_full_steps/aggregate.json")
     if arc and "patch_H" in arc:
         node = arc["patch_H"]
         steps = sorted((int(k) for k in node), key=int)
@@ -164,9 +164,9 @@ def _sae_vals(agg) -> Optional[Dict[str, float]]:
 def fig_sae_ladder(output_dir):
     print("[fig_crosstask_sae_ladder]")
     tasks = {
-        "Sudoku": _load("results/sae_study/causal_ablation/aggregate.json"),
-        "Maze": _load("results/maze/sae_study/causal_ablation/aggregate.json"),
-        "ARC": _load("results/arc/sae_study/causal_ablation/aggregate.json"),
+        "Sudoku": _load("results/Sudoku/sae_study/causal_ablation/aggregate.json"),
+        "Maze": _load("results/Maze/sae_study/causal_ablation/aggregate.json"),
+        "ARC": _load("results/ARC/arc/sae_study/causal_ablation/aggregate.json"),
     }
     data = {t: _sae_vals(a) for t, a in tasks.items()}
     data = {t: v for t, v in data.items() if v is not None}
@@ -192,7 +192,7 @@ def fig_sae_ladder(output_dir):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--output_dir", default="results/reports/paper_aaai_figures")
+    ap.add_argument("--output_dir", default="results/Final/figures")
     args = ap.parse_args()
     outdir = args.output_dir if os.path.isabs(args.output_dir) else os.path.join(REPO, args.output_dir)
     fig_freeze(outdir)

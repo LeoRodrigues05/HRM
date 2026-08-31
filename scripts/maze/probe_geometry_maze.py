@@ -12,14 +12,14 @@ geometry of those directions:
     dimensional the feature subspace is) with a seed CI,
   - per-direction weight norms.
 
-This is the maze analog of ``results/probes/e8_constraint_probes/geometric_analysis.json``.
+This is the maze analog of ``results/Sudoku/probes/e8_constraint_probes/geometric_analysis.json``.
 Only binary structural features have a single direction, so regression targets
 (distances, degree) are skipped.
 
 Usage
   python scripts/maze/probe_geometry_maze.py --num_puzzles 1000 \
       --steps 0,1,2,4,8,15 --streams z_H,z_L --seeds 0,1,2,3,4 --device cuda \
-      --output_dir results/maze/hardened/probe_geometry
+      --output_dir results/Maze/hardened/probe_geometry
 """
 from __future__ import annotations
 
@@ -93,7 +93,7 @@ def main():
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--train_device", default="auto")
-    ap.add_argument("--output_dir", default="results/maze/hardened/probe_geometry")
+    ap.add_argument("--output_dir", default="results/Maze/hardened/probe_geometry")
     args = ap.parse_args()
     os.makedirs(args.output_dir, exist_ok=True)
 

@@ -31,11 +31,11 @@ MAX_PROBE_BATCHES=${MAX_PROBE_BATCHES:-10} \
 python scripts/probes/run_probes_driver.py
 
 # 5) Inspect saved probes
-ls -lh results/probes/
+ls -lh results/Sudoku/probes/
 
 python - <<'PY'
 import torch
-g=torch.load("results/probes/probe_global.pt"); l=torch.load("results/probes/probe_local.pt")
+g=torch.load("results/Sudoku/probes/probe_global.pt"); l=torch.load("results/Sudoku/probes/probe_local.pt")
 print("global entries:",len(g),"local entries:",len(l))
 if len(g)>0:
     z=g[0].get("z_H") or g[0].get("z_L")
@@ -44,10 +44,10 @@ if len(g)>0:
 PY
 
 # 6) Train linear probes (global is_solved, local per_cell_correct)
-python scripts/probes/train_linear_probes.py --probes_dir results/probes
+python scripts/probes/train_linear_probes.py --probes_dir results/Sudoku/probes
 
 # 7) Show trained probe files
-ls -lh results/probes/global_probe_*.pt results/probes/local_probe_*.pt || true
+ls -lh results/Sudoku/probes/global_probe_*.pt results/Sudoku/probes/local_probe_*.pt || true
 
 echo "Probe workflow completed successfully."
 

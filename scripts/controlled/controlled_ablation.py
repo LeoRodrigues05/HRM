@@ -268,7 +268,7 @@ def main():
     parser = argparse.ArgumentParser(description="Controlled z_H/z_L Ablation (Revised E1)")
     add_common_args(parser)
     parser.add_argument("--num_puzzles", type=int, default=5000)
-    parser.add_argument("--output_dir", type=str, default="results/controlled_ablation")
+    parser.add_argument("--output_dir", type=str, default="results/Sudoku/controlled/ablation")
     parser.add_argument("--z_level", type=str, default="both",
                         choices=["H", "L", "both"],
                         help="Which level to ablate: H, L, or both (default)")

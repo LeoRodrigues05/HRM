@@ -21,9 +21,9 @@ cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
 
 mkdir -p logs \
-         results/maze/policy_improvement \
-         results/controlled/policy_improvement \
-         results/reports/policy_improvement_figures
+         results/Maze/policy_improvement \
+         results/Sudoku/controlled/policy_improvement \
+         results/Sudoku/policy_improvement_figures
 
 N="${N:-500}"
 echo "[hrm_polimp] starting  N=${N}  $(date)"
@@ -32,18 +32,18 @@ echo "[hrm_polimp] === maze ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/policy_improvement.py \
     --task maze \
     --num_puzzles "$N" \
-    --output_dir results/maze/policy_improvement \
+    --output_dir results/Maze/policy_improvement \
     --device cuda
 
 echo "[hrm_polimp] === sudoku ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/policy_improvement.py \
     --task sudoku \
     --num_puzzles "$N" \
-    --output_dir results/controlled/policy_improvement \
+    --output_dir results/Sudoku/controlled/policy_improvement \
     --device cuda
 
 echo "[hrm_polimp] === figures ==="
 conda run --no-capture-output -n hrm python -u scripts/analysis/plot_policy_improvement.py \
-    --outdir results/reports/policy_improvement_figures
+    --outdir results/Sudoku/policy_improvement_figures
 
 echo "[hrm_polimp] done  $(date)"

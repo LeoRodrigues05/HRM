@@ -34,16 +34,16 @@ STEPS="${STEPS:-0,1,2,4,8,15}"
 SEEDS="${SEEDS:-0,1,2,3,4}"
 RUN="${RUN:-conda run --no-capture-output -n hrm python -u}"
 
-LP=results/arc/hardened/linear_probes
-MLP=results/arc/hardened/linear_probes_mlp
-DA=results/arc/hardened/directed_ablation
+LP=results/ARC/arc/hardened/linear_probes
+MLP=results/ARC/arc/hardened/linear_probes_mlp
+DA=results/ARC/arc/hardened/directed_ablation
 
 echo "[hrm_arc] starting N=${N} steps=${STEPS} seeds=${SEEDS}  $(date)"
 mkdir -p logs "$LP" "$MLP" "$DA" \
-         results/arc/causal_subspace \
-         results/arc/policy_improvement \
-         results/arc/policy_decomposition \
-         results/reports/arc_figures
+         results/ARC/arc/causal_subspace \
+         results/ARC/arc/policy_improvement \
+         results/ARC/arc/policy_decomposition \
+         results/ARC/arc_figures
 
 # ═══════════════════════════════════════════════════════════
 # STEP 1 — E4/E8: linear probes + export directions for E9/H2
@@ -85,7 +85,7 @@ echo "[hrm_arc] === H2: causal subspace ==="
 $RUN scripts/analysis/causal_subspace.py \
     --task arc --num_puzzles "$N" --n_pca "$N" \
     --probe_weights "$LP/probe_weights.pt" \
-    --output_dir results/arc/causal_subspace --device cuda \
+    --output_dir results/ARC/arc/causal_subspace --device cuda \
     || echo "[hrm_arc] causal subspace failed (non-fatal)"
 
 # ═══════════════════════════════════════════════════════════
@@ -94,13 +94,13 @@ $RUN scripts/analysis/causal_subspace.py \
 echo "[hrm_arc] === A: policy improvement ==="
 $RUN scripts/analysis/policy_improvement.py \
     --task arc --num_puzzles "$N_POLICY" \
-    --output_dir results/arc/policy_improvement --device cuda \
+    --output_dir results/ARC/arc/policy_improvement --device cuda \
     || echo "[hrm_arc] policy improvement failed (non-fatal)"
 
 echo "[hrm_arc] === H4: policy decomposition ==="
 $RUN scripts/analysis/policy_decomposition.py \
     --task arc --num_puzzles "$N_POLICY" \
-    --output_dir results/arc/policy_decomposition --device cuda \
+    --output_dir results/ARC/arc/policy_decomposition --device cuda \
     || echo "[hrm_arc] policy decomposition failed (non-fatal)"
 
 # ═══════════════════════════════════════════════════════════
@@ -108,13 +108,13 @@ $RUN scripts/analysis/policy_decomposition.py \
 # ═══════════════════════════════════════════════════════════
 echo "[hrm_arc] === Figures ==="
 $RUN scripts/arc/plot_arc_figures.py \
-    --results_dir results/arc \
-    --output_dir results/reports/arc_figures || true
+    --results_dir results/ARC/arc \
+    --output_dir results/ARC/arc_figures || true
 
 echo "[hrm_arc] done  $(date)"
 echo "[hrm_arc] Key outputs:"
 echo "[hrm_arc]   $LP/probe_summary.json   (linear decodability)"
 echo "[hrm_arc]   $MLP/probe_summary.json  (MLP vs linear)"
 echo "[hrm_arc]   $DA/analysis.json         (directed ablation)"
-echo "[hrm_arc]   results/arc/causal_subspace/  results/arc/policy_*/"
-echo "[hrm_arc]   results/reports/arc_figures/  (figures)"
+echo "[hrm_arc]   results/ARC/arc/causal_subspace/  results/ARC/arc/policy_*/"
+echo "[hrm_arc]   results/ARC/arc_figures/  (figures)"

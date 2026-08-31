@@ -14,15 +14,15 @@
 set -euo pipefail
 cd "${SLURM_SUBMIT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
 export PYTHONPATH="$PWD:${PYTHONPATH:-}"
-mkdir -p logs/maze results/maze/sae_study/causal_ablation
+mkdir -p logs/maze results/Maze/sae_study/causal_ablation
 
 CHECKPOINT="${CHECKPOINT:-checkpoints/sapientinc-hrm-maze-30x30-hard/checkpoint}"
-SAE_PATH="${SAE_PATH:-results/maze/sae_study/sae_d2048_l10.01.pt}"
-ACTS="${ACTS:-results/maze/sae_study/activations_zH.pt}"
-PROBE_W="${PROBE_W:-results/maze/hardened/probe_geometry/probe_weights.pt}"
+SAE_PATH="${SAE_PATH:-results/Maze/sae_study/sae_d2048_l10.01.pt}"
+ACTS="${ACTS:-results/Maze/sae_study/activations_zH.pt}"
+PROBE_W="${PROBE_W:-results/Maze/hardened/probe_geometry/probe_weights.pt}"
 N_PUZZLES="${N_PUZZLES:-300}"
 TOP_K="${TOP_K:-50}"
-OUTPUT_DIR="${OUTPUT_DIR:-results/maze/sae_study/causal_ablation}"
+OUTPUT_DIR="${OUTPUT_DIR:-results/Maze/sae_study/causal_ablation}"
 
 echo "[maze_sae_causal] sae=$SAE_PATH n_puzzles=$N_PUZZLES top_k=$TOP_K"
 conda run --no-capture-output -n hrm python -u scripts/maze/sae_causal_ablation_maze.py \

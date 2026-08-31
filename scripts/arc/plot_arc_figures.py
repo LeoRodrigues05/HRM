@@ -6,15 +6,15 @@ publication-style figures (mirrors scripts/maze/plot_consolidated_figures.py for
 the maze suite). Each panel is skipped gracefully if its inputs are missing, so
 this can be run after a partial suite.
 
-Inputs (defaults under results/arc/):
+Inputs (defaults under results/ARC/arc/):
   hardened/linear_probes/probe_summary.json       (linear probe decodability)
   hardened/linear_probes_mlp/probe_summary.json   (MLP probe + linear baseline)
   hardened/directed_ablation/analysis.json         (E9 causal validation)
   policy_improvement/aggregate.json                (per-step value, optional)
 
 Usage
-  python scripts/arc/plot_arc_figures.py --results_dir results/arc \
-      --output_dir results/reports/arc_figures
+  python scripts/arc/plot_arc_figures.py --results_dir results/ARC/arc \
+      --output_dir results/ARC/arc_figures
 """
 from __future__ import annotations
 import os, sys, json, argparse
@@ -170,8 +170,8 @@ def plot_value_by_step(agg: dict, output_dir: str):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--results_dir", default="results/arc")
-    ap.add_argument("--output_dir", default="results/reports/arc_figures")
+    ap.add_argument("--results_dir", default="results/ARC/arc")
+    ap.add_argument("--output_dir", default="results/ARC/arc_figures")
     ap.add_argument("--streams", default="z_H,z_L")
     args = ap.parse_args()
 

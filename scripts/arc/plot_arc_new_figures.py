@@ -14,8 +14,8 @@ to run whether or not the voting eval has finished.
 
 Usage:
   python scripts/arc/plot_arc_new_figures.py \
-      --diag_dir results/arc/diagnostics \
-      --output_dir results/reports/arc_figures_step7391
+      --diag_dir results/ARC/arc/diagnostics \
+      --output_dir results/ARC/arc_figures_step7391
 """
 from __future__ import annotations
 import os, json, argparse, glob
@@ -126,8 +126,8 @@ def plot_convergence_trend(diag_dir: str, output_dir: str):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--diag_dir", default="results/arc/diagnostics")
-    ap.add_argument("--output_dir", default="results/reports/arc_figures_new")
+    ap.add_argument("--diag_dir", default="results/ARC/arc/diagnostics")
+    ap.add_argument("--output_dir", default="results/ARC/arc_figures_new")
     args = ap.parse_args()
 
     acc = _load(os.path.join(args.diag_dir, "arc_accuracy.json"))
