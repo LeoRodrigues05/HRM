@@ -95,7 +95,7 @@ Sudoku. All experiments share `scripts/core/activation_ablation.py` /
 | **E9b** | MLP / non-linear probes & their directed ablation | `scripts/probes/nonlinear_probes.py`, `scripts/directed_ablation/e9b_nonlinear_directed_ablation.py` | `results/Sudoku/directed_ablation/e9b_nonlinear/` |
 | **E10** | Sparse autoencoder study on z<sub>H</sub> (features + causal ablation) | `scripts/sae/sae_train.py`, `scripts/sae/sae_analyze_features.py`, `scripts/sae/sae_causal_ablation.py`, `scripts/sae/sae_sweep.py`, `scripts/sae/sae_plot.py` | `results/Sudoku/sae_study/` |
 | Maze | Maze variants of E1/E2/E5/E8/E9/E10 | `scripts/sae/sae_collect_activations_maze.py`, `scripts/maze/` | `results/Maze/` |
-| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/slurm_arc_suite.sbatch` (see `archive/plans/PLAN_ARC_experiments.md`) | `results/ARC/arc/` |
+| ARC | ARC-AGI replication of E4/E8/E9/E9b + H2/A/H4 (ARC-native features) | `scripts/arc/run_arc_end_to_end.sh`, `scripts/arc/slurm_arc_suite.sbatch` (see §7) | `results/ARC/arc/` |
 | Controlled | Single-variable, larger-N replications of E1/E2/E5/E9 with stats | `scripts/controlled/run_all_controlled_experiments.py` | `results/Sudoku/controlled/` |
 
 The ARC suite uses the HRM ARC-2 checkpoint
