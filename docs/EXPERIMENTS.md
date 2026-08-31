@@ -313,16 +313,16 @@ recorded in those files predate the rewrite. The mapping:
 
 | SHA in `_meta.json` | Commit in this history | Subject |
 |---|---|---|
-| `3bc8c8daac` | `c3729492ae` | ARC-AGI updates, intermediate-result documentation |
-| `658a38d2af` | `e980e300f3` | ARC figures for newly-retrieved data |
-| `7cba8918cd` | `93ea149355` | (untitled) |
-| `983d027793` | `40b356e883` | Merge; became degenerate under filtering and collapsed |
-| `9f0c3f327a` | `35b5876634` | Cluster setup: conda bootstrap + env activation |
-| `a34e5172d0` | `89d8573422` | Move paper drafts out of the tracked tree |
-| `c8d79812a0` | `ddbe7deca0` | Merge branch 'main' |
-| `cec861da1c` | `2498a73960` | TTA-voting eval for ARC |
-| `d0c8136ebf` | `0c2b39c2a8` | Maze experiments, report generation, results |
-| `db37caa6bf` | `0a36a969be` | Constraint-localization study, maze/comparison figures |
+| `3bc8c8daac` | `1d76475774` | ARC-AGI updates, intermediate-result documentation |
+| `658a38d2af` | `83ed6a52e8` | ARC figures for newly-retrieved data |
+| `7cba8918cd` | `06a5bb3933` | (untitled) |
+| `983d027793` | `52817ba9c0` | Merge; became degenerate under filtering and collapsed |
+| `9f0c3f327a` | `40695d1ecc` | Cluster setup: conda bootstrap + env activation |
+| `a34e5172d0` | `4e6db6370b` | Move paper drafts out of the tracked tree |
+| `c8d79812a0` | `c6dd0dc42c` | Merge branch 'main' |
+| `cec861da1c` | `34c9e09eae` | TTA-voting eval for ARC |
+| `d0c8136ebf` | `37d99e9431` | Maze experiments, report generation, results |
+| `db37caa6bf` | `5639ca13b6` | Constraint-localization study, maze/comparison figures |
 
 `9f0c3f327a` is the SHA behind the BPTT-vs-stock comparison (paper Tables 2, 18,
 19), which ran on separate A100 hardware — the only two `_meta.json` files

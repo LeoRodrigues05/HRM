@@ -198,6 +198,18 @@ The upstream model:
 }
 ```
 
+## Acknowledgements
+
+This repository is a research fork of the
+[Hierarchical Reasoning Model](https://github.com/sapientinc/HRM) codebase by
+Sapient Intelligence, and uses their released Sudoku-Extreme, Maze-Hard, and
+ARC-2 checkpoints.
+
+Parts of the interpretability tooling, the release cleanup, and the
+documentation in this repository were developed with assistance from
+[Claude](https://claude.com/claude-code) (Anthropic). All experimental design,
+analysis, and reported results are the authors'.
+
 ## License
 
 See [LICENSE](LICENSE).
