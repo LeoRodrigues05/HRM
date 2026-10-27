@@ -72,6 +72,9 @@ from scripts.core.sudoku_sample import (
     load_puzzle_indices,
     save_puzzle_indices,
 )
+from scripts.probes.probe_metrics import (
+    METRIC_KEYS, binary_metrics, multiclass_metrics, mean_metrics, nan_to_none,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s  %(message)s")
 logger = logging.getLogger(__name__)
@@ -664,6 +667,7 @@ def main():
                 rep_probe = None          # first-seed probe kept for geometry
                 rep_ntr = rep_nva = 0
                 seed_weight_vecs: List[torch.Tensor] = []  # per-seed [in] for binary geometry
+                seed_metrics: List[Dict[str, float]] = []  # base rates + balanced metrics (E0)
                 for s_i, seed in enumerate(seeds):
                     tr_idx, va_idx = puzzle_disjoint_split(
                         X_use.shape[0], args.val_frac, seed,
@@ -685,6 +689,12 @@ def main():
                             epochs=args.epochs, lr=args.lr)
                     seed_tr_scores.append(tr_score)
                     seed_va_scores.append(va_score)
+                    if task != "regression":
+                        with torch.no_grad():
+                            va_logits = probe(X_va)
+                        seed_metrics.append(
+                            binary_metrics(va_logits, y_va, y_tr) if task == "binary"
+                            else multiclass_metrics(va_logits, y_va, y_tr, n_classes=10))
                     if task == "binary":
                         seed_weight_vecs.append(probe.linear.weight.detach().cpu()[0])  # [in]
                     if s_i == 0:
@@ -693,6 +703,11 @@ def main():
 
                 va_mean, va_lo, va_hi, va_std = mean_ci(seed_va_scores)
                 tr_mean = float(np.mean(seed_tr_scores))
+                # Every row carries the same keys (NaN where a metric does not
+                # apply) so the CSV header from the first row fits all rows.
+                val_metrics = mean_metrics(seed_metrics)
+                margin = (va_mean - val_metrics["majority_acc"]
+                          if task != "regression" else float("nan"))
 
                 results.append({
                     "z_level": z_name,
@@ -710,6 +725,8 @@ def main():
                     "n_train": rep_ntr,
                     "n_val": rep_nva,
                     "in_dim": int(X_use.shape[1]),
+                    **{f"val_{k}": round(v, 5) for k, v in val_metrics.items()},
+                    "val_margin_over_majority": round(margin, 5),
                 })
 
                 # Store representative (first-seed) weights for geometry/ablation
@@ -729,6 +746,7 @@ def main():
                     "z_level": z_name,
                     "step": int(step_str),
                     "target": target,
+                    "val_metrics": val_metrics,
                     # per-seed unit weight vectors for ensemble geometry (binary only)
                     "W_per_seed": [w for w in seed_weight_vecs] if seed_weight_vecs else None,
                 }
@@ -736,7 +754,9 @@ def main():
                 logger.info(
                     f"  z_{z_name} step {step_str:>2s} {target:28s} "
                     f"{metric}={va_mean:.4f} ±{(va_hi - va_mean):.4f} "
-                    f"(train={tr_mean:.4f}, {len(seeds)} seeds)"
+                    f"(train={tr_mean:.4f}, {len(seeds)} seeds) "
+                    f"majority={val_metrics['majority_acc']:.4f} "
+                    f"balanced={val_metrics['balanced_acc']:.4f}"
                 )
 
     # ── Save results CSV ──────────────────────────────────────────────
@@ -757,6 +777,8 @@ def main():
             "val_per_seed": [float(x) for x in r["val_scores_per_seed"].split(";")],
             "train_mean": r["train_score"], "n_seeds": r["n_seeds"],
             "n_train": r["n_train"], "n_val": r["n_val"],
+            **{f"val_{k}": nan_to_none(r[f"val_{k}"]) for k in METRIC_KEYS},
+            "val_margin_over_majority": nan_to_none(r["val_margin_over_majority"]),
         }
         for r in results
     }
@@ -791,11 +813,13 @@ def main():
     print("\n" + "=" * 80)
     print("E8 CONSTRAINT PROBES — SUMMARY")
     print("=" * 80)
-    print(f"{'z':>3s}  {'step':>4s}  {'target':28s}  {'metric':>6s}  {'val':>8s}  {'train':>8s}")
-    print("-" * 80)
+    print(f"{'z':>3s}  {'step':>4s}  {'target':28s}  {'metric':>6s}  {'val':>8s}  {'train':>8s}"
+          f"  {'majority':>8s}  {'balanced':>8s}  {'auroc':>6s}")
+    print("-" * 104)
     for r in sorted(results, key=lambda x: (-x["val_score"], x["target"])):
         print(f"{r['z_level']:>3s}  {r['step']:>4d}  {r['target']:28s}  "
-              f"{r['metric']:>6s}  {r['val_score']:>8.4f}  {r['train_score']:>8.4f}")
+              f"{r['metric']:>6s}  {r['val_score']:>8.4f}  {r['train_score']:>8.4f}"
+              f"  {r['val_majority_acc']:>8.4f}  {r['val_balanced_acc']:>8.4f}  {r['val_auroc']:>6.3f}")
 
     if geometric.get("constraint_cosines"):
         print("\n── Constraint Direction Cosines (binary probes, same step) ──")

@@ -64,6 +64,7 @@ from scripts.maze.maze_common import (
     MAZE_CHECKPOINT, get_puzzle_emb_len, maze_prediction_metrics,
 )
 from scripts.maze.maze_render_common import html_doc, metrics_table
+from scripts.probes.probe_metrics import binary_metrics, multiclass_metrics
 from utils.maze_targets import (
     SEQ_LEN, UNREACHABLE,
     distance_to_goal, distance_to_start, on_optimal_path,
@@ -293,10 +294,18 @@ def _fit_classifier(
     model.eval()
     with torch.no_grad():
         train_acc = (model(x_train).argmax(1) == y_train_m).float().mean().item()
-        test_pred = model(x_test).argmax(1)
+        test_logits = model(x_test)
+        test_pred = test_logits.argmax(1)
         test_acc = (test_pred[known] == y_test_m[known]).float().mean().item()
         majority = torch.mode(y_train_m).values.item()
         baseline = (y_test_m[known] == majority).float().mean().item()
+        # Balanced metrics (rebuttal E0): `baseline` above is the majority rate.
+        if len(remap) == 2:
+            extra = binary_metrics(test_logits[known, 1] - test_logits[known, 0],
+                                   y_test_m[known], y_train_m)
+        else:
+            extra = multiclass_metrics(test_logits[known], y_test_m[known], y_train_m,
+                                       n_classes=len(remap))
 
     return {
         "status": "ok", "n": int(x.shape[0]),
@@ -304,6 +313,8 @@ def _fit_classifier(
         "train_score": float(train_acc), "test_score": float(test_acc),
         "baseline": float(baseline),
         "positive_rate": float(y.float().mean().item()) if len(remap) == 2 else float("nan"),
+        "balanced_acc": extra["balanced_acc"], "auroc": extra["auroc"],
+        "mcc": extra["mcc"], "macro_f1": extra["macro_f1"],
     }
 
 
@@ -392,6 +403,7 @@ def _ensemble_probe(
     scores: List[float] = []
     baselines: List[float] = []
     lin_scores: List[float] = []
+    balanced: Dict[str, List[float]] = {"balanced_acc": [], "auroc": [], "mcc": []}
     rep: Optional[Dict[str, float]] = None
     for s in seeds:
         split_seed = _stable_seed(base_seed + s, kind, stream, str(step), target)
@@ -407,6 +419,10 @@ def _ensemble_probe(
         if r.get("status") == "ok":
             scores.append(float(r["test_score"]))
             baselines.append(float(r.get("baseline", 0.0)))
+            for key in balanced:
+                v = r.get(key)
+                if v is not None and not math.isnan(v):
+                    balanced[key].append(float(v))
             if probe_type == "mlp":
                 lr_r = _fit_probe(
                     x, y, task, tr_idx, te_idx, probe_type="linear",
@@ -425,6 +441,7 @@ def _ensemble_probe(
             "score_mean": m, "score_ci_lower": lo, "score_ci_upper": hi,
             "score_std": sd, "score_per_seed": scores,
             "baseline_mean": float(np.mean(baselines)) if baselines else float("nan"),
+            **{f"{key}_mean": (float(np.mean(v)) if v else None) for key, v in balanced.items()},
         })
     out["n_seeds"] = len(scores)
     if probe_type == "mlp" and lin_scores:
